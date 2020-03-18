@@ -4,6 +4,9 @@ CIF varchar(9),
 telefono varchar(9),
 idComercio int primary key
 );
+
+
+
 create table redesWifi(
 ssid varchar(250),
 pwr double,
