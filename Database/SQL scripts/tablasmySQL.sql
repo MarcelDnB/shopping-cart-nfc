@@ -1,3 +1,9 @@
+create table comercio(
+nombreComercio varchar(250),
+CIF varchar(9),
+telefono varchar(9),
+idComercio int primary key
+);
 create table redesWifi(
 ssid varchar(250),
 pwr double,
@@ -5,13 +11,6 @@ idComercio int,
 time timestamp,
 idWifi int primary key,
 foreign key(idComercio) references comercio(idComercio)
-);
-
-create table comercio(
-nombreComercio varchar(250),
-CIF varchar(9),
-telefono varchar(9),
-idComercio int primary key
 );
 
 create table ubicacion(
