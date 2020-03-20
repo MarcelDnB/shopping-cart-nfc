@@ -1,12 +1,3 @@
-create table comercio(
-nombreComercio varchar(250),
-CIF varchar(9),
-telefono varchar(9),
-idComercio int primary key
-);
-
-
-
 create table redesWifi(
 ssid varchar(250),
 pwr double,
@@ -14,6 +5,13 @@ idComercio int,
 time timestamp,
 idWifi int primary key,
 foreign key(idComercio) references comercio(idComercio)
+);
+
+create table comercio(
+nombreComercio varchar(250),
+CIF varchar(9),
+telefono varchar(9),
+idComercio int primary key
 );
 
 create table ubicacion(
@@ -24,6 +22,7 @@ margenError float,
 idUbicacion int primary key,
 foreign key(idWifi) references redesWifi(idWifi)
 );
+
 
 create table intolerancia(
 nombreIntolerancia varchar(250),
@@ -49,6 +48,12 @@ foreign key(idIngrediente) references ingredientes(idIngrediente)
 
 create table usuario(
 idUsuario int primary key,
+idGestionUsuario int,
+foreign key(idGestionUsuario) references gestionUsuario(idGestionUsuario)
+);
+
+create table gestionUsuario(
+idGestionUsuario int primary key,
 idIntolerancia int,
 idComercio int,
 idProducto int,
