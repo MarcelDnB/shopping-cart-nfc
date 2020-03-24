@@ -25,11 +25,12 @@ DROP TABLE IF EXISTS `comercio`;
 CREATE TABLE `comercio` (
   `idComercio` int NOT NULL AUTO_INCREMENT,
   `nombreComercio` varchar(45) DEFAULT NULL,
-  `telefono` int DEFAULT NULL,
+  `telefono` bigint DEFAULT NULL,
   `CIF` varchar(9) DEFAULT NULL,
   PRIMARY KEY (`idComercio`),
-  UNIQUE KEY `idComercio_UNIQUE` (`idComercio`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  UNIQUE KEY `idComercio_UNIQUE` (`idComercio`),
+  UNIQUE KEY `CIF_UNIQUE` (`CIF`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -38,72 +39,8 @@ CREATE TABLE `comercio` (
 
 LOCK TABLES `comercio` WRITE;
 /*!40000 ALTER TABLE `comercio` DISABLE KEYS */;
+INSERT INTO `comercio` VALUES (1,'Mercadona',123456789,'123456789'),(5,'Dia',123456781,'12345678A'),(6,'elJamón',123456783,'12345678C'),(7,'Más',123456782,'12345678B');
 /*!40000 ALTER TABLE `comercio` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `contador`
---
-
-DROP TABLE IF EXISTS `contador`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `contador` (
-  `idcontador` int NOT NULL AUTO_INCREMENT,
-  `idUsuario` int DEFAULT NULL,
-  `idProducto` int DEFAULT NULL,
-  `vecesEscaneado` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`idcontador`),
-  UNIQUE KEY `idcontador_UNIQUE` (`idcontador`),
-  KEY `idUsuario_idx` (`idUsuario`),
-  KEY `idProducto_idx` (`idProducto`),
-  CONSTRAINT `idProducto` FOREIGN KEY (`idProducto`) REFERENCES `producto` (`idproducto`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `idUsuario` FOREIGN KEY (`idUsuario`) REFERENCES `usuario` (`idusuario`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `contador`
---
-
-LOCK TABLES `contador` WRITE;
-/*!40000 ALTER TABLE `contador` DISABLE KEYS */;
-/*!40000 ALTER TABLE `contador` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `gestionusuario`
---
-
-DROP TABLE IF EXISTS `gestionusuario`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `gestionusuario` (
-  `idgestionUsuario` int NOT NULL AUTO_INCREMENT,
-  `idIntolerancia` int DEFAULT NULL,
-  `idComercio` int DEFAULT NULL,
-  `idProducto` int DEFAULT NULL,
-  `idUbicacion` int DEFAULT NULL,
-  PRIMARY KEY (`idgestionUsuario`),
-  UNIQUE KEY `idgestionUsuario_UNIQUE` (`idgestionUsuario`),
-  KEY `idIntolerancia_idx` (`idIntolerancia`),
-  KEY `idComercio_idx` (`idComercio`),
-  KEY `idProducto_idx` (`idProducto`),
-  KEY `idUbicacion_idx` (`idUbicacion`),
-  CONSTRAINT `idComercio1` FOREIGN KEY (`idComercio`) REFERENCES `comercio` (`idComercio`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `idIntolerancia1` FOREIGN KEY (`idIntolerancia`) REFERENCES `intolerancia` (`idintolerancia`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `idProducto1` FOREIGN KEY (`idProducto`) REFERENCES `producto` (`idproducto`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `idUbicacion1` FOREIGN KEY (`idUbicacion`) REFERENCES `ubicacion` (`idubicacion`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `gestionusuario`
---
-
-LOCK TABLES `gestionusuario` WRITE;
-/*!40000 ALTER TABLE `gestionusuario` DISABLE KEYS */;
-/*!40000 ALTER TABLE `gestionusuario` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -121,7 +58,7 @@ CREATE TABLE `ingrediente` (
   UNIQUE KEY `idingredientes_UNIQUE` (`idingrediente`),
   KEY `idIntolerancia_idx` (`idIntolerancia`),
   CONSTRAINT `idIntolerancia` FOREIGN KEY (`idIntolerancia`) REFERENCES `intolerancia` (`idintolerancia`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -130,7 +67,38 @@ CREATE TABLE `ingrediente` (
 
 LOCK TABLES `ingrediente` WRITE;
 /*!40000 ALTER TABLE `ingrediente` DISABLE KEYS */;
+INSERT INTO `ingrediente` VALUES (1,'Huevo',4),(2,'Alcohol',2),(3,'Nata',1),(4,'Galletas',3);
 /*!40000 ALTER TABLE `ingrediente` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `ingredientesproducto`
+--
+
+DROP TABLE IF EXISTS `ingredientesproducto`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `ingredientesproducto` (
+  `idIngrediente` int DEFAULT NULL,
+  `IdIngredienteProducto` int NOT NULL AUTO_INCREMENT,
+  `IdProducto` int DEFAULT NULL,
+  PRIMARY KEY (`IdIngredienteProducto`),
+  UNIQUE KEY `IdIngredienteProducto_UNIQUE` (`IdIngredienteProducto`),
+  KEY `IdIngrediente_idx` (`idIngrediente`),
+  KEY `IdProducto3_idx` (`IdProducto`),
+  CONSTRAINT `IdIngrediente3` FOREIGN KEY (`idIngrediente`) REFERENCES `ingrediente` (`idingrediente`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `IdProducto3` FOREIGN KEY (`IdProducto`) REFERENCES `producto` (`idProducto`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `ingredientesproducto`
+--
+
+LOCK TABLES `ingredientesproducto` WRITE;
+/*!40000 ALTER TABLE `ingredientesproducto` DISABLE KEYS */;
+INSERT INTO `ingredientesproducto` VALUES (1,1,1),(3,2,1),(4,3,1),(2,4,2);
+/*!40000 ALTER TABLE `ingredientesproducto` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -145,7 +113,7 @@ CREATE TABLE `intolerancia` (
   `nombreIntolerancia` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`idintolerancia`),
   UNIQUE KEY `idintolerancia_UNIQUE` (`idintolerancia`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -154,37 +122,38 @@ CREATE TABLE `intolerancia` (
 
 LOCK TABLES `intolerancia` WRITE;
 /*!40000 ALTER TABLE `intolerancia` DISABLE KEYS */;
+INSERT INTO `intolerancia` VALUES (1,'Intolerancia a la lactosa'),(2,'Intolerancia a la histamina'),(3,'Intolerancia al glúten'),(4,'Intolerancia al huevo');
 /*!40000 ALTER TABLE `intolerancia` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `perfilintolerancia`
+-- Table structure for table `intoleranciasusuario`
 --
 
-DROP TABLE IF EXISTS `perfilintolerancia`;
+DROP TABLE IF EXISTS `intoleranciasusuario`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `perfilintolerancia` (
-  `idperfilIntolerancia` int NOT NULL AUTO_INCREMENT,
-  `rangoIntolerancia` int DEFAULT NULL,
-  `idUsuario` int DEFAULT NULL,
+CREATE TABLE `intoleranciasusuario` (
+  `idintoleranciasUsuario` int NOT NULL AUTO_INCREMENT,
   `idIntolerancia` int DEFAULT NULL,
-  PRIMARY KEY (`idperfilIntolerancia`),
-  UNIQUE KEY `idperfilIntolerancia_UNIQUE` (`idperfilIntolerancia`),
+  `idUsuario` int DEFAULT NULL,
+  PRIMARY KEY (`idintoleranciasUsuario`),
+  UNIQUE KEY `idintoleranciasUsuario_UNIQUE` (`idintoleranciasUsuario`),
   KEY `idIntolerancia_idx` (`idIntolerancia`),
   KEY `idUsuario_idx` (`idUsuario`),
-  CONSTRAINT `idIntolerancia2` FOREIGN KEY (`idIntolerancia`) REFERENCES `intolerancia` (`idintolerancia`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `idUsuario2` FOREIGN KEY (`idUsuario`) REFERENCES `usuario` (`idusuario`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  CONSTRAINT `idIntolerancia4` FOREIGN KEY (`idIntolerancia`) REFERENCES `intolerancia` (`idintolerancia`),
+  CONSTRAINT `idUsuario4` FOREIGN KEY (`idUsuario`) REFERENCES `usuario` (`idusuario`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `perfilintolerancia`
+-- Dumping data for table `intoleranciasusuario`
 --
 
-LOCK TABLES `perfilintolerancia` WRITE;
-/*!40000 ALTER TABLE `perfilintolerancia` DISABLE KEYS */;
-/*!40000 ALTER TABLE `perfilintolerancia` ENABLE KEYS */;
+LOCK TABLES `intoleranciasusuario` WRITE;
+/*!40000 ALTER TABLE `intoleranciasusuario` DISABLE KEYS */;
+INSERT INTO `intoleranciasusuario` VALUES (1,1,1),(2,2,1),(3,3,1),(4,4,2);
+/*!40000 ALTER TABLE `intoleranciasusuario` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -195,17 +164,14 @@ DROP TABLE IF EXISTS `producto`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `producto` (
-  `idproducto` int NOT NULL AUTO_INCREMENT,
+  `idProducto` int NOT NULL AUTO_INCREMENT,
   `nombreProducto` varchar(45) DEFAULT NULL,
   `codigoBarras` varchar(45) DEFAULT NULL,
   `fabricante` varchar(45) DEFAULT NULL,
-  `idIngrediente` int DEFAULT NULL,
   `telefono` int DEFAULT NULL,
-  PRIMARY KEY (`idproducto`),
-  UNIQUE KEY `idproducto_UNIQUE` (`idproducto`),
-  KEY `idIngrediente_idx` (`idIngrediente`),
-  CONSTRAINT `idIngrediente` FOREIGN KEY (`idIngrediente`) REFERENCES `ingrediente` (`idingrediente`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  PRIMARY KEY (`idProducto`),
+  UNIQUE KEY `idproducto_UNIQUE` (`idProducto`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -214,7 +180,38 @@ CREATE TABLE `producto` (
 
 LOCK TABLES `producto` WRITE;
 /*!40000 ALTER TABLE `producto` DISABLE KEYS */;
+INSERT INTO `producto` VALUES (1,'Natilla Con Galletas HACENDADO','346781234678234678','HACENDADO',666666666),(2,'CocaCola 1L','1231231234445','CocaCola SL',667676764),(3,'Pepinos 500g','2316723167231673','HACENDADO',675459325),(4,'LECHE HACENDADO 1L','2312312312312312','HACENDADO',674384582);
 /*!40000 ALTER TABLE `producto` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `productosusuario`
+--
+
+DROP TABLE IF EXISTS `productosusuario`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `productosusuario` (
+  `idproductosUsuario` int NOT NULL AUTO_INCREMENT,
+  `idProducto` int DEFAULT NULL,
+  `idUsuario` int DEFAULT NULL,
+  PRIMARY KEY (`idproductosUsuario`),
+  UNIQUE KEY `idproductosUsuario_UNIQUE` (`idproductosUsuario`),
+  KEY `idUsuario_idx` (`idUsuario`),
+  KEY `idProducto_idx` (`idProducto`),
+  CONSTRAINT `idProducto5` FOREIGN KEY (`idProducto`) REFERENCES `producto` (`idProducto`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `idUsuario5` FOREIGN KEY (`idUsuario`) REFERENCES `usuario` (`idusuario`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `productosusuario`
+--
+
+LOCK TABLES `productosusuario` WRITE;
+/*!40000 ALTER TABLE `productosusuario` DISABLE KEYS */;
+INSERT INTO `productosusuario` VALUES (1,1,1),(2,2,1),(3,3,1),(4,4,2);
+/*!40000 ALTER TABLE `productosusuario` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -228,13 +225,13 @@ CREATE TABLE `redeswifi` (
   `idredesWifi` int NOT NULL AUTO_INCREMENT,
   `SSID` varchar(45) DEFAULT NULL,
   `PWR` varchar(45) DEFAULT NULL,
-  `timestamp` bigint DEFAULT NULL,
+  `captureTime` bigint DEFAULT NULL,
   `idComercio` int DEFAULT NULL,
   PRIMARY KEY (`idredesWifi`),
   UNIQUE KEY `idredesWifi_UNIQUE` (`idredesWifi`),
   KEY `idComercio_idx` (`idComercio`),
   CONSTRAINT `idComercio` FOREIGN KEY (`idComercio`) REFERENCES `comercio` (`idComercio`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -243,6 +240,7 @@ CREATE TABLE `redeswifi` (
 
 LOCK TABLES `redeswifi` WRITE;
 /*!40000 ALTER TABLE `redeswifi` DISABLE KEYS */;
+INSERT INTO `redeswifi` VALUES (1,'WLAN_1212','-42',1584921601,1),(2,'ONO_512','-50',1584921601,1),(3,'WLAN_666','-60',1584921605,1),(5,'RED_DE_JUAN','-70',1584921607,5);
 /*!40000 ALTER TABLE `redeswifi` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -259,11 +257,14 @@ CREATE TABLE `ubicacion` (
   `idredesWifi` int DEFAULT NULL,
   `margenError` float DEFAULT NULL,
   `nombreZona` varchar(45) DEFAULT NULL,
+  `idUsuario` int DEFAULT NULL,
   PRIMARY KEY (`idubicacion`),
   UNIQUE KEY `idubicacion_UNIQUE` (`idubicacion`),
   KEY `idredesWifi_idx` (`idredesWifi`),
-  CONSTRAINT `idredesWifi` FOREIGN KEY (`idredesWifi`) REFERENCES `redeswifi` (`idredesWifi`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  KEY `idUsuario_idx` (`idUsuario`),
+  CONSTRAINT `idredesWifi` FOREIGN KEY (`idredesWifi`) REFERENCES `redeswifi` (`idredesWifi`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `idUsuario` FOREIGN KEY (`idUsuario`) REFERENCES `usuario` (`idusuario`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -272,6 +273,7 @@ CREATE TABLE `ubicacion` (
 
 LOCK TABLES `ubicacion` WRITE;
 /*!40000 ALTER TABLE `ubicacion` DISABLE KEYS */;
+INSERT INTO `ubicacion` VALUES (1,1584921600,1,0.05,'Pasillo_1',1),(2,1584921600,1,0.05,'Pasillo_1',1),(3,1584921600,1,0.02,'Pasillo_5',2),(4,1584921600,2,0.05,'Pasillo_1',2);
 /*!40000 ALTER TABLE `ubicacion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -284,12 +286,12 @@ DROP TABLE IF EXISTS `usuario`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `usuario` (
   `idusuario` int NOT NULL AUTO_INCREMENT,
-  `idGestionUsuario` int DEFAULT NULL,
+  `idComercio` int DEFAULT NULL,
   PRIMARY KEY (`idusuario`),
   UNIQUE KEY `idusuario_UNIQUE` (`idusuario`),
-  KEY `idGestionUsuario_idx` (`idGestionUsuario`),
-  CONSTRAINT `idGestionUsuario` FOREIGN KEY (`idGestionUsuario`) REFERENCES `gestionusuario` (`idgestionUsuario`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  KEY `idComercio7_idx` (`idComercio`),
+  CONSTRAINT `idComercio7` FOREIGN KEY (`idComercio`) REFERENCES `comercio` (`idComercio`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -298,6 +300,7 @@ CREATE TABLE `usuario` (
 
 LOCK TABLES `usuario` WRITE;
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
+INSERT INTO `usuario` VALUES (1,1),(3,1),(4,1),(5,1),(2,5);
 /*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -310,4 +313,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-03-23 13:23:22
+-- Dump completed on 2020-03-24 18:59:46
