@@ -23,7 +23,6 @@ idUbicacion int primary key,
 foreign key(idWifi) references redesWifi(idWifi)
 );
 
-
 create table intolerancia(
 nombreIntolerancia varchar(250),
 idIntolerancia int primary key
@@ -48,7 +47,7 @@ foreign key(idIngrediente) references ingredientes(idIngrediente)
 
 create table usuario(
 idUsuario int primary key,
-idGestionUsuario int,
+idGestionUsuario int,	
 foreign key(idGestionUsuario) references gestionUsuario(idGestionUsuario)
 );
 
