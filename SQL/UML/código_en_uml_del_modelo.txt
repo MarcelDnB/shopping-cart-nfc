@@ -1,0 +1,89 @@
+@startuml
+
+class comercio {
+idComercio
+nombreComercio
+telefono
+CIF
+}
+
+class redeswifi {
+idredesWifi
+SSI
+PWR
+captureTime
+==
+idComercio
+}
+
+class usuario {
+idusuario
+==
+idComercio
+}
+
+class producto {
+idProducto
+nombreProducto
+codigoBarras
+fabricante
+teléfono
+}
+
+class intolerancia {
+idIntolerancia
+nombreIntolerancia
+}
+
+class intoleranciasUsuario {
+idintoleranciaUsuario
+==
+idIntolerancia
+idUsuario
+}
+
+class ingrediente{
+idIngrediente
+nombreIngrediente
+==
+idIntolerancia
+}
+
+class productosusuario{
+idProductoUsuario
+==
+idProducto
+idUsuario
+}
+
+class ubicacion{
+idUbicacion
+horaUbicacion
+margenError
+nombreZona
+==
+idredesWifi
+idUsuario
+}
+
+class ingredientesProducto{
+idIngredienteProducto
+==
+idIngrediente
+IdProducto
+}
+
+intolerancia "1" -- "*" ingrediente
+comercio "1" -- "*" redeswifi
+comercio "1" -- "*" usuario
+redeswifi "1" -- "*" ubicacion
+ingrediente "1" -- "*" ingredientesProducto
+intolerancia "1" -- "*" intoleranciasUsuario
+usuario "1" -- "*" intoleranciasUsuario
+usuario "1" -- "*" ubicacion
+usuario "1" -- "*" productosusuario
+producto "1" -- "*" productosusuario
+producto "1" -- "*" ingredientesProducto
+
+
+@enduml
