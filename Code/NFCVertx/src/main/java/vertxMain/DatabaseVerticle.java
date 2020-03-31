@@ -12,17 +12,23 @@ import io.vertx.mysqlclient.MySQLClient;
 import io.vertx.mysqlclient.MySQLConnectOptions;
 import io.vertx.mysqlclient.MySQLPool;
 import io.vertx.sqlclient.PoolOptions;
+import io.vertx.sqlclient.PropertyKind;
 import io.vertx.sqlclient.Row;
 import io.vertx.sqlclient.RowSet;
 import io.vertx.sqlclient.Tuple;
 import types.productosUsuario;
 import types.scannedProduct;
+import types.usuarioIntolerancias;
 import types.wifiReading;
 
 public class DatabaseVerticle extends AbstractVerticle{
 
 	
 	private MySQLPool mySQLPool;
+	Long idUsuarioCreado; /* Dentro del ESP32 primero se va a ejecutar la funcion que añade un usuario
+	 						 y dentro de esta función asignamos a esta variable el id de este, posteriormente
+	 						 el ESP32 ejecuta la segunda función en la que guardamos las intolerancias introducidas
+	 						 por el usuario junto al id (que vamos a obtener de esta variable).*/
 	
 	@Override
 	public void start(Promise<Void> startPromise) {
@@ -41,11 +47,69 @@ public class DatabaseVerticle extends AbstractVerticle{
 		});
 		
 		router.put("/api/scan/put/wifi/values").handler(this::putWifiScan);
-		//router.get("/api/scan/:idProducto/").handler(this::getIntolerances);
+		router.get("/api/scan/:idProducto/").handler(this::getIntolerances);
 		router.put("/api/scan/put/produs/values").handler(this::putAfterScan);
+		router.put("/api/scan/put/usuario/values").handler(this::putUsuario);
+		router.put("/api/scan/put/usuint/values").handler(this::putIntoleranciasUsuario);
 		}
 	
-	private void putWifiScan(RoutingContext routingContext) {
+	
+	private void putUsuario(RoutingContext routingContext) { //Funciona
+		try {
+		usuarioIntolerancias usuarioIntolerancias = Json.decodeValue(routingContext.getBodyAsString(), usuarioIntolerancias.class);
+			mySQLPool.preparedQuery(
+					"INSERT INTO usuario (idComercio) VALUES (?)",
+					Tuple.of(usuarioIntolerancias.getIdComercio()),
+					handler -> {
+						if (handler.succeeded()) {
+							System.out.println(handler.result().rowCount());
+							
+							long id = handler.result().property(MySQLClient.LAST_INSERTED_ID);
+							
+							idUsuarioCreado = id;
+							
+							routingContext.response().setStatusCode(200).putHeader("content-type", "application/json")
+									.end(JsonObject.mapFrom(usuarioIntolerancias).encodePrettily());
+						} else {
+							System.out.println(handler.cause().toString());
+							routingContext.response().setStatusCode(401).putHeader("content-type", "application/json")
+									.end((JsonObject.mapFrom(handler.cause()).encodePrettily()));
+						}
+					});
+		}catch(Exception e) {
+			System.out.println(e.getMessage());
+		}
+	}
+	
+	
+	private void putIntoleranciasUsuario(RoutingContext routingContext) { //Funciona
+		try {
+		usuarioIntolerancias usuarioIntolerancias = Json.decodeValue(routingContext.getBodyAsString(), usuarioIntolerancias.class);
+		for(Integer i:usuarioIntolerancias.getIntolerancias()) {
+			mySQLPool.preparedQuery(
+					"INSERT INTO intoleranciasusuario (idIntolerancia, idUsuario) VALUES (?,?)",
+					Tuple.of(i, idUsuarioCreado),
+					handler -> {
+						if (handler.succeeded()) {
+							System.out.println(handler.result().rowCount());
+							
+							routingContext.response().setStatusCode(200).putHeader("content-type", "application/json")
+									.end(JsonObject.mapFrom(usuarioIntolerancias).encodePrettily());
+						} else {
+							System.out.println(handler.cause().toString());
+							routingContext.response().setStatusCode(401).putHeader("content-type", "application/json")
+									.end((JsonObject.mapFrom(handler.cause()).encodePrettily()));
+						}
+					});
+		}
+		
+	}catch(Exception e) {
+		System.out.println(e.getMessage());
+		}
+	}
+	
+	
+	private void putWifiScan(RoutingContext routingContext) { //Funciona
 			wifiReading wifiReading1 = Json.decodeValue(routingContext.getBodyAsString(), wifiReading.class);
 			mySQLPool.preparedQuery(
 					"INSERT INTO redeswifi (SSID, PWR, captureTime, idComercio) VALUES (?,?,?,?)",
@@ -69,7 +133,7 @@ public class DatabaseVerticle extends AbstractVerticle{
 	}
 	
 	
-	private void putAfterScan(RoutingContext routingContext) {
+	private void putAfterScan(RoutingContext routingContext) { //Funciona
 		productosUsuario productoUsuario = Json.decodeValue(routingContext.getBodyAsString(), productosUsuario.class);
 		mySQLPool.preparedQuery(
 				"INSERT INTO productosUsuario (idProducto, idUsuario) VALUES (?,?)",
@@ -92,9 +156,7 @@ public class DatabaseVerticle extends AbstractVerticle{
 	}
 	
 	
-	
-	
-	private void getIntolerances(RoutingContext routingContext) {
+	private void getIntolerances(RoutingContext routingContext) { //Funciona
 		mySQLPool.query("select idIntolerancia from intolerancia natural join ingrediente natural"
 				+ " join ingredientesproducto natural join producto where IdProducto = " + 
 				routingContext.request().getParam("idProducto"),
@@ -115,8 +177,4 @@ public class DatabaseVerticle extends AbstractVerticle{
 					}
 				});
 	}
-	
-	
-	
-	
 }
