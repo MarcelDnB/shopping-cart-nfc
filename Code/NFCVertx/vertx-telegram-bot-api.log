@@ -4038,3 +4038,293 @@ java.lang.IllegalAccessException: class io.netty.util.internal.PlatformDependent
 21:02:51,622 DEBUG vert.x-eventloop-thread-0 ResourceLeakDetectorFactory:newResourceLeakDetector:195 - Loaded default ResourceLeakDetector: io.netty.util.ResourceLeakDetector@6b1afe67
 21:02:51,824 DEBUG vert.x-eventloop-thread-0 ZlibCodecFactory:<clinit>:39 - -Dio.netty.noJdkZlibDecoder: false
 21:02:51,825 DEBUG vert.x-eventloop-thread-0 ZlibCodecFactory:<clinit>:42 - -Dio.netty.noJdkZlibEncoder: false
+12:53:38,754 DEBUG main InternalLoggerFactory:newDefaultFactory:47 - Using Log4J as the default logging framework
+12:53:38,763 DEBUG main ResourceLeakDetector:<clinit>:129 - -Dio.netty.leakDetection.level: simple
+12:53:38,766 DEBUG main ResourceLeakDetector:<clinit>:130 - -Dio.netty.leakDetection.targetRecords: 4
+12:53:38,805 DEBUG main InternalThreadLocalMap:<clinit>:54 - -Dio.netty.threadLocalMap.stringBuilder.initialSize: 1024
+12:53:38,806 DEBUG main InternalThreadLocalMap:<clinit>:57 - -Dio.netty.threadLocalMap.stringBuilder.maxSize: 4096
+12:53:38,817 DEBUG main MultithreadEventLoopGroup:<clinit>:44 - -Dio.netty.eventLoopThreads: 16
+12:53:38,860 DEBUG main NioEventLoop:<clinit>:106 - -Dio.netty.noKeySetOptimization: false
+12:53:38,860 DEBUG main NioEventLoop:<clinit>:107 - -Dio.netty.selectorAutoRebuildThreshold: 512
+12:53:38,880 DEBUG main PlatformDependent:isWindows0:985 - Platform: Windows
+12:53:38,882 DEBUG main PlatformDependent0:explicitNoUnsafeCause0:395 - -Dio.netty.noUnsafe: false
+12:53:38,882 DEBUG main PlatformDependent0:javaVersion0:851 - Java version: 8
+12:53:38,884 DEBUG main PlatformDependent0:<clinit>:120 - sun.misc.Unsafe.theUnsafe: available
+12:53:38,885 DEBUG main PlatformDependent0:<clinit>:144 - sun.misc.Unsafe.copyMemory: available
+12:53:38,885 DEBUG main PlatformDependent0:<clinit>:182 - java.nio.Buffer.address: available
+12:53:38,886 DEBUG main PlatformDependent0:<clinit>:243 - direct buffer constructor: available
+12:53:38,888 DEBUG main PlatformDependent0:<clinit>:313 - java.nio.Bits.unaligned: available, true
+12:53:38,890 DEBUG main PlatformDependent0:<clinit>:378 - jdk.internal.misc.Unsafe.allocateUninitializedArray(int): unavailable prior to Java9
+12:53:38,890 DEBUG main PlatformDependent0:<clinit>:385 - java.nio.DirectByteBuffer.<init>(long, int): available
+12:53:38,891 DEBUG main PlatformDependent:unsafeUnavailabilityCause0:1028 - sun.misc.Unsafe: available
+12:53:38,892 DEBUG main PlatformDependent:tmpdir0:1147 - -Dio.netty.tmpdir: C:\Users\Marcel\AppData\Local\Temp (java.io.tmpdir)
+12:53:38,892 DEBUG main PlatformDependent:bitMode0:1226 - -Dio.netty.bitMode: 64 (sun.arch.data.model)
+12:53:38,894 DEBUG main PlatformDependent:<clinit>:173 - -Dio.netty.maxDirectMemory: 3791650816 bytes
+12:53:38,894 DEBUG main PlatformDependent:<clinit>:180 - -Dio.netty.uninitializedArrayAllocationThreshold: -1
+12:53:38,896 DEBUG main CleanerJava6:<clinit>:92 - java.nio.ByteBuffer.cleaner(): available
+12:53:38,896 DEBUG main PlatformDependent:<clinit>:200 - -Dio.netty.noPreferDirect: false
+12:53:38,912 DEBUG main PlatformDependent:<clinit>:890 - org.jctools-core.MpscChunkedArrayQueue: available
+12:53:39,279 DEBUG main DefaultDnsServerAddressStreamProvider:<clinit>:82 - Default DNS servers: [/1.1.1.1:53, /1.0.0.1:53] (sun.net.dns.ResolverConfiguration)
+12:53:39,288 DEBUG main NetUtil:<clinit>:139 - -Djava.net.preferIPv4Stack: false
+12:53:39,288 DEBUG main NetUtil:<clinit>:140 - -Djava.net.preferIPv6Addresses: false
+12:53:39,636 DEBUG main NetUtil:<clinit>:224 - Loopback interface: lo (Software Loopback Interface 1, 127.0.0.1)
+12:53:39,645 DEBUG main NetUtil:run:289 - Failed to get SOMAXCONN from sysctl and file \proc\sys\net\core\somaxconn. Default: 200
+12:53:39,934 DEBUG vert.x-eventloop-thread-0 PooledByteBufAllocator:<clinit>:142 - -Dio.netty.allocator.numHeapArenas: 16
+12:53:39,935 DEBUG vert.x-eventloop-thread-0 PooledByteBufAllocator:<clinit>:143 - -Dio.netty.allocator.numDirectArenas: 16
+12:53:39,935 DEBUG vert.x-eventloop-thread-0 PooledByteBufAllocator:<clinit>:145 - -Dio.netty.allocator.pageSize: 8192
+12:53:39,935 DEBUG vert.x-eventloop-thread-0 PooledByteBufAllocator:<clinit>:150 - -Dio.netty.allocator.maxOrder: 11
+12:53:39,935 DEBUG vert.x-eventloop-thread-0 PooledByteBufAllocator:<clinit>:154 - -Dio.netty.allocator.chunkSize: 16777216
+12:53:39,935 DEBUG vert.x-eventloop-thread-0 PooledByteBufAllocator:<clinit>:155 - -Dio.netty.allocator.tinyCacheSize: 512
+12:53:39,935 DEBUG vert.x-eventloop-thread-0 PooledByteBufAllocator:<clinit>:156 - -Dio.netty.allocator.smallCacheSize: 256
+12:53:39,935 DEBUG vert.x-eventloop-thread-0 PooledByteBufAllocator:<clinit>:157 - -Dio.netty.allocator.normalCacheSize: 64
+12:53:39,935 DEBUG vert.x-eventloop-thread-0 PooledByteBufAllocator:<clinit>:158 - -Dio.netty.allocator.maxCachedBufferCapacity: 32768
+12:53:39,936 DEBUG vert.x-eventloop-thread-0 PooledByteBufAllocator:<clinit>:159 - -Dio.netty.allocator.cacheTrimInterval: 8192
+12:53:39,936 DEBUG vert.x-eventloop-thread-0 PooledByteBufAllocator:<clinit>:160 - -Dio.netty.allocator.cacheTrimIntervalMillis: 0
+12:53:39,936 DEBUG vert.x-eventloop-thread-0 PooledByteBufAllocator:<clinit>:161 - -Dio.netty.allocator.useCacheForAllThreads: true
+12:53:39,936 DEBUG vert.x-eventloop-thread-0 PooledByteBufAllocator:<clinit>:162 - -Dio.netty.allocator.maxCachedByteBuffersPerChunk: 1023
+12:53:40,301 DEBUG vert.x-eventloop-thread-0 DefaultChannelId:<clinit>:79 - -Dio.netty.processId: 9364 (auto-detected)
+12:53:40,553 DEBUG vert.x-eventloop-thread-0 DefaultChannelId:<clinit>:101 - -Dio.netty.machineId: 30:9c:23:ff:fe:18:7f:72 (auto-detected)
+12:53:40,587 DEBUG vert.x-eventloop-thread-0 ByteBufUtil:<clinit>:85 - -Dio.netty.allocator.type: pooled
+12:53:40,588 DEBUG vert.x-eventloop-thread-0 ByteBufUtil:<clinit>:94 - -Dio.netty.threadLocalDirectBufferSize: 0
+12:53:40,588 DEBUG vert.x-eventloop-thread-0 ByteBufUtil:<clinit>:97 - -Dio.netty.maxThreadLocalCharBufferSize: 16384
+12:58:20,655 DEBUG vert.x-eventloop-thread-0 Recycler:<clinit>:96 - -Dio.netty.recycler.maxCapacityPerThread: 4096
+12:58:20,655 DEBUG vert.x-eventloop-thread-0 Recycler:<clinit>:97 - -Dio.netty.recycler.maxSharedCapacityFactor: 2
+12:58:20,656 DEBUG vert.x-eventloop-thread-0 Recycler:<clinit>:98 - -Dio.netty.recycler.linkCapacity: 16
+12:58:20,656 DEBUG vert.x-eventloop-thread-0 Recycler:<clinit>:99 - -Dio.netty.recycler.ratio: 8
+12:58:20,665 DEBUG vert.x-eventloop-thread-0 AbstractByteBuf:<clinit>:62 - -Dio.netty.buffer.checkAccessible: true
+12:58:20,665 DEBUG vert.x-eventloop-thread-0 AbstractByteBuf:<clinit>:63 - -Dio.netty.buffer.checkBounds: true
+12:58:20,667 DEBUG vert.x-eventloop-thread-0 ResourceLeakDetectorFactory:newResourceLeakDetector:195 - Loaded default ResourceLeakDetector: io.netty.util.ResourceLeakDetector@7c16fe2f
+12:58:20,872 DEBUG vert.x-eventloop-thread-0 ZlibCodecFactory:<clinit>:39 - -Dio.netty.noJdkZlibDecoder: false
+12:58:20,872 DEBUG vert.x-eventloop-thread-0 ZlibCodecFactory:<clinit>:42 - -Dio.netty.noJdkZlibEncoder: false
+12:59:05,018 DEBUG main InternalLoggerFactory:newDefaultFactory:47 - Using Log4J as the default logging framework
+12:59:05,024 DEBUG main ResourceLeakDetector:<clinit>:129 - -Dio.netty.leakDetection.level: simple
+12:59:05,026 DEBUG main ResourceLeakDetector:<clinit>:130 - -Dio.netty.leakDetection.targetRecords: 4
+12:59:05,057 DEBUG main InternalThreadLocalMap:<clinit>:54 - -Dio.netty.threadLocalMap.stringBuilder.initialSize: 1024
+12:59:05,058 DEBUG main InternalThreadLocalMap:<clinit>:57 - -Dio.netty.threadLocalMap.stringBuilder.maxSize: 4096
+12:59:05,069 DEBUG main MultithreadEventLoopGroup:<clinit>:44 - -Dio.netty.eventLoopThreads: 16
+12:59:05,098 DEBUG main NioEventLoop:<clinit>:106 - -Dio.netty.noKeySetOptimization: false
+12:59:05,099 DEBUG main NioEventLoop:<clinit>:107 - -Dio.netty.selectorAutoRebuildThreshold: 512
+12:59:05,125 DEBUG main PlatformDependent:isWindows0:985 - Platform: Windows
+12:59:05,126 DEBUG main PlatformDependent0:explicitNoUnsafeCause0:395 - -Dio.netty.noUnsafe: false
+12:59:05,127 DEBUG main PlatformDependent0:javaVersion0:851 - Java version: 8
+12:59:05,128 DEBUG main PlatformDependent0:<clinit>:120 - sun.misc.Unsafe.theUnsafe: available
+12:59:05,128 DEBUG main PlatformDependent0:<clinit>:144 - sun.misc.Unsafe.copyMemory: available
+12:59:05,129 DEBUG main PlatformDependent0:<clinit>:182 - java.nio.Buffer.address: available
+12:59:05,130 DEBUG main PlatformDependent0:<clinit>:243 - direct buffer constructor: available
+12:59:05,131 DEBUG main PlatformDependent0:<clinit>:313 - java.nio.Bits.unaligned: available, true
+12:59:05,132 DEBUG main PlatformDependent0:<clinit>:378 - jdk.internal.misc.Unsafe.allocateUninitializedArray(int): unavailable prior to Java9
+12:59:05,133 DEBUG main PlatformDependent0:<clinit>:385 - java.nio.DirectByteBuffer.<init>(long, int): available
+12:59:05,133 DEBUG main PlatformDependent:unsafeUnavailabilityCause0:1028 - sun.misc.Unsafe: available
+12:59:05,134 DEBUG main PlatformDependent:tmpdir0:1147 - -Dio.netty.tmpdir: C:\Users\Marcel\AppData\Local\Temp (java.io.tmpdir)
+12:59:05,134 DEBUG main PlatformDependent:bitMode0:1226 - -Dio.netty.bitMode: 64 (sun.arch.data.model)
+12:59:05,135 DEBUG main PlatformDependent:<clinit>:173 - -Dio.netty.maxDirectMemory: 3791650816 bytes
+12:59:05,136 DEBUG main PlatformDependent:<clinit>:180 - -Dio.netty.uninitializedArrayAllocationThreshold: -1
+12:59:05,137 DEBUG main CleanerJava6:<clinit>:92 - java.nio.ByteBuffer.cleaner(): available
+12:59:05,137 DEBUG main PlatformDependent:<clinit>:200 - -Dio.netty.noPreferDirect: false
+12:59:05,151 DEBUG main PlatformDependent:<clinit>:890 - org.jctools-core.MpscChunkedArrayQueue: available
+12:59:05,531 DEBUG main DefaultDnsServerAddressStreamProvider:<clinit>:82 - Default DNS servers: [/1.1.1.1:53, /1.0.0.1:53] (sun.net.dns.ResolverConfiguration)
+12:59:05,538 DEBUG main NetUtil:<clinit>:139 - -Djava.net.preferIPv4Stack: false
+12:59:05,538 DEBUG main NetUtil:<clinit>:140 - -Djava.net.preferIPv6Addresses: false
+12:59:05,745 DEBUG main NetUtil:<clinit>:224 - Loopback interface: lo (Software Loopback Interface 1, 127.0.0.1)
+12:59:05,746 DEBUG main NetUtil:run:289 - Failed to get SOMAXCONN from sysctl and file \proc\sys\net\core\somaxconn. Default: 200
+12:59:05,941 DEBUG vert.x-eventloop-thread-0 PooledByteBufAllocator:<clinit>:142 - -Dio.netty.allocator.numHeapArenas: 16
+12:59:05,942 DEBUG vert.x-eventloop-thread-0 PooledByteBufAllocator:<clinit>:143 - -Dio.netty.allocator.numDirectArenas: 16
+12:59:05,942 DEBUG vert.x-eventloop-thread-0 PooledByteBufAllocator:<clinit>:145 - -Dio.netty.allocator.pageSize: 8192
+12:59:05,942 DEBUG vert.x-eventloop-thread-0 PooledByteBufAllocator:<clinit>:150 - -Dio.netty.allocator.maxOrder: 11
+12:59:05,942 DEBUG vert.x-eventloop-thread-0 PooledByteBufAllocator:<clinit>:154 - -Dio.netty.allocator.chunkSize: 16777216
+12:59:05,942 DEBUG vert.x-eventloop-thread-0 PooledByteBufAllocator:<clinit>:155 - -Dio.netty.allocator.tinyCacheSize: 512
+12:59:05,942 DEBUG vert.x-eventloop-thread-0 PooledByteBufAllocator:<clinit>:156 - -Dio.netty.allocator.smallCacheSize: 256
+12:59:05,942 DEBUG vert.x-eventloop-thread-0 PooledByteBufAllocator:<clinit>:157 - -Dio.netty.allocator.normalCacheSize: 64
+12:59:05,942 DEBUG vert.x-eventloop-thread-0 PooledByteBufAllocator:<clinit>:158 - -Dio.netty.allocator.maxCachedBufferCapacity: 32768
+12:59:05,943 DEBUG vert.x-eventloop-thread-0 PooledByteBufAllocator:<clinit>:159 - -Dio.netty.allocator.cacheTrimInterval: 8192
+12:59:05,943 DEBUG vert.x-eventloop-thread-0 PooledByteBufAllocator:<clinit>:160 - -Dio.netty.allocator.cacheTrimIntervalMillis: 0
+12:59:05,943 DEBUG vert.x-eventloop-thread-0 PooledByteBufAllocator:<clinit>:161 - -Dio.netty.allocator.useCacheForAllThreads: true
+12:59:05,943 DEBUG vert.x-eventloop-thread-0 PooledByteBufAllocator:<clinit>:162 - -Dio.netty.allocator.maxCachedByteBuffersPerChunk: 1023
+12:59:06,241 DEBUG vert.x-eventloop-thread-0 DefaultChannelId:<clinit>:79 - -Dio.netty.processId: 3748 (auto-detected)
+12:59:06,470 DEBUG vert.x-eventloop-thread-0 DefaultChannelId:<clinit>:101 - -Dio.netty.machineId: 30:9c:23:ff:fe:18:7f:72 (auto-detected)
+12:59:06,490 DEBUG vert.x-eventloop-thread-0 ByteBufUtil:<clinit>:85 - -Dio.netty.allocator.type: pooled
+12:59:06,490 DEBUG vert.x-eventloop-thread-0 ByteBufUtil:<clinit>:94 - -Dio.netty.threadLocalDirectBufferSize: 0
+12:59:06,490 DEBUG vert.x-eventloop-thread-0 ByteBufUtil:<clinit>:97 - -Dio.netty.maxThreadLocalCharBufferSize: 16384
+12:59:11,446 DEBUG vert.x-eventloop-thread-0 Recycler:<clinit>:96 - -Dio.netty.recycler.maxCapacityPerThread: 4096
+12:59:11,446 DEBUG vert.x-eventloop-thread-0 Recycler:<clinit>:97 - -Dio.netty.recycler.maxSharedCapacityFactor: 2
+12:59:11,446 DEBUG vert.x-eventloop-thread-0 Recycler:<clinit>:98 - -Dio.netty.recycler.linkCapacity: 16
+12:59:11,446 DEBUG vert.x-eventloop-thread-0 Recycler:<clinit>:99 - -Dio.netty.recycler.ratio: 8
+12:59:11,465 DEBUG vert.x-eventloop-thread-0 AbstractByteBuf:<clinit>:62 - -Dio.netty.buffer.checkAccessible: true
+12:59:11,466 DEBUG vert.x-eventloop-thread-0 AbstractByteBuf:<clinit>:63 - -Dio.netty.buffer.checkBounds: true
+12:59:11,468 DEBUG vert.x-eventloop-thread-0 ResourceLeakDetectorFactory:newResourceLeakDetector:195 - Loaded default ResourceLeakDetector: io.netty.util.ResourceLeakDetector@5e2615f8
+12:59:11,670 DEBUG vert.x-eventloop-thread-0 ZlibCodecFactory:<clinit>:39 - -Dio.netty.noJdkZlibDecoder: false
+12:59:11,671 DEBUG vert.x-eventloop-thread-0 ZlibCodecFactory:<clinit>:42 - -Dio.netty.noJdkZlibEncoder: false
+13:00:10,405 DEBUG main InternalLoggerFactory:newDefaultFactory:47 - Using Log4J as the default logging framework
+13:00:10,470 DEBUG main ResourceLeakDetector:<clinit>:129 - -Dio.netty.leakDetection.level: simple
+13:00:10,480 DEBUG main ResourceLeakDetector:<clinit>:130 - -Dio.netty.leakDetection.targetRecords: 4
+13:00:10,538 DEBUG main InternalThreadLocalMap:<clinit>:54 - -Dio.netty.threadLocalMap.stringBuilder.initialSize: 1024
+13:00:10,538 DEBUG main InternalThreadLocalMap:<clinit>:57 - -Dio.netty.threadLocalMap.stringBuilder.maxSize: 4096
+13:00:10,553 DEBUG main MultithreadEventLoopGroup:<clinit>:44 - -Dio.netty.eventLoopThreads: 16
+13:00:10,604 DEBUG main NioEventLoop:<clinit>:106 - -Dio.netty.noKeySetOptimization: false
+13:00:10,604 DEBUG main NioEventLoop:<clinit>:107 - -Dio.netty.selectorAutoRebuildThreshold: 512
+13:00:10,633 DEBUG main PlatformDependent:isWindows0:985 - Platform: Windows
+13:00:10,636 DEBUG main PlatformDependent0:explicitNoUnsafeCause0:395 - -Dio.netty.noUnsafe: false
+13:00:10,638 DEBUG main PlatformDependent0:javaVersion0:851 - Java version: 8
+13:00:10,647 DEBUG main PlatformDependent0:<clinit>:120 - sun.misc.Unsafe.theUnsafe: available
+13:00:10,649 DEBUG main PlatformDependent0:<clinit>:144 - sun.misc.Unsafe.copyMemory: available
+13:00:10,650 DEBUG main PlatformDependent0:<clinit>:182 - java.nio.Buffer.address: available
+13:00:10,652 DEBUG main PlatformDependent0:<clinit>:243 - direct buffer constructor: available
+13:00:10,653 DEBUG main PlatformDependent0:<clinit>:313 - java.nio.Bits.unaligned: available, true
+13:00:10,657 DEBUG main PlatformDependent0:<clinit>:378 - jdk.internal.misc.Unsafe.allocateUninitializedArray(int): unavailable prior to Java9
+13:00:10,658 DEBUG main PlatformDependent0:<clinit>:385 - java.nio.DirectByteBuffer.<init>(long, int): available
+13:00:10,658 DEBUG main PlatformDependent:unsafeUnavailabilityCause0:1028 - sun.misc.Unsafe: available
+13:00:10,660 DEBUG main PlatformDependent:tmpdir0:1147 - -Dio.netty.tmpdir: C:\Users\Marcel\AppData\Local\Temp (java.io.tmpdir)
+13:00:10,660 DEBUG main PlatformDependent:bitMode0:1226 - -Dio.netty.bitMode: 64 (sun.arch.data.model)
+13:00:10,666 DEBUG main PlatformDependent:<clinit>:173 - -Dio.netty.maxDirectMemory: 3791650816 bytes
+13:00:10,667 DEBUG main PlatformDependent:<clinit>:180 - -Dio.netty.uninitializedArrayAllocationThreshold: -1
+13:00:10,673 DEBUG main CleanerJava6:<clinit>:92 - java.nio.ByteBuffer.cleaner(): available
+13:00:10,675 DEBUG main PlatformDependent:<clinit>:200 - -Dio.netty.noPreferDirect: false
+13:00:10,708 DEBUG main PlatformDependent:<clinit>:890 - org.jctools-core.MpscChunkedArrayQueue: available
+13:00:11,101 DEBUG main DefaultDnsServerAddressStreamProvider:<clinit>:82 - Default DNS servers: [/1.1.1.1:53, /1.0.0.1:53] (sun.net.dns.ResolverConfiguration)
+13:00:11,112 DEBUG main NetUtil:<clinit>:139 - -Djava.net.preferIPv4Stack: false
+13:00:11,112 DEBUG main NetUtil:<clinit>:140 - -Djava.net.preferIPv6Addresses: false
+13:00:11,410 DEBUG main NetUtil:<clinit>:224 - Loopback interface: lo (Software Loopback Interface 1, 127.0.0.1)
+13:00:11,411 DEBUG main NetUtil:run:289 - Failed to get SOMAXCONN from sysctl and file \proc\sys\net\core\somaxconn. Default: 200
+13:00:11,603 DEBUG vert.x-eventloop-thread-0 PooledByteBufAllocator:<clinit>:142 - -Dio.netty.allocator.numHeapArenas: 16
+13:00:11,603 DEBUG vert.x-eventloop-thread-0 PooledByteBufAllocator:<clinit>:143 - -Dio.netty.allocator.numDirectArenas: 16
+13:00:11,603 DEBUG vert.x-eventloop-thread-0 PooledByteBufAllocator:<clinit>:145 - -Dio.netty.allocator.pageSize: 8192
+13:00:11,603 DEBUG vert.x-eventloop-thread-0 PooledByteBufAllocator:<clinit>:150 - -Dio.netty.allocator.maxOrder: 11
+13:00:11,603 DEBUG vert.x-eventloop-thread-0 PooledByteBufAllocator:<clinit>:154 - -Dio.netty.allocator.chunkSize: 16777216
+13:00:11,603 DEBUG vert.x-eventloop-thread-0 PooledByteBufAllocator:<clinit>:155 - -Dio.netty.allocator.tinyCacheSize: 512
+13:00:11,604 DEBUG vert.x-eventloop-thread-0 PooledByteBufAllocator:<clinit>:156 - -Dio.netty.allocator.smallCacheSize: 256
+13:00:11,604 DEBUG vert.x-eventloop-thread-0 PooledByteBufAllocator:<clinit>:157 - -Dio.netty.allocator.normalCacheSize: 64
+13:00:11,604 DEBUG vert.x-eventloop-thread-0 PooledByteBufAllocator:<clinit>:158 - -Dio.netty.allocator.maxCachedBufferCapacity: 32768
+13:00:11,604 DEBUG vert.x-eventloop-thread-0 PooledByteBufAllocator:<clinit>:159 - -Dio.netty.allocator.cacheTrimInterval: 8192
+13:00:11,604 DEBUG vert.x-eventloop-thread-0 PooledByteBufAllocator:<clinit>:160 - -Dio.netty.allocator.cacheTrimIntervalMillis: 0
+13:00:11,604 DEBUG vert.x-eventloop-thread-0 PooledByteBufAllocator:<clinit>:161 - -Dio.netty.allocator.useCacheForAllThreads: true
+13:00:11,604 DEBUG vert.x-eventloop-thread-0 PooledByteBufAllocator:<clinit>:162 - -Dio.netty.allocator.maxCachedByteBuffersPerChunk: 1023
+13:00:11,956 DEBUG vert.x-eventloop-thread-0 DefaultChannelId:<clinit>:79 - -Dio.netty.processId: 15316 (auto-detected)
+13:00:12,215 DEBUG vert.x-eventloop-thread-0 DefaultChannelId:<clinit>:101 - -Dio.netty.machineId: 30:9c:23:ff:fe:18:7f:72 (auto-detected)
+13:00:12,247 DEBUG vert.x-eventloop-thread-0 ByteBufUtil:<clinit>:85 - -Dio.netty.allocator.type: pooled
+13:00:12,247 DEBUG vert.x-eventloop-thread-0 ByteBufUtil:<clinit>:94 - -Dio.netty.threadLocalDirectBufferSize: 0
+13:00:12,247 DEBUG vert.x-eventloop-thread-0 ByteBufUtil:<clinit>:97 - -Dio.netty.maxThreadLocalCharBufferSize: 16384
+13:00:15,136 DEBUG vert.x-eventloop-thread-0 Recycler:<clinit>:96 - -Dio.netty.recycler.maxCapacityPerThread: 4096
+13:00:15,136 DEBUG vert.x-eventloop-thread-0 Recycler:<clinit>:97 - -Dio.netty.recycler.maxSharedCapacityFactor: 2
+13:00:15,136 DEBUG vert.x-eventloop-thread-0 Recycler:<clinit>:98 - -Dio.netty.recycler.linkCapacity: 16
+13:00:15,136 DEBUG vert.x-eventloop-thread-0 Recycler:<clinit>:99 - -Dio.netty.recycler.ratio: 8
+13:00:15,148 DEBUG vert.x-eventloop-thread-0 AbstractByteBuf:<clinit>:62 - -Dio.netty.buffer.checkAccessible: true
+13:00:15,148 DEBUG vert.x-eventloop-thread-0 AbstractByteBuf:<clinit>:63 - -Dio.netty.buffer.checkBounds: true
+13:00:15,149 DEBUG vert.x-eventloop-thread-0 ResourceLeakDetectorFactory:newResourceLeakDetector:195 - Loaded default ResourceLeakDetector: io.netty.util.ResourceLeakDetector@42ba93d3
+13:00:15,340 DEBUG vert.x-eventloop-thread-0 ZlibCodecFactory:<clinit>:39 - -Dio.netty.noJdkZlibDecoder: false
+13:00:15,341 DEBUG vert.x-eventloop-thread-0 ZlibCodecFactory:<clinit>:42 - -Dio.netty.noJdkZlibEncoder: false
+13:01:17,750 DEBUG main InternalLoggerFactory:newDefaultFactory:47 - Using Log4J as the default logging framework
+13:01:17,755 DEBUG main ResourceLeakDetector:<clinit>:129 - -Dio.netty.leakDetection.level: simple
+13:01:17,757 DEBUG main ResourceLeakDetector:<clinit>:130 - -Dio.netty.leakDetection.targetRecords: 4
+13:01:17,783 DEBUG main InternalThreadLocalMap:<clinit>:54 - -Dio.netty.threadLocalMap.stringBuilder.initialSize: 1024
+13:01:17,783 DEBUG main InternalThreadLocalMap:<clinit>:57 - -Dio.netty.threadLocalMap.stringBuilder.maxSize: 4096
+13:01:17,790 DEBUG main MultithreadEventLoopGroup:<clinit>:44 - -Dio.netty.eventLoopThreads: 16
+13:01:17,821 DEBUG main NioEventLoop:<clinit>:106 - -Dio.netty.noKeySetOptimization: false
+13:01:17,822 DEBUG main NioEventLoop:<clinit>:107 - -Dio.netty.selectorAutoRebuildThreshold: 512
+13:01:17,838 DEBUG main PlatformDependent:isWindows0:985 - Platform: Windows
+13:01:17,843 DEBUG main PlatformDependent0:explicitNoUnsafeCause0:395 - -Dio.netty.noUnsafe: false
+13:01:17,843 DEBUG main PlatformDependent0:javaVersion0:851 - Java version: 8
+13:01:17,845 DEBUG main PlatformDependent0:<clinit>:120 - sun.misc.Unsafe.theUnsafe: available
+13:01:17,845 DEBUG main PlatformDependent0:<clinit>:144 - sun.misc.Unsafe.copyMemory: available
+13:01:17,846 DEBUG main PlatformDependent0:<clinit>:182 - java.nio.Buffer.address: available
+13:01:17,846 DEBUG main PlatformDependent0:<clinit>:243 - direct buffer constructor: available
+13:01:17,847 DEBUG main PlatformDependent0:<clinit>:313 - java.nio.Bits.unaligned: available, true
+13:01:17,848 DEBUG main PlatformDependent0:<clinit>:378 - jdk.internal.misc.Unsafe.allocateUninitializedArray(int): unavailable prior to Java9
+13:01:17,848 DEBUG main PlatformDependent0:<clinit>:385 - java.nio.DirectByteBuffer.<init>(long, int): available
+13:01:17,848 DEBUG main PlatformDependent:unsafeUnavailabilityCause0:1028 - sun.misc.Unsafe: available
+13:01:17,849 DEBUG main PlatformDependent:tmpdir0:1147 - -Dio.netty.tmpdir: C:\Users\Marcel\AppData\Local\Temp (java.io.tmpdir)
+13:01:17,849 DEBUG main PlatformDependent:bitMode0:1226 - -Dio.netty.bitMode: 64 (sun.arch.data.model)
+13:01:17,850 DEBUG main PlatformDependent:<clinit>:173 - -Dio.netty.maxDirectMemory: 3791650816 bytes
+13:01:17,850 DEBUG main PlatformDependent:<clinit>:180 - -Dio.netty.uninitializedArrayAllocationThreshold: -1
+13:01:17,851 DEBUG main CleanerJava6:<clinit>:92 - java.nio.ByteBuffer.cleaner(): available
+13:01:17,851 DEBUG main PlatformDependent:<clinit>:200 - -Dio.netty.noPreferDirect: false
+13:01:17,861 DEBUG main PlatformDependent:<clinit>:890 - org.jctools-core.MpscChunkedArrayQueue: available
+13:01:18,178 DEBUG main DefaultDnsServerAddressStreamProvider:<clinit>:82 - Default DNS servers: [/1.1.1.1:53, /1.0.0.1:53] (sun.net.dns.ResolverConfiguration)
+13:01:18,184 DEBUG main NetUtil:<clinit>:139 - -Djava.net.preferIPv4Stack: false
+13:01:18,184 DEBUG main NetUtil:<clinit>:140 - -Djava.net.preferIPv6Addresses: false
+13:01:18,416 DEBUG main NetUtil:<clinit>:224 - Loopback interface: lo (Software Loopback Interface 1, 127.0.0.1)
+13:01:18,416 DEBUG main NetUtil:run:289 - Failed to get SOMAXCONN from sysctl and file \proc\sys\net\core\somaxconn. Default: 200
+13:01:18,653 DEBUG vert.x-eventloop-thread-0 PooledByteBufAllocator:<clinit>:142 - -Dio.netty.allocator.numHeapArenas: 16
+13:01:18,654 DEBUG vert.x-eventloop-thread-0 PooledByteBufAllocator:<clinit>:143 - -Dio.netty.allocator.numDirectArenas: 16
+13:01:18,654 DEBUG vert.x-eventloop-thread-0 PooledByteBufAllocator:<clinit>:145 - -Dio.netty.allocator.pageSize: 8192
+13:01:18,654 DEBUG vert.x-eventloop-thread-0 PooledByteBufAllocator:<clinit>:150 - -Dio.netty.allocator.maxOrder: 11
+13:01:18,654 DEBUG vert.x-eventloop-thread-0 PooledByteBufAllocator:<clinit>:154 - -Dio.netty.allocator.chunkSize: 16777216
+13:01:18,654 DEBUG vert.x-eventloop-thread-0 PooledByteBufAllocator:<clinit>:155 - -Dio.netty.allocator.tinyCacheSize: 512
+13:01:18,654 DEBUG vert.x-eventloop-thread-0 PooledByteBufAllocator:<clinit>:156 - -Dio.netty.allocator.smallCacheSize: 256
+13:01:18,655 DEBUG vert.x-eventloop-thread-0 PooledByteBufAllocator:<clinit>:157 - -Dio.netty.allocator.normalCacheSize: 64
+13:01:18,655 DEBUG vert.x-eventloop-thread-0 PooledByteBufAllocator:<clinit>:158 - -Dio.netty.allocator.maxCachedBufferCapacity: 32768
+13:01:18,655 DEBUG vert.x-eventloop-thread-0 PooledByteBufAllocator:<clinit>:159 - -Dio.netty.allocator.cacheTrimInterval: 8192
+13:01:18,655 DEBUG vert.x-eventloop-thread-0 PooledByteBufAllocator:<clinit>:160 - -Dio.netty.allocator.cacheTrimIntervalMillis: 0
+13:01:18,655 DEBUG vert.x-eventloop-thread-0 PooledByteBufAllocator:<clinit>:161 - -Dio.netty.allocator.useCacheForAllThreads: true
+13:01:18,655 DEBUG vert.x-eventloop-thread-0 PooledByteBufAllocator:<clinit>:162 - -Dio.netty.allocator.maxCachedByteBuffersPerChunk: 1023
+13:01:18,937 DEBUG vert.x-eventloop-thread-0 DefaultChannelId:<clinit>:79 - -Dio.netty.processId: 2520 (auto-detected)
+13:01:19,160 DEBUG vert.x-eventloop-thread-0 DefaultChannelId:<clinit>:101 - -Dio.netty.machineId: 30:9c:23:ff:fe:18:7f:72 (auto-detected)
+13:01:19,187 DEBUG vert.x-eventloop-thread-0 ByteBufUtil:<clinit>:85 - -Dio.netty.allocator.type: pooled
+13:01:19,187 DEBUG vert.x-eventloop-thread-0 ByteBufUtil:<clinit>:94 - -Dio.netty.threadLocalDirectBufferSize: 0
+13:01:19,187 DEBUG vert.x-eventloop-thread-0 ByteBufUtil:<clinit>:97 - -Dio.netty.maxThreadLocalCharBufferSize: 16384
+13:01:25,085 DEBUG vert.x-eventloop-thread-0 Recycler:<clinit>:96 - -Dio.netty.recycler.maxCapacityPerThread: 4096
+13:01:25,085 DEBUG vert.x-eventloop-thread-0 Recycler:<clinit>:97 - -Dio.netty.recycler.maxSharedCapacityFactor: 2
+13:01:25,085 DEBUG vert.x-eventloop-thread-0 Recycler:<clinit>:98 - -Dio.netty.recycler.linkCapacity: 16
+13:01:25,086 DEBUG vert.x-eventloop-thread-0 Recycler:<clinit>:99 - -Dio.netty.recycler.ratio: 8
+13:01:25,098 DEBUG vert.x-eventloop-thread-0 AbstractByteBuf:<clinit>:62 - -Dio.netty.buffer.checkAccessible: true
+13:01:25,099 DEBUG vert.x-eventloop-thread-0 AbstractByteBuf:<clinit>:63 - -Dio.netty.buffer.checkBounds: true
+13:01:25,100 DEBUG vert.x-eventloop-thread-0 ResourceLeakDetectorFactory:newResourceLeakDetector:195 - Loaded default ResourceLeakDetector: io.netty.util.ResourceLeakDetector@42ba93d3
+13:01:25,288 DEBUG vert.x-eventloop-thread-0 ZlibCodecFactory:<clinit>:39 - -Dio.netty.noJdkZlibDecoder: false
+13:01:25,290 DEBUG vert.x-eventloop-thread-0 ZlibCodecFactory:<clinit>:42 - -Dio.netty.noJdkZlibEncoder: false
+13:16:06,664 DEBUG main InternalLoggerFactory:newDefaultFactory:47 - Using Log4J as the default logging framework
+13:16:06,669 DEBUG main ResourceLeakDetector:<clinit>:129 - -Dio.netty.leakDetection.level: simple
+13:16:06,671 DEBUG main ResourceLeakDetector:<clinit>:130 - -Dio.netty.leakDetection.targetRecords: 4
+13:16:06,696 DEBUG main InternalThreadLocalMap:<clinit>:54 - -Dio.netty.threadLocalMap.stringBuilder.initialSize: 1024
+13:16:06,696 DEBUG main InternalThreadLocalMap:<clinit>:57 - -Dio.netty.threadLocalMap.stringBuilder.maxSize: 4096
+13:16:06,708 DEBUG main MultithreadEventLoopGroup:<clinit>:44 - -Dio.netty.eventLoopThreads: 16
+13:16:06,740 DEBUG main NioEventLoop:<clinit>:106 - -Dio.netty.noKeySetOptimization: false
+13:16:06,740 DEBUG main NioEventLoop:<clinit>:107 - -Dio.netty.selectorAutoRebuildThreshold: 512
+13:16:06,756 DEBUG main PlatformDependent:isWindows0:985 - Platform: Windows
+13:16:06,758 DEBUG main PlatformDependent0:explicitNoUnsafeCause0:395 - -Dio.netty.noUnsafe: false
+13:16:06,758 DEBUG main PlatformDependent0:javaVersion0:851 - Java version: 8
+13:16:06,759 DEBUG main PlatformDependent0:<clinit>:120 - sun.misc.Unsafe.theUnsafe: available
+13:16:06,761 DEBUG main PlatformDependent0:<clinit>:144 - sun.misc.Unsafe.copyMemory: available
+13:16:06,761 DEBUG main PlatformDependent0:<clinit>:182 - java.nio.Buffer.address: available
+13:16:06,762 DEBUG main PlatformDependent0:<clinit>:243 - direct buffer constructor: available
+13:16:06,763 DEBUG main PlatformDependent0:<clinit>:313 - java.nio.Bits.unaligned: available, true
+13:16:06,764 DEBUG main PlatformDependent0:<clinit>:378 - jdk.internal.misc.Unsafe.allocateUninitializedArray(int): unavailable prior to Java9
+13:16:06,764 DEBUG main PlatformDependent0:<clinit>:385 - java.nio.DirectByteBuffer.<init>(long, int): available
+13:16:06,764 DEBUG main PlatformDependent:unsafeUnavailabilityCause0:1028 - sun.misc.Unsafe: available
+13:16:06,765 DEBUG main PlatformDependent:tmpdir0:1147 - -Dio.netty.tmpdir: C:\Users\Marcel\AppData\Local\Temp (java.io.tmpdir)
+13:16:06,765 DEBUG main PlatformDependent:bitMode0:1226 - -Dio.netty.bitMode: 64 (sun.arch.data.model)
+13:16:06,766 DEBUG main PlatformDependent:<clinit>:173 - -Dio.netty.maxDirectMemory: 3791650816 bytes
+13:16:06,766 DEBUG main PlatformDependent:<clinit>:180 - -Dio.netty.uninitializedArrayAllocationThreshold: -1
+13:16:06,767 DEBUG main CleanerJava6:<clinit>:92 - java.nio.ByteBuffer.cleaner(): available
+13:16:06,767 DEBUG main PlatformDependent:<clinit>:200 - -Dio.netty.noPreferDirect: false
+13:16:06,784 DEBUG main PlatformDependent:<clinit>:890 - org.jctools-core.MpscChunkedArrayQueue: available
+13:16:07,093 DEBUG main DefaultDnsServerAddressStreamProvider:<clinit>:82 - Default DNS servers: [/1.1.1.1:53, /1.0.0.1:53] (sun.net.dns.ResolverConfiguration)
+13:16:07,100 DEBUG main NetUtil:<clinit>:139 - -Djava.net.preferIPv4Stack: false
+13:16:07,100 DEBUG main NetUtil:<clinit>:140 - -Djava.net.preferIPv6Addresses: false
+13:16:07,322 DEBUG main NetUtil:<clinit>:224 - Loopback interface: lo (Software Loopback Interface 1, 127.0.0.1)
+13:16:07,324 DEBUG main NetUtil:run:289 - Failed to get SOMAXCONN from sysctl and file \proc\sys\net\core\somaxconn. Default: 200
+13:16:07,494 DEBUG vert.x-eventloop-thread-0 PooledByteBufAllocator:<clinit>:142 - -Dio.netty.allocator.numHeapArenas: 16
+13:16:07,494 DEBUG vert.x-eventloop-thread-0 PooledByteBufAllocator:<clinit>:143 - -Dio.netty.allocator.numDirectArenas: 16
+13:16:07,494 DEBUG vert.x-eventloop-thread-0 PooledByteBufAllocator:<clinit>:145 - -Dio.netty.allocator.pageSize: 8192
+13:16:07,494 DEBUG vert.x-eventloop-thread-0 PooledByteBufAllocator:<clinit>:150 - -Dio.netty.allocator.maxOrder: 11
+13:16:07,495 DEBUG vert.x-eventloop-thread-0 PooledByteBufAllocator:<clinit>:154 - -Dio.netty.allocator.chunkSize: 16777216
+13:16:07,495 DEBUG vert.x-eventloop-thread-0 PooledByteBufAllocator:<clinit>:155 - -Dio.netty.allocator.tinyCacheSize: 512
+13:16:07,495 DEBUG vert.x-eventloop-thread-0 PooledByteBufAllocator:<clinit>:156 - -Dio.netty.allocator.smallCacheSize: 256
+13:16:07,495 DEBUG vert.x-eventloop-thread-0 PooledByteBufAllocator:<clinit>:157 - -Dio.netty.allocator.normalCacheSize: 64
+13:16:07,495 DEBUG vert.x-eventloop-thread-0 PooledByteBufAllocator:<clinit>:158 - -Dio.netty.allocator.maxCachedBufferCapacity: 32768
+13:16:07,495 DEBUG vert.x-eventloop-thread-0 PooledByteBufAllocator:<clinit>:159 - -Dio.netty.allocator.cacheTrimInterval: 8192
+13:16:07,495 DEBUG vert.x-eventloop-thread-0 PooledByteBufAllocator:<clinit>:160 - -Dio.netty.allocator.cacheTrimIntervalMillis: 0
+13:16:07,496 DEBUG vert.x-eventloop-thread-0 PooledByteBufAllocator:<clinit>:161 - -Dio.netty.allocator.useCacheForAllThreads: true
+13:16:07,496 DEBUG vert.x-eventloop-thread-0 PooledByteBufAllocator:<clinit>:162 - -Dio.netty.allocator.maxCachedByteBuffersPerChunk: 1023
+13:16:07,792 DEBUG vert.x-eventloop-thread-0 DefaultChannelId:<clinit>:79 - -Dio.netty.processId: 13472 (auto-detected)
+13:16:08,006 DEBUG vert.x-eventloop-thread-0 DefaultChannelId:<clinit>:101 - -Dio.netty.machineId: 30:9c:23:ff:fe:18:7f:72 (auto-detected)
+13:16:08,026 DEBUG vert.x-eventloop-thread-0 ByteBufUtil:<clinit>:85 - -Dio.netty.allocator.type: pooled
+13:16:08,027 DEBUG vert.x-eventloop-thread-0 ByteBufUtil:<clinit>:94 - -Dio.netty.threadLocalDirectBufferSize: 0
+13:16:08,027 DEBUG vert.x-eventloop-thread-0 ByteBufUtil:<clinit>:97 - -Dio.netty.maxThreadLocalCharBufferSize: 16384
+13:16:59,691 DEBUG vert.x-eventloop-thread-0 Recycler:<clinit>:96 - -Dio.netty.recycler.maxCapacityPerThread: 4096
+13:16:59,692 DEBUG vert.x-eventloop-thread-0 Recycler:<clinit>:97 - -Dio.netty.recycler.maxSharedCapacityFactor: 2
+13:16:59,692 DEBUG vert.x-eventloop-thread-0 Recycler:<clinit>:98 - -Dio.netty.recycler.linkCapacity: 16
+13:16:59,692 DEBUG vert.x-eventloop-thread-0 Recycler:<clinit>:99 - -Dio.netty.recycler.ratio: 8
+13:16:59,714 DEBUG vert.x-eventloop-thread-0 AbstractByteBuf:<clinit>:62 - -Dio.netty.buffer.checkAccessible: true
+13:16:59,714 DEBUG vert.x-eventloop-thread-0 AbstractByteBuf:<clinit>:63 - -Dio.netty.buffer.checkBounds: true
+13:16:59,717 DEBUG vert.x-eventloop-thread-0 ResourceLeakDetectorFactory:newResourceLeakDetector:195 - Loaded default ResourceLeakDetector: io.netty.util.ResourceLeakDetector@5e2615f8
+13:17:00,010 DEBUG vert.x-eventloop-thread-0 ZlibCodecFactory:<clinit>:39 - -Dio.netty.noJdkZlibDecoder: false
+13:17:00,011 DEBUG vert.x-eventloop-thread-0 ZlibCodecFactory:<clinit>:42 - -Dio.netty.noJdkZlibEncoder: false
