@@ -1,0 +1,104 @@
+TABLAS:
+
+	Comercio:
+	 	- PUT DE DATOS DE COMERCIO (BOT_TELEGRAM)
+
+		JSON:
+		{
+		  "nombreComercio" : "Mercadona S.L" ,
+		  "telefono": 957145678 ,
+		  "CIF":55555555X 
+		}
+	
+	Usuario: 
+		- PUT DE DATOS DE USUARIO (ESP32)
+
+		JSON:
+		{
+		  "idComercio" : 1"
+		}
+
+	RedesWifi:
+		- PUT DE DATOS DE REDESWIFI(ESP32)
+
+		JSON:
+		{
+    		 "ssid" : "WLAN_32",
+                 "power" : -43,
+                 "timestamp" : 1231231231,
+                 "idComercio" : 1
+		}
+
+	Ubicación:
+		- PUT DE DATOS DE UBICACIÓN(SERVIDOR) 
+
+		JSON:
+		{	
+		 "horaUbicacion" : 1231231231,
+                 "idredesWifi1" : 2,
+		 "idredesWifi2" : 1,
+		 "idredesWifi3" : 3,
+		 "idredesWifi4" : 4,
+                 "margenError" : 41.3,
+                 "nombreZona" : "Pasillo_3",
+		 "idUsuario ": 3
+		}
+
+	Producto:
+		- PUT DE DATOS DE PRODUCTO(BOT_TELEGRAM)
+
+		JSON:
+		{	
+		 "nombreProducto" : "Natillas con galletas",
+                 "codigoBarras" : 123456789258,
+		 "fabricante" : "HACENDADO",
+		 "telefono" : 957188462,
+		}	
+
+	ProductoUsuario:
+		- PUT DE DATOS DE PRODUCTOUSUARIO(ESP32)
+		
+		JSON:
+		{
+		 "idProducto": 2,
+		 "idUsuario": 3
+		}
+
+
+	IngredientesProducto:
+		- PUT DE DATOS DE INGREDIENTESPRODUCTO(BOT_TELEGRAM)
+		- GET DE INTOLERANCIAS DE CADA PRODUCTO.(ESP32)
+
+		JSON:
+		{
+		 "idIngrediente": 1,
+		 "idProducto": 2
+		}
+
+
+	IntoleranciasUsuario:
+		- PUT DE INTOLERANCIAS DEL USUARIO CREADO(ESP32)
+		
+		JSON:
+		{
+		 "idIntolerancia": 1,
+		 "idUsuario": 2
+		}
+
+	Intolerancia:
+		- PUT DE DATOS DE INTOLERANCIAS(BOT_TELEGRAM)
+		
+		JSON:
+		{
+		 "nombreIntolerancia": "Intolerancia a la lactosa"
+		}
+
+	Ingrediente:	
+		- PUT DE DATOS DE INGREDIENTES(BOT_TELEGRAM)
+
+		JSON:
+		{
+		 "nombreIngrediente": "Nata",
+		 "idIntolerancia": 2
+		}
+		

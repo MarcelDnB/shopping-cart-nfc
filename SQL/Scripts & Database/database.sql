@@ -254,15 +254,24 @@ DROP TABLE IF EXISTS `ubicacion`;
 CREATE TABLE `ubicacion` (
   `idubicacion` int NOT NULL AUTO_INCREMENT,
   `horaUbicacion` bigint DEFAULT NULL,
-  `idredesWifi` int DEFAULT NULL,
+  `idredesWifi2` int DEFAULT NULL,
+  `idredesWifi3` int DEFAULT NULL,
+  `idredesWifi4` int DEFAULT NULL,
   `margenError` float DEFAULT NULL,
   `nombreZona` varchar(45) DEFAULT NULL,
   `idUsuario` int DEFAULT NULL,
+  `idredesWifi1` int DEFAULT NULL,
   PRIMARY KEY (`idubicacion`),
   UNIQUE KEY `idubicacion_UNIQUE` (`idubicacion`),
-  KEY `idredesWifi_idx` (`idredesWifi`),
+  KEY `idredesWifi_idx` (`idredesWifi1`),
   KEY `idUsuario_idx` (`idUsuario`),
-  CONSTRAINT `idredesWifi` FOREIGN KEY (`idredesWifi`) REFERENCES `redeswifi` (`idredesWifi`) ON DELETE CASCADE ON UPDATE CASCADE,
+  KEY `idredesWifi2_idx` (`idredesWifi2`),
+  KEY `idredesWifi3_idx` (`idredesWifi3`),
+  KEY `idredesWifi4_idx` (`idredesWifi4`),
+  CONSTRAINT `idredesWifi1` FOREIGN KEY (`idredesWifi1`) REFERENCES `redeswifi` (`idredesWifi`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `idredesWifi2` FOREIGN KEY (`idredesWifi2`) REFERENCES `redeswifi` (`idredesWifi`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `idredesWifi3` FOREIGN KEY (`idredesWifi3`) REFERENCES `redeswifi` (`idredesWifi`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `idredesWifi4` FOREIGN KEY (`idredesWifi4`) REFERENCES `redeswifi` (`idredesWifi`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `idUsuario` FOREIGN KEY (`idUsuario`) REFERENCES `usuario` (`idusuario`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -273,7 +282,7 @@ CREATE TABLE `ubicacion` (
 
 LOCK TABLES `ubicacion` WRITE;
 /*!40000 ALTER TABLE `ubicacion` DISABLE KEYS */;
-INSERT INTO `ubicacion` VALUES (1,1584921600,1,0.05,'Pasillo_1',1),(2,1584921600,1,0.05,'Pasillo_1',1),(3,1584921600,1,0.02,'Pasillo_5',2),(4,1584921600,2,0.05,'Pasillo_1',2);
+INSERT INTO `ubicacion` VALUES (1,1584921600,NULL,NULL,NULL,0.05,'Pasillo_1',1,1),(2,1584921600,NULL,NULL,NULL,0.05,'Pasillo_1',1,1),(3,1584921600,NULL,NULL,NULL,0.02,'Pasillo_5',2,1),(4,1584921600,NULL,NULL,NULL,0.05,'Pasillo_1',2,2);
 /*!40000 ALTER TABLE `ubicacion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -313,4 +322,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-03-24 18:59:46
+-- Dump completed on 2020-03-31 13:07:39
