@@ -1,0 +1,72 @@
+HISTORIA DE USUARIO PARA  LA CREACIÓN DEL BOT
+
+Para poder accerder a realizar algun tipo de petición hacia el bot se va a tener que ralizar con la siguiente sintaxis --> /comando
+
+PRESENTACIÓN:
+
+Para poder empezar a realizar cualquier tipo de petición antes hay que presentarse con el comando: /hola.
+
+El bot contestará: Hola, en que puedo ayudarte.
+
+INSERTAR DATOS
+
+Para poder realizar cualquier tipo de INSERT en la base de datos se debe comenzar con el comando /insertar.
+
+COMERCIO:
+
+admin:/insertar	
+bot: ¿En qué tabla quiere usted insertar?
+admin:comercio
+bot: ¿Qué dato quiere introducir en nombreComercio?
+admin:Mercadona
+bot:¿Qué dato quiere introducir en telefono?
+admin:957222222
+bot:¿Qué dato quiere introducir en CIF?
+admin:55555555D
+bot: Se ha añadido la entrada correctamente
+
+PRODUCTO
+admin:/insertar	
+bot:¿En qué tabla quiere usted insertar?
+admin:producto
+bot:¿Qué dato quiere introducir en nombreProducto?
+admin:Natilla con galletas
+bot:¿Qué dato quiere introducir en codigoBarras?
+admin:123456789123
+bot:¿Qué dato quiere introducir en fabricante?
+admin:Hacendado
+bot:¿Qué dato quiere introducir en telefono?
+admin:666666666
+bot:Se ha añadido la entrada correctamente
+
+INTOLERANCIA
+admin:/insertar
+bot:¿En qué tabla quiere usted insertar?
+admin:intolerancia
+bot:¿Qué dato quiere introducir en nombreIntolerancia?
+admin:Intolerancia a la lactosa.
+bot:Se ha añadido la entrada correctamente
+
+INGREDIENTE
+admin:/insertar
+bot:¿En qué tabla quiere usted insertar?
+admin:ingrediente
+bot:¿Qué dato quiere introducir en nombreIngrediente?
+admin:Sacarosa
+bot:¿Qué dato quiere introducir en idIntolerancia?
+bot: se muestra un listado con las intolerancias y sus id que hay en la base de datos
+admin:2
+bot:Se ha añadido la entrada correctamente
+
+INGREDENTESPRODCUTO
+admin:/INSERTAR
+bot:¿En qué tabla quiere usted insertar?
+admin:ingredientesproducto
+bot:¿Qué dato quiere introducir en idIngrediente?
+bot:se muestra un listado con los ingredientes y sus id que hay en la base de datos
+admin:1
+bot:¿Qué dato quiere introducir en idProducto?
+bot:se muestra un listado con los productos y sus id que hay en la base de datos
+admin:3
+bot:Se ha añadido la entrada correctamente
+
