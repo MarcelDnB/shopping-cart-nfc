@@ -1,5 +1,8 @@
 package telegram;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.schors.vertx.telegram.bot.LongPollingReceiver;
 import org.schors.vertx.telegram.bot.TelegramBot;
 import org.schors.vertx.telegram.bot.TelegramOptions;
@@ -12,6 +15,8 @@ import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.client.HttpResponse;
 import io.vertx.ext.web.client.WebClient;
+import types.comercio;
+
 import org.schors.vertx.telegram.bot.api.types.Update;
 
 public class telegramMain extends AbstractVerticle{
@@ -19,8 +24,7 @@ public class telegramMain extends AbstractVerticle{
 	private TelegramBot bot;
 	private String tabla;
 	private String seccion;
-	private Integer columna = 0;
-	
+	private  Map<Integer,Object> map = new HashMap<Integer, Object>();
 	
 	@Override
 	public void start(Promise<Void> future) {
@@ -60,22 +64,21 @@ public class telegramMain extends AbstractVerticle{
 										+ " insertar")
 								.setChatId(handler.getMessage().getChatId()));	
 						seccion = "insertar";
+						map.put(handler.getMessage().getChatId(),  new comercio());
 
-					}else if((handler.getMessage().getText().toLowerCase().contains("comercio") && seccion == "/insertar") || 
-							tabla == "comercio") {
+					}else if((handler.getMessage().getText().toLowerCase().contains("comercio") && (seccion == "/insertar") || 
+							tabla == "comercio")) {
+						if(handler.getMessage().getText().toLowerCase().contains("comercio")) {
 						bot.sendMessage(new SendMessage()
 								.setText("Hola " + handler.getMessage().getFrom().getFirstName() + " Has seleccionado la tabla"
 										+ " comercio, voy a proceder a preguntarte los datos.." + "\n" + "Nombre del comercio?")
 								.setChatId(handler.getMessage().getChatId()));
 						tabla = "comercio";
-						
-						if(columna == 0) {
-							
+						}else {
+							if(map.) {
+								
+							}
 						}
-						
-						
-						
-						columna++;
 					}
 				}));
 		bot.start();
