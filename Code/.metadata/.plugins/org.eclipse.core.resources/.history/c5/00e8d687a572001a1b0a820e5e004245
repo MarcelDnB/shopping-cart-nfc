@@ -1,0 +1,55 @@
+package types;
+
+import java.util.Arrays;
+
+public class scannedProduct {
+	
+	//Las variables coincidiran con los valores almacenados en la etiqueda NFC
+	
+	private Integer[] idIntolerancias;
+
+	public scannedProduct(Integer[] idIntolerancias) {
+		super();
+		this.idIntolerancias = idIntolerancias;
+	}
+
+	public Integer[] getIdIntolerancias() {
+		return idIntolerancias;
+	}
+
+	public void setIdIntolerancias(Integer[] idIntolerancias) {
+		this.idIntolerancias = idIntolerancias;
+	}
+
+	@Override
+	public String toString() {
+		return "scannedProduct [idIntolerancias=" + Arrays.toString(idIntolerancias) + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + Arrays.hashCode(idIntolerancias);
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		scannedProduct other = (scannedProduct) obj;
+		if (!Arrays.equals(idIntolerancias, other.idIntolerancias))
+			return false;
+		return true;
+	}
+	
+	
+	
+	
+	
+}

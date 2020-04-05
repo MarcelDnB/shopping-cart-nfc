@@ -1,0 +1,16 @@
+package types;
+
+public class productoUsuario {
+
+	private int IdProducto;
+	private int IdUsuario;
+	
+	public productoUsuario() {
+		super();
+	}
+	
+	
+	
+	
+	
+}

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="io.vertx.core.json.Json"/>
+<fullyQualifiedTypeName name="io.vertx.sqlclient.Tuple"/>
+<fullyQualifiedTypeName name="types.scannedProduct"/>
+<fullyQualifiedTypeName name="types.productoUsuario"/>
+<fullyQualifiedTypeName name="io.vertx.mysqlclient.MySQLClient"/>
+<fullyQualifiedTypeName name="types.wifiReading"/>
+<fullyQualifiedTypeName name="java.util.List"/>
+<fullyQualifiedTypeName name="types.usuarioIntolerancias"/>
+<fullyQualifiedTypeName name="telegram.telegramMain"/>
+<fullyQualifiedTypeName name="database.DatabaseVerticle"/>
+<fullyQualifiedTypeName name="io.vertx.core.Handler"/>
+<fullyQualifiedTypeName name="com.fasterxml.jackson.databind.util.Converter"/>
+<fullyQualifiedTypeName name="types.producto"/>
+</qualifiedTypeNameHistroy>

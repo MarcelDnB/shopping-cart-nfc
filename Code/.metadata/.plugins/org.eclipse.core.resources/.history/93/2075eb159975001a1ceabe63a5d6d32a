@@ -1,0 +1,81 @@
+package types;
+
+public class comercio {
+
+	private String nombreComercio;
+	private Long telefono;
+	private Long CIF;
+	
+	public comercio() {
+		super();
+		this.nombreComercio = null;
+		this.telefono = null;
+		CIF = null;
+	}
+	
+	public comercio(String nombreComercio, Long telefono, Long cIF) {
+		super();
+		this.nombreComercio = nombreComercio;
+		this.telefono = telefono;
+		CIF = cIF;
+	}
+	public String getNombreComercio() {
+		return nombreComercio;
+	}
+	public void setNombreComercio(String nombreComercio) {
+		this.nombreComercio = nombreComercio;
+	}
+	public Long getTelefono() {
+		return telefono;
+	}
+	public void setTelefono(Long telefono) {
+		this.telefono = telefono;
+	}
+	public Long getCIF() {
+		return CIF;
+	}
+	public void setCIF(Long cIF) {
+		CIF = cIF;
+	}
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((CIF == null) ? 0 : CIF.hashCode());
+		result = prime * result + ((nombreComercio == null) ? 0 : nombreComercio.hashCode());
+		result = prime * result + ((telefono == null) ? 0 : telefono.hashCode());
+		return result;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		comercio other = (comercio) obj;
+		if (CIF == null) {
+			if (other.CIF != null)
+				return false;
+		} else if (!CIF.equals(other.CIF))
+			return false;
+		if (nombreComercio == null) {
+			if (other.nombreComercio != null)
+				return false;
+		} else if (!nombreComercio.equals(other.nombreComercio))
+			return false;
+		if (telefono == null) {
+			if (other.telefono != null)
+				return false;
+		} else if (!telefono.equals(other.telefono))
+			return false;
+		return true;
+	}
+	@Override
+	public String toString() {
+		return "comercio [nombreComercio=" + nombreComercio + ", telefono=" + telefono + ", CIF=" + CIF + "]";
+	}
+	
+	
+}

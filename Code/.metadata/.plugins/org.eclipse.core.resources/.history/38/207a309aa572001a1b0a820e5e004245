@@ -1,0 +1,13 @@
+package types;
+
+public class scannedProduct {
+	
+	//Las variables coincidiran con los valores almacenados en la etiqueda NFC
+	
+	private Integer idIntolerancia;
+	
+	
+	
+	
+	
+}

@@ -1,0 +1,115 @@
+package types;
+
+public class scannedProduct {
+	
+	//Las variables coincidiran con los valores almacenados en la etiqueda NFC
+	
+	private Integer idProducto;
+	private String nombre;
+	private String fabricante;
+	private Long atencionAlCliente; //Nº de telefono at cliente
+	
+	
+	public scannedProduct(Integer idProducto, String nombre, String fabricante, Long atencionAlCliente) {
+		super();
+		this.idProducto = idProducto;
+		this.nombre = nombre;
+		this.fabricante = fabricante;
+		this.atencionAlCliente = atencionAlCliente;
+	}
+
+
+	public Integer getIdProducto() {
+		return idProducto;
+	}
+
+
+	public void setIdProducto(Integer idProducto) {
+		this.idProducto = idProducto;
+	}
+
+
+	public String getNombre() {
+		return nombre;
+	}
+
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+
+	public String getFabricante() {
+		return fabricante;
+	}
+
+
+	public void setFabricante(String fabricante) {
+		this.fabricante = fabricante;
+	}
+
+
+	public Long getAtencionAlCliente() {
+		return atencionAlCliente;
+	}
+
+
+	public void setAtencionAlCliente(Long atencionAlCliente) {
+		this.atencionAlCliente = atencionAlCliente;
+	}
+
+
+	@Override
+	public String toString() {
+		return "scannedProduct [idProducto=" + idProducto + ", nombre=" + nombre + ", fabricante=" + fabricante
+				+ ", atencionAlCliente=" + atencionAlCliente + "]";
+	}
+
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((atencionAlCliente == null) ? 0 : atencionAlCliente.hashCode());
+		result = prime * result + ((fabricante == null) ? 0 : fabricante.hashCode());
+		result = prime * result + ((idProducto == null) ? 0 : idProducto.hashCode());
+		result = prime * result + ((nombre == null) ? 0 : nombre.hashCode());
+		return result;
+	}
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		scannedProduct other = (scannedProduct) obj;
+		if (atencionAlCliente == null) {
+			if (other.atencionAlCliente != null)
+				return false;
+		} else if (!atencionAlCliente.equals(other.atencionAlCliente))
+			return false;
+		if (fabricante == null) {
+			if (other.fabricante != null)
+				return false;
+		} else if (!fabricante.equals(other.fabricante))
+			return false;
+		if (idProducto == null) {
+			if (other.idProducto != null)
+				return false;
+		} else if (!idProducto.equals(other.idProducto))
+			return false;
+		if (nombre == null) {
+			if (other.nombre != null)
+				return false;
+		} else if (!nombre.equals(other.nombre))
+			return false;
+		return true;
+	}
+	
+	
+	
+}
