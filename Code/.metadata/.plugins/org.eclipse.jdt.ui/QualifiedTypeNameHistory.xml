@@ -13,4 +13,6 @@
 <fullyQualifiedTypeName name="io.vertx.core.Handler"/>
 <fullyQualifiedTypeName name="com.fasterxml.jackson.databind.util.Converter"/>
 <fullyQualifiedTypeName name="types.producto"/>
+<fullyQualifiedTypeName name="types.ingrediente"/>
+<fullyQualifiedTypeName name="types.ingredientesProducto"/>
 </qualifiedTypeNameHistroy>

@@ -2,7 +2,7 @@ package types;
 
 public class intolerancia {
 
-	private String nombreIntolerancia;
+	private String nombreIntolerancia = null;
 
 	public intolerancia() {
 		
