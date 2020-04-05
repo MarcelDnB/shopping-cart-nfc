@@ -1,0 +1,68 @@
+package types;
+
+public class productoUsuario {
+
+	private int IdProducto;
+	private int IdUsuario;
+	
+	public productoUsuario() {
+		super();
+	}
+
+	public productoUsuario(int idProducto, int idUsuario) {
+		super();
+		IdProducto = idProducto;
+		IdUsuario = idUsuario;
+	}
+
+	public int getIdProducto() {
+		return IdProducto;
+	}
+
+	public void setIdProducto(int idProducto) {
+		IdProducto = idProducto;
+	}
+
+	public int getIdUsuario() {
+		return IdUsuario;
+	}
+
+	public void setIdUsuario(int idUsuario) {
+		IdUsuario = idUsuario;
+	}
+
+	@Override
+	public String toString() {
+		return "productoUsuario [IdProducto=" + IdProducto + ", IdUsuario=" + IdUsuario + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + IdProducto;
+		result = prime * result + IdUsuario;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		productoUsuario other = (productoUsuario) obj;
+		if (IdProducto != other.IdProducto)
+			return false;
+		if (IdUsuario != other.IdUsuario)
+			return false;
+		return true;
+	}
+	
+	
+	
+	
+	
+}

@@ -2,9 +2,9 @@ package types;
 
 public class productosUsuario {
 
-	private int IdProductosUsuario;
-	private int IdProducto;
-	private int IdUsuario;
+	private Integer IdProductosUsuario;
+	private Integer IdProducto;
+	private Integer IdUsuario;
 	
 	public productosUsuario() {
 		super();
@@ -17,27 +17,27 @@ public class productosUsuario {
 		IdUsuario = idUsuario;
 	}
 
-	public int getIdProductosUsuario() {
+	public Integer getIdProductosUsuario() {
 		return IdProductosUsuario;
 	}
 
-	public void setIdProductosUsuario(int idProductosUsuario) {
+	public void setIdProductosUsuario(Integer idProductosUsuario) {
 		IdProductosUsuario = idProductosUsuario;
 	}
 
-	public int getIdProducto() {
+	public Integer getIdProducto() {
 		return IdProducto;
 	}
 
-	public void setIdProducto(int idProducto) {
+	public void setIdProducto(Integer idProducto) {
 		IdProducto = idProducto;
 	}
 
-	public int getIdUsuario() {
+	public Integer getIdUsuario() {
 		return IdUsuario;
 	}
 
-	public void setIdUsuario(int idUsuario) {
+	public void setIdUsuario(Integer idUsuario) {
 		IdUsuario = idUsuario;
 	}
 

@@ -7,7 +7,6 @@ import org.schors.vertx.telegram.bot.LongPollingReceiver;
 import org.schors.vertx.telegram.bot.TelegramBot;
 import org.schors.vertx.telegram.bot.TelegramOptions;
 import org.schors.vertx.telegram.bot.api.methods.SendMessage;
-import org.schors.vertx.telegram.bot.api.types.Update;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
@@ -21,8 +20,9 @@ import io.vertx.mysqlclient.MySQLPool;
 import io.vertx.sqlclient.PoolOptions;
 import io.vertx.sqlclient.Tuple;
 import types.comercio;
+import types.intolerancia;
 import types.producto;
-
+import types.productosUsuario;
 
 public class telegramMain extends AbstractVerticle {
 
@@ -30,7 +30,6 @@ public class telegramMain extends AbstractVerticle {
 	private String tabla;
 	private String seccion;
 	private MySQLPool mySQLPool;
-	private String res;
 	private Map<Integer, Object> map = new HashMap<Integer, Object>();
 
 	@Override
@@ -39,7 +38,7 @@ public class telegramMain extends AbstractVerticle {
 				.setDatabase("DAD").setUser("dad").setPassword("dnbmusic");
 		PoolOptions poolOptions = new PoolOptions().setMaxSize(5);
 		mySQLPool = MySQLPool.pool(vertx, mySQLConnectOptions, poolOptions);
-		
+
 		TelegramOptions telegramOptions = new TelegramOptions().setBotName("nfcAdminBot")
 				.setBotToken("1240009222:AAFCKXVJRvKmNHgbQCgEt4S0p5dBfDQTWGw");
 		bot = TelegramBot.create(vertx, telegramOptions).receiver(new LongPollingReceiver().onUpdate(handler -> {
@@ -83,39 +82,40 @@ public class telegramMain extends AbstractVerticle {
 					tabla = "comercio";
 					map.put(Integer.parseInt(handler.getMessage().getChatId()), new comercio());
 				} else {
-						//Para que cuando hayan 2 personas hablando con el bot no se mezclen los datos
-						com = comercio.class.cast(map.get(Integer.parseInt(handler.getMessage().getChatId())));
+					// Para que cuando hayan 2 personas hablando con el bot no se mezclen los datos
+					com = comercio.class.cast(map.get(Integer.parseInt(handler.getMessage().getChatId())));
 					if (com.getNombreComercio() == null) {
 						com.setNombreComercio(handler.getMessage().getText());
 						map.put(Integer.parseInt(handler.getMessage().getChatId()), com);
 						bot.sendMessage(
 								new SendMessage().setText("Telefono").setChatId(handler.getMessage().getChatId()));
-					} else if ((com.getTelefono() == null) ) {
+					} else if ((com.getTelefono() == null)) {
 						com.setTelefono(Long.parseLong(handler.getMessage().getText()));
 						map.put(Integer.parseInt(handler.getMessage().getChatId()), com);
-						bot.sendMessage(new SendMessage().setText("CIF")
-								.setChatId(handler.getMessage().getChatId()));
-					}else if(com.getCIF() == null) {
-						map.put(Integer.parseInt(handler.getMessage().getChatId()), com);	
-						mySQLPool.preparedQuery(
-								"INSERT INTO comercio (nombreComercio, telefono, CIF) VALUES (?,?,?)",
-								Tuple.of(com.getNombreComercio(), com.getTelefono(), com.getCIF()),
-								handler1 -> {
+						bot.sendMessage(new SendMessage().setText("CIF").setChatId(handler.getMessage().getChatId()));
+					} else if (com.getCIF() == null) {
+						map.put(Integer.parseInt(handler.getMessage().getChatId()), com);
+						mySQLPool.preparedQuery("INSERT INTO comercio (nombreComercio, telefono, CIF) VALUES (?,?,?)",
+								Tuple.of(com.getNombreComercio(), com.getTelefono(), com.getCIF()), handler1 -> {
 									if (handler1.succeeded()) {
-										bot.sendMessage(new SendMessage().setText("Se han agregado " + String.valueOf(handler1.result().rowCount()) + " filas")
+										bot.sendMessage(new SendMessage()
+												.setText("Se han agregado "
+														+ String.valueOf(handler1.result().rowCount()) + " filas")
 												.setChatId(handler.getMessage().getChatId()));
 									} else {
-										bot.sendMessage(new SendMessage().setText("Ha ocurrido el siguiente error: " + handler1.cause().toString())
+										bot.sendMessage(new SendMessage()
+												.setText("Ha ocurrido el siguiente error: "
+														+ handler1.cause().toString())
 												.setChatId(handler.getMessage().getChatId()));
 									}
 								});
-						//Cuando se termine una conversacion, hay que vaciar las variables
+						// Cuando se termine una conversacion, hay que vaciar las variables
 						seccion = "";
 						tabla = "";
 						map.remove(Integer.parseInt(handler.getMessage().getChatId()));
 					}
 				}
-			}else if ((handler.getMessage().getText().toLowerCase().contains("producto") && (seccion == "/insertar"))
+			} else if ((handler.getMessage().getText().toLowerCase().contains("producto") && (seccion == "/insertar"))
 					|| (seccion == "/insertar" && tabla == "producto")) {
 				producto prod = producto.class.cast(map.get(Integer.parseInt(handler.getMessage().getChatId())));
 				if (handler.getMessage().getText().toLowerCase().contains("producto")) {
@@ -125,7 +125,7 @@ public class telegramMain extends AbstractVerticle {
 					tabla = "producto";
 					map.put(Integer.parseInt(handler.getMessage().getChatId()), new producto());
 				} else {
-					//Para que cuando hayan 2 personas hablando con el bot no se mezclen los datos
+					// Para que cuando hayan 2 personas hablando con el bot no se mezclen los datos
 					prod = producto.class.cast(map.get(Integer.parseInt(handler.getMessage().getChatId())));
 					if (prod.getNombreProducto() == null) {
 						prod.setNombreProducto(handler.getMessage().getText());
@@ -135,46 +135,82 @@ public class telegramMain extends AbstractVerticle {
 					} else if (prod.getCodigoBarras() == null) {
 						prod.setCodigoBarras(Long.parseLong(handler.getMessage().getText()));
 						map.put(Integer.parseInt(handler.getMessage().getChatId()), prod);
-						bot.sendMessage(new SendMessage().setText("Fabricante")
-								.setChatId(handler.getMessage().getChatId()));
-					}else if(prod.getFabricante() == null) {
+						bot.sendMessage(
+								new SendMessage().setText("Fabricante").setChatId(handler.getMessage().getChatId()));
+					} else if (prod.getFabricante() == null) {
 						prod.setFabricante(handler.getMessage().getText());
 						map.put(Integer.parseInt(handler.getMessage().getChatId()), prod);
-						bot.sendMessage(new SendMessage().setText("Teléfono")
-								.setChatId(handler.getMessage().getChatId()));
-					}else if(prod.getTelefono() == null) {
+						bot.sendMessage(
+								new SendMessage().setText("Teléfono").setChatId(handler.getMessage().getChatId()));
+					} else if (prod.getTelefono() == null) {
 						prod.setTelefono(Long.parseLong(handler.getMessage().getText()));
 						map.put(Integer.parseInt(handler.getMessage().getChatId()), prod);
 						mySQLPool.preparedQuery(
 								"INSERT INTO producto (nombreProducto, codigoBarras, fabricante, telefono) VALUES (?,?,?,?)",
-								Tuple.of(prod.getNombreProducto(), prod.getCodigoBarras(), prod.getFabricante()
-										,prod.getTelefono()),
+								Tuple.of(prod.getNombreProducto(), prod.getCodigoBarras(), prod.getFabricante(),
+										prod.getTelefono()),
 								handler1 -> {
 									if (handler1.succeeded()) {
-										bot.sendMessage(new SendMessage().setText("Se han agregado " + String.valueOf(handler1.result().rowCount()) + " filas")
+										bot.sendMessage(new SendMessage()
+												.setText("Se han agregado "
+														+ String.valueOf(handler1.result().rowCount()) + " filas")
 												.setChatId(handler.getMessage().getChatId()));
 									} else {
-										bot.sendMessage(new SendMessage().setText("Ha ocurrido el siguiente error: " + handler1.cause().toString())
+										bot.sendMessage(new SendMessage()
+												.setText("Ha ocurrido el siguiente error: "
+														+ handler1.cause().toString())
 												.setChatId(handler.getMessage().getChatId()));
 									}
 								});
-						
-						
-						//Cuando se termine una conversacion, hay que vaciar las variables
+						// Cuando se termine una conversacion, hay que vaciar las variables
 						seccion = "";
 						tabla = "";
 						map.remove(Integer.parseInt(handler.getMessage().getChatId()));
+					}
+				}
+			} else if ((handler.getMessage().getText().toLowerCase().contains("intolerancia")
+					&& (seccion == "/insertar")) || (seccion == "/insertar" && tabla == "intolerancia")) {
+				intolerancia intoler = intolerancia.class
+						.cast(map.get(Integer.parseInt(handler.getMessage().getChatId())));
+				if (handler.getMessage().getText().toLowerCase().contains("intolerancia")) {
+					bot.sendMessage(new SendMessage().setText("Hola " + handler.getMessage().getFrom().getFirstName()
+							+ " Has seleccionado la tabla"
+							+ " intolerancia, voy a proceder a preguntarte los datos.." + "\n" + "Nombre de la intolerancia")
+							.setChatId(handler.getMessage().getChatId()));
+					tabla = "intolerancia";
+					map.put(Integer.parseInt(handler.getMessage().getChatId()), new intolerancia());
+				} else {
+					// Para que cuando hayan 2 personas hablando con el bot no se mezclen los datos
+					intoler = intolerancia.class.cast(map.get(Integer.parseInt(handler.getMessage().getChatId())));
+					if (intoler.getNombreIntolerancia() == null) {
+						intoler.setNombreIntolerancia(handler.getMessage().getText());
+						map.put(Integer.parseInt(handler.getMessage().getChatId()), intoler);
+						
+						mySQLPool.preparedQuery(
+								"INSERT INTO intolerancia (nombreIntolerancia) VALUES (?)",
+								Tuple.of(intoler.getNombreIntolerancia()),
+								handler1 -> {
+									if (handler1.succeeded()) {
+										bot.sendMessage(new SendMessage()
+												.setText("Se han agregado "
+														+ String.valueOf(handler1.result().rowCount()) + " filas")
+												.setChatId(handler.getMessage().getChatId()));
+									} else {
+										bot.sendMessage(new SendMessage()
+												.setText("Ha ocurrido el siguiente error: "
+														+ handler1.cause().toString())
+												.setChatId(handler.getMessage().getChatId()));
+									}
+								});
+						// Cuando se termine una conversacion, hay que vaciar las variables
+						seccion = "";
+						tabla = "";
+						map.remove(Integer.parseInt(handler.getMessage().getChatId()));
+						
 					}
 				}
 			}
 		}));
 		bot.start();
 	}
-	
-	String comercioDatabase(comercio com) {
-		
-		
-		return res;
-	}
-	
 }
