@@ -1,0 +1,102 @@
+package types;
+
+public class wifiReading {
+
+	private String SSID;
+	private double power;
+	private long timestamp;
+	private long idWifi;
+	private int idComercio;
+	
+	
+	public wifiReading() {
+		super();
+	}
+	
+	public wifiReading(String SSID, double power, long timestamp, long idWifi, int idComercio) {
+		super();
+		this.SSID = SSID;
+		this.power = power;
+		this.timestamp = timestamp;
+		this.idWifi = idWifi;
+		this.idComercio = idComercio;
+	}
+	public String getSSID() {
+		return SSID;
+	}
+	public void setSSID(String SSID) {
+		this.SSID = SSID;
+	}
+	public double getPower() {
+		return power;
+	}
+	public void setPower(double power) {
+		this.power = power;
+	}
+	public long getTimestamp() {
+		return timestamp;
+	}
+	public void setTimestamp(long timestamp) {
+		this.timestamp = timestamp;
+	}
+	public long getIdWifi() {
+		return idWifi;
+	}
+	public void setIdWifi(long idWifi) {
+		this.idWifi = idWifi;
+	}
+	public int getIdComercio() {
+		return idComercio;
+	}
+	public void setIdComercio(int idComercio) {
+		this.idComercio = idComercio;
+	}
+	@Override
+	public String toString() {
+		return "wifiReading [SSID=" + SSID + ", power=" + power + ", timestamp=" + timestamp + ", idWifi=" + idWifi
+				+ ", idComercio=" + idComercio + "]";
+	}
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((SSID == null) ? 0 : SSID.hashCode());
+		result = prime * result + idComercio;
+		result = prime * result + (int) (idWifi ^ (idWifi >>> 32));
+		long temp;
+		temp = Double.doubleToLongBits(power);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + (int) (timestamp ^ (timestamp >>> 32));
+		return result;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		wifiReading other = (wifiReading) obj;
+		if (SSID == null) {
+			if (other.SSID != null)
+				return false;
+		} else if (!SSID.equals(other.SSID))
+			return false;
+		if (idComercio != other.idComercio)
+			return false;
+		if (idWifi != other.idWifi)
+			return false;
+		if (Double.doubleToLongBits(power) != Double.doubleToLongBits(other.power))
+			return false;
+		if (timestamp != other.timestamp)
+			return false;
+		return true;
+	}
+	
+	
+	
+	
+	
+	
+}

@@ -1,0 +1,47 @@
+El usuario entra en la tienda y procede a utilizar el dispositivo ESP32:
+
+ - En el primer contacto del usuario con el dispositivo, este debera introducir sus intolerancias en el dispositivo
+
+ - Una vez introducidas las intolerancias, el dispositivo va a enviar, haciendo uso de la API REST, estas
+   intolerancias al servidor. Pero antes de hacer eso necesita crear un usuario cuya funcion correspondiente
+   esta en el servidor, posteriormente, haciendo uso del IDUSUARIO de la ultima entrada creada, creamos las entradas
+   correspondientes a las intolerancias introducidas por el usuario referenciando este ultimo IDUSUARIO mencionado
+   anteriormente. Pero este ultimo paso hace uso del IDUSUARIO que hemos obtenido anteriormente de
+   la creacion del usuario, por lo que va a ser necesario crear un usuario antes de asignar las respectivas  
+   intolerancias.
+
+ - Posteriormente, el usuario procedera a escanear un producto con el dispositivo, por lo que hará falta conseguir
+   las intolerancias ligadas a dicho producto, para ello vamos a hacer uso de una funcion que haga una consulta sql
+   en la que obtenga todas las intolerancias de un producto pasado su ID.
+   Al haber escaneado el producto vamos a tener que crear una entrada que ligue al usuario y sus intolerancias con el
+   producto escaneado, para que de de esta forma tengamos una informacion detallada sobre la preferencia de los usuarios
+   con ciertas intolerancias.
+
+ - Una vez que tengamos tanto las intolerancias que van ligadas al producto escaneado, como las que introdujo el
+   usuario, vamos a tener que hacer una comparacion en la que le podamos indicar mediante el display si ese alimento es
+   adecuado o no, y en un caso mas complejo decirle en que medida le va a afectar ese alimento teniendo en cuenta sus
+   intolerancias.
+
+
+
+En cuanto al funcionamiento del dispositivo cuando no tiene interaccion con el usuario, es de mandar informacion sobre
+la potencia de las diferentes redes WIFI que detecte, en este caso nos interesan 4 ya que seran las que tendremos en
+cuenta a la hora de hacer la triangulacion en el servidor.
+
+Dentro del servidor, sin embargo, vamos a hacer uso de estas redes escaneadas previamente por el ESP32, y mediante las
+cuales vamos a crear una entrada para la tabla de ubicacion, en la que sera necesario hacer un procesamiento (
+se implementará mediante un programa aparte) en el cual
+obtengamos la zona en la que se encuentra el usuario mediante las intensidades de señal anteriormente mencionadas y 
+comparando estos resultados con los de un mapa que tengamos con intensidades y zonas del supermercado mapeadas (para la
+generacion de este mapa probablemente se pueda hacer empleando una solucion facil utilizando los bots de Telegram).
+Por otro lado la hora de la tabla de ubicacion coincidira con el captureTime de la tabla de redeswifi.
+
+
+
+
+* Tener en cuenta de que el IDCOMERCIO que se utiliza en alguna de las funciones creadas para la API REST va a existir
+en forma de constante en el dispositivo ESP.
+
+* Las tablas comercio, ingrediente, ingredientesproducto, intolerancia y producto no van a hacer parte del intercambio
+de informacion entre el servidor y el ESP32 ya que van a tener que ser completadas manualmente, ya sea manipulando
+directamente la base de datos o utilizando la funcionalidad de bots que nos ofrece Telegram.

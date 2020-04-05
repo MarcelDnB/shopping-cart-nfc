@@ -1,8 +1,6 @@
 # shopping-cart-nfc
 
-## 1. Overview
+## 1. ¿Que es?
 
-The project consists of a board situated in a shopping cart with which we can scan NFC tags located near the products which identifies it. This board indicates if a product is good for a specified costumer in terms of intolerances, allergies, etc.
-
-The board that we gonna use is called ESP32, obviously we also have an NFC receiver, some RGB LED's to indicate how bad is a product for a specified costumer e.g. intolerance, an LCD because the costumer needs to select their own preferences and finally some wires to put it all together.
-
+Consiste en una placa situada en un carro de compra con el cual vamos a escanear etiquetas NFC situadas cerca de los productos las cuales indican a estos. Esta placa tiene el objetivo de dar a conocer al usuario de si un producto es adecuado para el en cuanto a las intolerancias, alergias, etc.
+La placa que vamos a usar es llamada ESP32, evidentemente tenemos tambien un receptor NFC, algunos LED's RGB para indicar cuanto de malo es un producto para un usuario especifico, por ejemplo en cuanto a las intolerancias. Tenemos tambien un LCD para que el usuario pueda elegir su perfil de intolerancias.
