@@ -10,14 +10,14 @@ public class comercio {
 		super();
 		this.nombreComercio = null;
 		this.telefono = null;
-		CIF = null;
+		this.CIF = null;
 	}
 	
-	public comercio(String nombreComercio, Long telefono, String cIF) {
+	public comercio(String nombreComercio, Long telefono, String CIF) {
 		super();
 		this.nombreComercio = nombreComercio;
 		this.telefono = telefono;
-		CIF = cIF;
+		this.CIF = CIF;
 	}
 	public String getNombreComercio() {
 		return nombreComercio;
