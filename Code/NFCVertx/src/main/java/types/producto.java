@@ -17,7 +17,7 @@ public class producto {
 		this.telefono = null;
 	}
 	
-	public producto(String nombreProducto, long codigoBarras, String fabricante, long telefono) {
+	public producto(String nombreProducto, Long codigoBarras, String fabricante, long telefono) {
 		super();
 		this.nombreProducto = nombreProducto;
 		this.codigoBarras = codigoBarras;
@@ -31,10 +31,10 @@ public class producto {
 	public void setNombreProducto(String nombreProducto) {
 		this.nombreProducto = nombreProducto;
 	}
-	public long getCodigoBarras() {
+	public Long getCodigoBarras() {
 		return codigoBarras;
 	}
-	public void setCodigoBarras(long codigoBarras) {
+	public void setCodigoBarras(Long codigoBarras) {
 		this.codigoBarras = codigoBarras;
 	}
 	public String getFabricante() {
@@ -43,10 +43,10 @@ public class producto {
 	public void setFabricante(String fabricante) {
 		this.fabricante = fabricante;
 	}
-	public long getTelefono() {
+	public Long getTelefono() {
 		return telefono;
 	}
-	public void setTelefono(long telefono) {
+	public void setTelefono(Long telefono) {
 		this.telefono = telefono;
 	}
 	@Override

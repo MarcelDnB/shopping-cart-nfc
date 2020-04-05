@@ -4,7 +4,7 @@ public class comercio {
 
 	private String nombreComercio;
 	private Long telefono;
-	private Long CIF;
+	private String CIF;
 	
 	public comercio() {
 		super();
@@ -13,7 +13,7 @@ public class comercio {
 		CIF = null;
 	}
 	
-	public comercio(String nombreComercio, Long telefono, Long cIF) {
+	public comercio(String nombreComercio, Long telefono, String cIF) {
 		super();
 		this.nombreComercio = nombreComercio;
 		this.telefono = telefono;
@@ -31,10 +31,10 @@ public class comercio {
 	public void setTelefono(Long telefono) {
 		this.telefono = telefono;
 	}
-	public Long getCIF() {
+	public String getCIF() {
 		return CIF;
 	}
-	public void setCIF(Long cIF) {
+	public void setCIF(String cIF) {
 		CIF = cIF;
 	}
 	@Override
