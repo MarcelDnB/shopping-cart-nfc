@@ -53,11 +53,8 @@ DROP TABLE IF EXISTS `ingrediente`;
 CREATE TABLE `ingrediente` (
   `idingrediente` int NOT NULL AUTO_INCREMENT,
   `nombreIngrediente` varchar(45) DEFAULT NULL,
-  `idIntolerancia` int DEFAULT NULL,
   PRIMARY KEY (`idingrediente`),
-  UNIQUE KEY `idingredientes_UNIQUE` (`idingrediente`),
-  KEY `idIntolerancia_idx` (`idIntolerancia`),
-  CONSTRAINT `idIntolerancia` FOREIGN KEY (`idIntolerancia`) REFERENCES `intolerancia` (`idintolerancia`) ON DELETE CASCADE ON UPDATE CASCADE
+  UNIQUE KEY `idingredientes_UNIQUE` (`idingrediente`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -67,7 +64,7 @@ CREATE TABLE `ingrediente` (
 
 LOCK TABLES `ingrediente` WRITE;
 /*!40000 ALTER TABLE `ingrediente` DISABLE KEYS */;
-INSERT INTO `ingrediente` VALUES (1,'Huevo',4),(2,'Alcohol',2),(3,'Nata',1),(4,'Galletas',3);
+INSERT INTO `ingrediente` VALUES (1,'Huevo'),(2,'Alcohol'),(3,'Nata'),(4,'Galletas');
 /*!40000 ALTER TABLE `ingrediente` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -124,6 +121,35 @@ LOCK TABLES `intolerancia` WRITE;
 /*!40000 ALTER TABLE `intolerancia` DISABLE KEYS */;
 INSERT INTO `intolerancia` VALUES (1,'Intolerancia a la lactosa'),(2,'Intolerancia a la histamina'),(3,'Intolerancia al glúten'),(4,'Intolerancia al huevo');
 /*!40000 ALTER TABLE `intolerancia` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `intoleranciasingrediente`
+--
+
+DROP TABLE IF EXISTS `intoleranciasingrediente`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `intoleranciasingrediente` (
+  `idintoleranciasIngrediente` int NOT NULL AUTO_INCREMENT,
+  `idIngrediente` int DEFAULT NULL,
+  `idIntolerancia` int DEFAULT NULL,
+  PRIMARY KEY (`idintoleranciasIngrediente`),
+  UNIQUE KEY `idintoleranciasIngrediente_UNIQUE` (`idintoleranciasIngrediente`),
+  KEY `idIntolerancia_idx` (`idIntolerancia`),
+  KEY `idIngrediente_idx` (`idIngrediente`),
+  CONSTRAINT `idIngrediente5` FOREIGN KEY (`idIngrediente`) REFERENCES `ingrediente` (`idingrediente`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `idIntolerancia5` FOREIGN KEY (`idIntolerancia`) REFERENCES `intolerancia` (`idintolerancia`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `intoleranciasingrediente`
+--
+
+LOCK TABLES `intoleranciasingrediente` WRITE;
+/*!40000 ALTER TABLE `intoleranciasingrediente` DISABLE KEYS */;
+/*!40000 ALTER TABLE `intoleranciasingrediente` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -322,4 +348,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-03-31 13:07:39
+-- Dump completed on 2020-04-05 18:37:30
