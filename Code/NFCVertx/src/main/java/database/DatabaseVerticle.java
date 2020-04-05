@@ -47,10 +47,8 @@ public class DatabaseVerticle extends AbstractVerticle{
 			}
 		});
 		
-		vertx.deployVerticle(telegramMain.class.getName());
-		
 		router.put("/api/scan/put/wifi/values").handler(this::putWifiScan);
-		router.get("/api/scan/:idProducto/").handler(this::getIntolerances);
+		router.get("/api/scan/:idProducto").handler(this::getIntolerances);
 		router.put("/api/scan/put/produs/values").handler(this::putAfterScan);
 		router.put("/api/scan/put/usuario/values").handler(this::putUsuario);
 		router.put("/api/scan/put/usuint/values").handler(this::putIntoleranciasUsuario);
@@ -160,6 +158,7 @@ public class DatabaseVerticle extends AbstractVerticle{
 	
 	
 	private void getIntolerances(RoutingContext routingContext) { //Funciona
+		try {
 		mySQLPool.query("select idIntolerancia from intolerancia natural join ingrediente natural"
 				+ " join ingredientesproducto natural join producto where IdProducto = " + 
 				routingContext.request().getParam("idProducto"),
@@ -179,5 +178,8 @@ public class DatabaseVerticle extends AbstractVerticle{
 							.end((JsonObject.mapFrom(res.cause()).encodePrettily()));
 					}
 				});
+		}catch(Exception e) {
+			System.out.println(e.getMessage());
+		}
 	}
 }

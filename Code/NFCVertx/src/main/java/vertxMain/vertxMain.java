@@ -3,25 +3,9 @@ package vertxMain;
 import database.DatabaseVerticle;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
-import io.vertx.core.json.Json;
-import io.vertx.core.json.JsonArray;
-import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.Router;
-import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.handler.BodyHandler;
-import io.vertx.mysqlclient.MySQLClient;
-import io.vertx.mysqlclient.MySQLConnectOptions;
-import io.vertx.mysqlclient.MySQLPool;
-import io.vertx.sqlclient.PoolOptions;
-import io.vertx.sqlclient.PropertyKind;
-import io.vertx.sqlclient.Row;
-import io.vertx.sqlclient.RowSet;
-import io.vertx.sqlclient.Tuple;
 import telegram.telegramMain;
-import types.productosUsuario;
-import types.scannedProduct;
-import types.usuarioIntolerancias;
-import types.wifiReading;
 
 public class vertxMain extends AbstractVerticle{
 
@@ -30,15 +14,8 @@ public class vertxMain extends AbstractVerticle{
 	public void start(Promise<Void> startPromise) {
 		Router router = Router.router(vertx);
 		router.route().handler(BodyHandler.create());
-		vertx.createHttpServer().requestHandler(router::handle).listen(8081, result -> {
-			if (result.succeeded()) {
-				startPromise.complete();
-			}else {
-				startPromise.fail(result.cause());
-			}
-		});
 		
-		vertx.deployVerticle(telegramMain.class.getName());
-		//vertx.deployVerticle(DatabaseVerticle.class.getName());
+		//vertx.deployVerticle(telegramMain.class.getName());
+		vertx.deployVerticle(DatabaseVerticle.class.getName());
 	}
 }
