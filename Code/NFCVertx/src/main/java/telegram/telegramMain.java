@@ -30,13 +30,9 @@ import types.producto;
 
 public class telegramMain extends AbstractVerticle {
 
-	private TelegramBot bot;
-	private Map<Integer, String> tabla = new HashMap<Integer, String>();
-	private Map<Integer, String> seccion = new HashMap<Integer, String>();
-	private MySQLPool mySQLPool;
-	private Map<Integer, Object> map = new HashMap<Integer, Object>();
-
-	/*
+	
+	
+	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	 * bot: variable que nos entrega las funcionalidades del bot de Telegram.
 	 * 
 	 * tabla: nos sirve para que el bot sepa de que tabla nos estaba haciendo las
@@ -51,21 +47,50 @@ public class telegramMain extends AbstractVerticle {
 	 * 
 	 * map: nos ayudamos de un map para poder diferenciar los diferentes usuarios,
 	 * mediante su chatId que nos proporciona el bot de Telegram.
-	 */
+	 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+	
+	private TelegramBot bot;
+	private Map<Integer, String> tabla = new HashMap<Integer, String>();
+	private Map<Integer, String> seccion = new HashMap<Integer, String>();
+	private MySQLPool mySQLPool;
+	private Map<Integer, Object> map = new HashMap<Integer, Object>();
 
+	
 	@Override
 	public void start(Promise<Void> future) {
-		/*
+		
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+		 * 
+		 * 
+		 * 
 		 * Conexion a la base de datos MySQL
-		 */
+		 * 
+		 * 
+		 * 
+		 * 
+		 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		MySQLConnectOptions mySQLConnectOptions = new MySQLConnectOptions().setPort(3306).setHost("localhost")
 				.setDatabase("DAD").setUser("dad").setPassword("dnbmusic");
 		PoolOptions poolOptions = new PoolOptions().setMaxSize(5);
 		mySQLPool = MySQLPool.pool(vertx, mySQLConnectOptions, poolOptions);
 
-		/*
+		
+		
+		
+		
+		
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+		 * 
+		 * 
+		 * 
+		 * 
 		 * Puesta en marcha del bot de Telegram
-		 */
+		 * 
+		 * 
+		 * 
+		 * 
+		 * 
+		 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		TelegramOptions telegramOptions = new TelegramOptions().setBotName("nfcAdminBot")
 				.setBotToken("1240009222:AAFCKXVJRvKmNHgbQCgEt4S0p5dBfDQTWGw");
 		bot = TelegramBot.create(vertx, telegramOptions).receiver(new LongPollingReceiver().onUpdate(handler -> {
@@ -73,10 +98,22 @@ public class telegramMain extends AbstractVerticle {
 				bot.sendMessage(new SendMessage()
 						.setText("Hola " + handler.getMessage().getFrom().getFirstName() + " ¿En qué puedo ayudarte?")
 						.setChatId(handler.getMessage().getChatId()));
-				/*
+				
+				
+				
+				
+				
+				
+				
+				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+				 * 
+				 * 
 				 * Modelo que nos puede venir bien para ver como recibir informacion desde una
 				 * API en este caso recibimos informacion del tiempo.
-				 */
+				 * 
+				 * 
+				 * 
+				 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 			} else if (handler.getMessage().getText().toLowerCase().contains("/tiempo")) {
 				WebClient client = WebClient.create(vertx);
 				client.get(80, "api.openweathermap.org",
@@ -97,13 +134,26 @@ public class telegramMain extends AbstractVerticle {
 										.setChatId(handler.getMessage().getChatId()));
 							}
 						});
+				
+				
+				
+				
+				
+				
+				
 
-				/*
+				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+				 * 
+				 * 
+				 * 
 				 * El usuario indica que quiere insertar datos en la tabla por lo que nosotros
 				 * guardamos el keyword en una variable la cual vamos a utilizar posteriormente
 				 * para saber que nos encontramos en esta seccion (de añadir a la base de
 				 * datos), dicha variable es "seccion".
-				 */
+				 * 
+				 * 
+				 * 
+				 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 			} else if (handler.getMessage().getText().toLowerCase().contains("/insertar")) {
 				bot.sendMessage(new SendMessage()
 						.setText("Hola " + handler.getMessage().getFrom().getFirstName()
@@ -113,9 +163,18 @@ public class telegramMain extends AbstractVerticle {
 				tabla.put(Integer.parseInt(handler.getMessage().getChatId()), " ");
 				bot.sendMessage(
 						new SendMessage().setText("Tablas disponibles: ").setChatId(handler.getMessage().getChatId()));
-				/*
+				
+				
+				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+				 * 
+				 * 
+				 * 
+				 * 
 				 * Un query para ver todas las tablas disponibles de un schema
-				 */
+				 * 
+				 * 
+				 * 
+				 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 				mySQLPool.query("SELECT table_name FROM information_schema.tables WHERE table_schema = 'dad'", res -> {
 					if (res.succeeded()) {
 						RowSet<Row> resultSet = res.result();
@@ -129,7 +188,13 @@ public class telegramMain extends AbstractVerticle {
 								.setChatId(handler.getMessage().getChatId()));
 					}
 				});
-				/*
+				
+				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+				 * 
+				 * 
+				 * 
+				 * 
+				 * 
 				 * A partir de aqui vamos a guardar el rastro de la tabla que hemos elegido
 				 * mediante la variable "tabla", para que el bot nos haga una y otra vez
 				 * preguntas hasta obtener todos los datos necesarios para rellenar la clase
@@ -138,12 +203,34 @@ public class telegramMain extends AbstractVerticle {
 				 * Necesitamos la variable "tabla" para que cuando nosotros respondamos una
 				 * pregunta de una tabla cualquiera, el bot sepa volver a la misma tabla y
 				 * seguir por la siguiente pregunta.
-				 */
+				 * 
+				 * 
+				 * 
+				 * 
+				 * 
+				 * 
+				 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-				/*
-				 * Tabla: Comercio Columnas: NombreComercio, telefono, CIF KeywordTelegram:
-				 * comercio
-				 */
+				
+				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+				 * 
+				 * 
+				 * 
+				 * 
+				 * 
+				 * 
+				 * 
+				 * Tabla: Comercio 
+				 * Columnas: NombreComercio, telefono, CIF 
+				 * KeywordTelegram: comercio
+				 * 
+				 * 
+				 * 
+				 * 
+				 * 
+				 * 
+				 * 
+				 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 			} else if ((handler.getMessage().getText().toLowerCase().contains("comercio")
 					&& (seccion.get(Integer.parseInt(handler.getMessage().getChatId())) == "/insertar"))
 					|| (seccion.get(Integer.parseInt(handler.getMessage().getChatId())) == "/insertar"
@@ -215,10 +302,30 @@ public class telegramMain extends AbstractVerticle {
 						
 					}
 				}
-				/*
-				 * Tabla: Producto Columnas: nombreProducto, codigoBarras, fabricante, telefono
+				
+				
+				
+				
+				
+				
+				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+				 * 
+				 * 
+				 * 
+				 * 
+				 * 
+				 * 
+				 * 
+				 * Tabla: Producto 
+				 * Columnas: nombreProducto, codigoBarras, fabricante, telefono
 				 * KeywordTelegram: producto
-				 */
+				 * 
+				 * 
+				 * 
+				 * 
+				 * 
+				 * 
+				 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 			} else if ((handler.getMessage().getText().toLowerCase().contentEquals("producto")
 					&& (seccion.get((Integer.parseInt(handler.getMessage().getChatId()))) == "/insertar"))
 					|| (seccion.get((Integer.parseInt(handler.getMessage().getChatId()))) == "/insertar"
@@ -309,10 +416,27 @@ public class telegramMain extends AbstractVerticle {
 					}
 				}
 
-				/*
-				 * Tabla: Intolerancia Columnas: nombreIntolerancia KeywordTelegram:
-				 * intolerancia
-				 */
+				
+				
+				
+				
+				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+				 * 
+				 * 
+				 * 
+				 * 
+				 * 
+				 * 
+				 * Tabla: Intolerancia 
+				 * Columnas: nombreIntolerancia 
+				 * KeywordTelegram: intolerancia
+				 * 
+				 * 
+				 * 
+				 * 
+				 * 
+				 * 
+				 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 			} else if ((handler.getMessage().getText().toLowerCase().contentEquals("intolerancia")
 					&& (seccion.get((Integer.parseInt(handler.getMessage().getChatId()))) == "/insertar"))
 					|| (seccion.get((Integer.parseInt(handler.getMessage().getChatId()))) == "/insertar"
@@ -365,11 +489,31 @@ public class telegramMain extends AbstractVerticle {
 					}
 				}
 
-				/*
-				 * Tabla: Ingrediente Columnas: nombreIngrediente, idIntolerancia
+				
+				
+				
+				
+				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+				 * 
+				 * 
+				 * 
+				 * 
+				 * 
+				 * 
+				 * 
+				 * 
+				 * Tabla: Ingrediente 
+				 * Columnas: nombreIngrediente, idIntolerancia
 				 * KeywordTelegram: ingrediente
-				 */
-
+				 * 
+				 * 
+				 * 
+				 * 
+				 * 
+				 * 
+				 * 
+				 * 
+				 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 			} else if ((handler.getMessage().getText().toLowerCase().contentEquals("ingrediente")
 					&& (seccion.get((Integer.parseInt(handler.getMessage().getChatId()))) == "/insertar"))
 					|| (seccion.get((Integer.parseInt(handler.getMessage().getChatId()))) == "/insertar"
@@ -422,10 +566,32 @@ public class telegramMain extends AbstractVerticle {
 					}
 				}
 
-				/*
-				 * Tabla: IngredientesProducto Columnas: idIngrediente, idProducto
+				
+				
+				
+				
+				
+				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+				 * 
+				 * 
+				 * 
+				 * 
+				 * 
+				 * 
+				 * 
+				 * 
+				 * Tabla: IngredientesProducto 
+				 * Columnas: idIngrediente, idProducto
 				 * KeywordTelegram: ingredientesproducto
-				 */
+				 * 
+				 * 
+				 * 
+				 * 
+				 * 
+				 * 
+				 * 
+				 * 
+				 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 			} else if ((handler.getMessage().getText().toLowerCase().contentEquals("ingredientesproducto")
 					&& (seccion.get((Integer.parseInt(handler.getMessage().getChatId()))) == "/insertar"))
 					|| (seccion.get((Integer.parseInt(handler.getMessage().getChatId()))) == "/insertar" && tabla
@@ -526,10 +692,34 @@ public class telegramMain extends AbstractVerticle {
 						
 					}
 				}
-				/*
-				 * Tabla: intoleranciasIngrediente Columnas: idIntolerancia, idIngrediente
+			
+				
+				
+				
+				
+				
+				
+				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+				 * 
+				 * 
+				 * 
+				 * 
+				 * 
+				 * 
+				 * 
+				 * 
+				 * Tabla: intoleranciasIngrediente 
+				 * Columnas: idIntolerancia, idIngrediente
 				 * KeywordTelegram: intoleranciasingrediente
-				 */
+				 * 
+				 * 
+				 * 
+				 * 
+				 * 
+				 * 
+				 * 
+				 * 
+				 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 			} else if ((handler.getMessage().getText().toLowerCase().contentEquals("intoleranciasingrediente")
 					&& (seccion.get((Integer.parseInt(handler.getMessage().getChatId()))) == "/insertar"))
 					|| (seccion.get((Integer.parseInt(handler.getMessage().getChatId()))) == "/insertar" && tabla
