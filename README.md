@@ -1,4 +1,4 @@
-# shopping-cart-nfc
+# Shopping Cart NFC
 
 ## 1. ¿Que es?
 
