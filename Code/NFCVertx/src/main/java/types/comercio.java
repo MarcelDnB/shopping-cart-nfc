@@ -1,11 +1,13 @@
 package types;
 
+import java.util.regex.Pattern;
+
 public class comercio {
 
 	private String nombreComercio;
 	private Long telefono;
 	private String CIF;
-	
+
 	public comercio() {
 		super();
 		this.nombreComercio = null;
@@ -22,20 +24,36 @@ public class comercio {
 	public String getNombreComercio() {
 		return nombreComercio;
 	}
-	public void setNombreComercio(String nombreComercio) {
-		this.nombreComercio = nombreComercio;
+	public void setNombreComercio(String nombreComercio) throws Exception {
+		if(nombreComercio.length()<=45) {
+			this.nombreComercio = nombreComercio;
+		}else {
+			throw new Exception("El nombre del comercio no puede tener mas de 45 caracteres");
+		}
+		
 	}
 	public Long getTelefono() {
 		return telefono;
 	}
-	public void setTelefono(Long telefono) {
-		this.telefono = telefono;
+	public void setTelefono(Long telefono) throws Exception {
+		if(String.valueOf(telefono).length() == 9) {
+			this.telefono = telefono;
+		}else {
+			throw new Exception("El numero de telefono debe contener 9 digitos");
+		}
+		
+		
 	}
 	public String getCIF() {
 		return CIF;
 	}
-	public void setCIF(String cIF) {
-		CIF = cIF;
+	public void setCIF(String cIF) throws Exception {
+		if((cIF.length() == 9) && !Pattern.matches("-?\\d+(\\.\\d+)?", (Character.toString(cIF.charAt(0)))))  {
+			CIF = cIF;
+		}else {
+			throw new Exception("El CIF debe contener un caracter y 8 digitos");
+		}
+		
 	}
 	@Override
 	public int hashCode() {

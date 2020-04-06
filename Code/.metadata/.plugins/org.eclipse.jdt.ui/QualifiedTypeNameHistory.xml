@@ -15,4 +15,7 @@
 <fullyQualifiedTypeName name="types.producto"/>
 <fullyQualifiedTypeName name="types.ingrediente"/>
 <fullyQualifiedTypeName name="types.ingredientesProducto"/>
+<fullyQualifiedTypeName name="types.intoleranciasIngrediente"/>
+<fullyQualifiedTypeName name="utiles.Checkers"/>
+<fullyQualifiedTypeName name="java.util.regex.Pattern"/>
 </qualifiedTypeNameHistroy>
