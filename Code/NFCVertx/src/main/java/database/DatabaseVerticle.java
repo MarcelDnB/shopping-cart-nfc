@@ -12,13 +12,12 @@ import io.vertx.mysqlclient.MySQLClient;
 import io.vertx.mysqlclient.MySQLConnectOptions;
 import io.vertx.mysqlclient.MySQLPool;
 import io.vertx.sqlclient.PoolOptions;
-import io.vertx.sqlclient.PropertyKind;
 import io.vertx.sqlclient.Row;
 import io.vertx.sqlclient.RowSet;
 import io.vertx.sqlclient.Tuple;
-import telegram.telegramMain;
 import types.productosUsuario;
 import types.scannedProduct;
+import types.usuario;
 import types.usuarioIntolerancias;
 import types.wifiReading;
 
@@ -57,7 +56,7 @@ public class DatabaseVerticle extends AbstractVerticle{
 	
 	private void putUsuario(RoutingContext routingContext) { //Funciona
 		try {
-		usuarioIntolerancias usuarioIntolerancias = Json.decodeValue(routingContext.getBodyAsString(), usuarioIntolerancias.class);
+			usuario usuarioIntolerancias = Json.decodeValue(routingContext.getBodyAsString(), usuario.class);
 			mySQLPool.preparedQuery(
 					"INSERT INTO usuario (idComercio) VALUES (?)",
 					Tuple.of(usuarioIntolerancias.getIdComercio()),
