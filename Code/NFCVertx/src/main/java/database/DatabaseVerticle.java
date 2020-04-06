@@ -22,7 +22,7 @@ import types.usuarioIntolerancias;
 import types.wifiReading;
 
 public class DatabaseVerticle extends AbstractVerticle{
-
+	
 	
 	private MySQLPool mySQLPool;
 	Long idUsuarioCreado; /* Dentro del ESP32 primero se va a ejecutar la funcion que añade un usuario
@@ -83,7 +83,6 @@ public class DatabaseVerticle extends AbstractVerticle{
 	
 	
 	private void putIntoleranciasUsuario(RoutingContext routingContext) { //Funciona
-		try {
 		usuarioIntolerancias usuarioIntolerancias = Json.decodeValue(routingContext.getBodyAsString(), usuarioIntolerancias.class);
 		for(Integer i:usuarioIntolerancias.getIntolerancias()) {
 			mySQLPool.preparedQuery(
@@ -96,15 +95,10 @@ public class DatabaseVerticle extends AbstractVerticle{
 							routingContext.response().setStatusCode(200).putHeader("content-type", "application/json")
 									.end(JsonObject.mapFrom(usuarioIntolerancias).encodePrettily());
 						} else {
-							System.out.println(handler.cause().toString());
 							routingContext.response().setStatusCode(401).putHeader("content-type", "application/json")
 									.end((JsonObject.mapFrom(handler.cause()).encodePrettily()));
 						}
 					});
-		}
-		
-	}catch(Exception e) {
-		System.out.println(e.getMessage());
 		}
 	}
 	

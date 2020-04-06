@@ -53,7 +53,7 @@ public class telegramMain extends AbstractVerticle {
 	private Map<Integer, String> seccion = new HashMap<Integer, String>();
 	private MySQLPool mySQLPool;
 	private Map<Integer, Object> map = new HashMap<Integer, Object>();
-
+	
 	
 	@Override
 	public void start(Promise<Void> future) {
