@@ -18,4 +18,6 @@
 <fullyQualifiedTypeName name="types.intoleranciasIngrediente"/>
 <fullyQualifiedTypeName name="utiles.Checkers"/>
 <fullyQualifiedTypeName name="java.util.regex.Pattern"/>
+<fullyQualifiedTypeName name="types.usuario"/>
+<fullyQualifiedTypeName name="org.schors.vertx.telegram.bot.api.types.Update"/>
 </qualifiedTypeNameHistroy>
