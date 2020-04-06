@@ -17,8 +17,13 @@ public class intolerancia {
 		return nombreIntolerancia;
 	}
 
-	public void setNombreIntolerancia(String nombreIntolerancia) {
-		this.nombreIntolerancia = nombreIntolerancia;
+	public void setNombreIntolerancia(String nombreIntolerancia) throws Exception {
+		if(nombreIntolerancia.length()<=45) {
+			this.nombreIntolerancia = nombreIntolerancia;
+		}else {
+			throw new Exception("El nombre de la intolerancia tiene que contener como maximo 45 caracteres");
+		}
+		
 	}
 
 	@Override

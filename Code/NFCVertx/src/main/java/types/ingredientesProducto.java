@@ -16,14 +16,24 @@ public class ingredientesProducto {
 	public Integer getIdIngrediente() {
 		return idIngrediente;
 	}
-	public void setIdIngrediente(Integer idIngrediente) {
-		this.idIngrediente = idIngrediente;
+	public void setIdIngrediente(Integer idIngrediente) throws Exception {
+		if(idIngrediente<=2147483647) {
+			this.idIngrediente = idIngrediente;
+		}else {
+			throw new Exception("El maximo numero para el ID de ingrediente es 2147483647");
+		}
+		
 	}
 	public Integer getIdProducto() {
 		return idProducto;
 	}
-	public void setIdProducto(Integer idProducto) {
-		this.idProducto = idProducto;
+	public void setIdProducto(Integer idProducto) throws Exception {
+		if(idProducto<=2147483647) {
+			this.idProducto = idProducto;
+		}else {
+			throw new Exception("El maximo numero para el ID de producto es 2147483647");
+		}
+		
 	}
 	@Override
 	public String toString() {

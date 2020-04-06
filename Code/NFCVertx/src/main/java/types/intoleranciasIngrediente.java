@@ -19,16 +19,25 @@ public class intoleranciasIngrediente {
 		return idIntolerancia;
 	}
 
-	public void setIdIntolerancia(Integer idIntolerancia) {
-		this.idIntolerancia = idIntolerancia;
+	public void setIdIntolerancia(Integer idIntolerancia) throws Exception {
+		if(idIntolerancia<=2147483647) {
+			this.idIntolerancia = idIntolerancia;
+		}else {
+			throw new Exception("El maximo numero para el ID de intolerancia es 2147483647");
+		}
 	}
 
 	public Integer getIdIngrediente() {
 		return idIngrediente;
 	}
 
-	public void setIdIngrediente(Integer idIngrediente) {
-		this.idIngrediente = idIngrediente;
+	public void setIdIngrediente(Integer idIngrediente) throws Exception {
+		if(idIntolerancia<=2147483647) {
+			this.idIngrediente = idIngrediente;
+		}else {
+			throw new Exception("El maximo numero para el ID de ingrediente es 2147483647");
+		}
+		
 	}
 
 	@Override

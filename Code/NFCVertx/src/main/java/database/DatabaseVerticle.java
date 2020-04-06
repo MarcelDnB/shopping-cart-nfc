@@ -159,8 +159,8 @@ public class DatabaseVerticle extends AbstractVerticle{
 	
 	private void getIntolerances(RoutingContext routingContext) { //Funciona
 		try {
-		mySQLPool.query("select idIntolerancia from intolerancia natural join ingrediente natural"
-				+ " join ingredientesproducto natural join producto where IdProducto = " + 
+		mySQLPool.query("select idIntolerancia from intoleranciasingrediente natural join ingrediente natural join ingredientesproducto"
+				+ " natural join producto where IdProducto = " + 
 				routingContext.request().getParam("idProducto"),
 				res -> {
 					if (res.succeeded()) {

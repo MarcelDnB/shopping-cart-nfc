@@ -8,7 +8,7 @@ public class ingrediente {
 	
 	public ingrediente() {
 		this.nombreIngrediente = null;
-		this.idIntolerancia = null;
+		this.idIntolerancia = null; //En desuso, eliminar si da tiempo
 	}
 	
 	public ingrediente(String nombreIngrediente, Integer idIntolerancia) {
@@ -21,16 +21,26 @@ public class ingrediente {
 		return nombreIngrediente;
 	}
 
-	public void setNombreIngrediente(String nombreIngrediente) {
-		this.nombreIngrediente = nombreIngrediente;
+	public void setNombreIngrediente(String nombreIngrediente) throws Exception {
+		if(nombreIngrediente.length()<=45) {
+			this.nombreIngrediente = nombreIngrediente;
+		}else {
+			throw new Exception("El nombre del ingrediente debe contener como maximo 45 caracteres");
+		}
+		
 	}
 
 	public Integer getIdIntolerancia() {
 		return idIntolerancia;
 	}
 
-	public void setIdIntolerancia(Integer idIntolerancia) {
-		this.idIntolerancia = idIntolerancia;
+	public void setIdIntolerancia(Integer idIntolerancia) throws Exception {
+		if(idIntolerancia<=2147483647) {
+			this.idIntolerancia = idIntolerancia;
+		}else {
+			throw new Exception("El maximo numero para el ID de intolerancia es 2147483647");
+		}
+		
 	}
 
 	@Override
