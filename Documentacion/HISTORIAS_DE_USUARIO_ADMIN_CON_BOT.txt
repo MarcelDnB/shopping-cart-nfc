@@ -58,6 +58,24 @@ bot: se muestra un listado con las intolerancias y sus id que hay en la base de 
 admin:2
 bot:Se ha añadido la entrada correctamente
 
+INTOLERANCIASINGREDIENTE
+admin:/insertar
+bot:¿En qué tabla quiere usted insertar?
+admin:intoleranciasIngrediente
+bot:¿Qué dato quiere introducir en idIngrediente?
+bot: se muestra un listado con los ingredientes y sus id que hay en la base de datos
+admin:2
+bot:¿Qué dato quiere introducir en idIntolerancia?
+bot: se muestra un listado con las intolerancias y sus id que hay en la base de datos
+admin:1
+bot:Se ha añadido la entrada correctamente
+
+
+
+
+
+
+
 INGREDENTESPRODCUTO
 admin:/INSERTAR
 bot:¿En qué tabla quiere usted insertar?
