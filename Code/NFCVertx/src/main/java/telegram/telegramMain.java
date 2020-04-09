@@ -141,21 +141,21 @@ public class telegramMain extends AbstractVerticle {
 			}else if(handler.getMessage().getText().toLowerCase().contains("/info")) {
 				bot.sendMessage(new SendMessage()
 						.setText("A continuación se indica la información disponible: \n"
-								+ " 1. Productos escaneados por ususarios con ciertas intolerancias" + "\n" +
+								+ " a. Productos escaneados por ususarios con cierta intolerancia" + "\n" +
 								"Seleccione la petición deseada, introduciendo su índice:"+ "\n")
 						.setChatId(handler.getMessage().getChatId()));
 				seccion.put(Integer.parseInt(handler.getMessage().getChatId()), "/info");
 				tabla.put(Integer.parseInt(handler.getMessage().getChatId()), " ");
 				
-			}else if ((handler.getMessage().getText().toLowerCase().contentEquals("1")
+			}else if ((handler.getMessage().getText().toLowerCase().contentEquals("a")
 					&& (seccion.get(Integer.parseInt(handler.getMessage().getChatId())) == "/info"))
 					|| (seccion.get(Integer.parseInt(handler.getMessage().getChatId())) == "/info"
-							&& tabla.get(Integer.parseInt(handler.getMessage().getChatId())) == "1")) {
-				if((handler.getMessage().getText().toLowerCase().contentEquals("1")
+							&& tabla.get(Integer.parseInt(handler.getMessage().getChatId())) == "a")) {
+				if((handler.getMessage().getText().toLowerCase().contentEquals("a")
 						&& (seccion.get(Integer.parseInt(handler.getMessage().getChatId())) == "/info"))) {
-					tabla.put((Integer.parseInt(handler.getMessage().getChatId())), "1");
+					tabla.put((Integer.parseInt(handler.getMessage().getChatId())), "a");
 					bot.sendMessage(new SendMessage()
-							.setText("¿De que intolerancias desea ver los productos escaneados por los usuarios?, alguno"
+							.setText("¿De que intolerancia desea ver los productos escaneados por los usuarios?, alguno"
 									+ " de los ID's mostrados a continuación: " + "\n")
 							.setChatId(handler.getMessage().getChatId()));
 					mySQLPool.query("select idIntolerancia, nombreIntolerancia from intolerancia", res -> {
@@ -177,22 +177,16 @@ public class telegramMain extends AbstractVerticle {
 					
 				}else {
 					String s = handler.getMessage().getText();
-					List<String> list = new ArrayList<>(Arrays.asList(s.split(" ")));
-					String query = "";
-					for(String ss:list) {
-						
-					}
-					
-					
-					
-					mySQLPool.query("select idIntolerancia, nombreIntolerancia from intolerancia", res -> {
+
+					mySQLPool.query("select idProducto,nombreProducto, count(idProducto) from productosusuario natural join producto where productosusuario.idProducto in (select idProducto from productosusuario natural join producto \r\n" + 
+							"natural join ingredientesproducto natural join ingrediente natural join intoleranciasingrediente natural join intolerancia where idIntolerancia=" + Integer.parseInt(s) +") group by IdProducto", res -> {
 						if (res.succeeded()) {
 							RowSet<Row> resultSet = res.result();
 							System.out.println("El número de elementos obtenidos es " + resultSet.size());
 							for (Row row : resultSet) {
 								bot.sendMessage(new SendMessage()
-										.setText(String.valueOf(row.getInteger("idIntolerancia")) + ". "
-												+ row.getString("nombreIntolerancia"))
+										.setText(String.valueOf(row.getString("nombreProducto")) + " - cantidad="
+												+ row.getInteger("count(idProducto)"))
 										.setChatId(handler.getMessage().getChatId()));
 							}
 
@@ -201,19 +195,8 @@ public class telegramMain extends AbstractVerticle {
 									.setChatId(handler.getMessage().getChatId()));
 						}
 					});
-					
-					
 				}
-				
-				
-				
-				
 			}
-			
-			
-			
-			
-			
 			
 			
 			
