@@ -2,18 +2,12 @@ HISTORIA DE USUARIO PARA  LA CREACIÓN DEL BOT
 
 Para poder accerder a realizar algun tipo de petición hacia el bot se va a tener que ralizar con la siguiente sintaxis --> /comando
 
-PRESENTACIÓN:
-
-Para poder empezar a realizar cualquier tipo de petición antes hay que presentarse con el comando: /hola.
-
-El bot contestará: Hola, en que puedo ayudarte.
 
 INSERTAR DATOS
 
 Para poder realizar cualquier tipo de INSERT en la base de datos se debe comenzar con el comando /insertar.
 
 COMERCIO:
-
 admin:/insertar	
 bot: ¿En qué tabla quiere usted insertar?
 admin:comercio
@@ -70,12 +64,6 @@ bot: se muestra un listado con las intolerancias y sus id que hay en la base de 
 admin:1
 bot:Se ha añadido la entrada correctamente
 
-
-
-
-
-
-
 INGREDENTESPRODCUTO
 admin:/INSERTAR
 bot:¿En qué tabla quiere usted insertar?
@@ -87,4 +75,44 @@ bot:¿Qué dato quiere introducir en idProducto?
 bot:se muestra un listado con los productos y sus id que hay en la base de datos
 admin:3
 bot:Se ha añadido la entrada correctamente
+
+VISUALIZAR INFORMACION:
+
+Para poder realizar cualquier tipo de CONSULTA en la base de datos se debe comenzar con el comando /info.
+
+VER QUE PRODUCTOS HAN ESCANEADO LOS USUARIOS CON CIERTAS INTOLERANCIAS
+admin:/info
+bot:A continuación se indica la información disponible:
+bot: 1.Productos escaneados por usuarios con ciertas intolerancias
+bot: Selecciona la petición deseada, introduciendo su índice:
+admin: 1
+bot: ¿De qué intolerancias desea ver los productos escaneados por los usuarios?
+bot: Introduzca alguno de los ID's mostrados a contiuación. 
+admin: 1 2 5
+bot: A continuación se mostraran la lista de productos escaneados por usuarios con intolerancias iguales a las seleccionadas antes.
+
+
+COMPROBAR SI UN PRODUCTO ESTÁ YA EN LA BASE DE DATOS.
+admin: /info
+bot: A continuación se indica la información disponible:
+bot: 2.Comprobar si un producto está ya en la base de datos.
+admin: 2
+bot: Indique el nombre del producto a comprobar 
+admin: Natilla con galletas
+bot: El producto ya está en la base de datos y posee el siguiente id.
+bot: El producto no está en la base de datos
+
+VER EL NOMBRE Y NÚMERO DE TELÉFONO DEL FABRICANTE DE UN PRODUCTO.
+admin: /info
+bot: A continuación se indica la información disponible:
+bot: 3.Visualizar información referente a un producto.
+admin: 2
+bot: Indique el nombre del producto del cual desea visualizar la información
+admin: Natilla con galletas
+bot: fabricante : "Hacendado"  
+bot:teléfono: "666666666"
+bot:código de barras: 123456789123
+ 
+
+
 
