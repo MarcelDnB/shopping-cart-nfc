@@ -23,7 +23,6 @@ import types.wifiReading;
 
 public class DatabaseVerticle extends AbstractVerticle{
 	
-	
 	private MySQLPool mySQLPool;
 	Long idUsuarioCreado; /* Dentro del ESP32 primero se va a ejecutar la funcion que añade un usuario
 	 						 y dentro de esta función asignamos a esta variable el id de este, posteriormente
@@ -131,7 +130,7 @@ public class DatabaseVerticle extends AbstractVerticle{
 		productosUsuario productoUsuario = Json.decodeValue(routingContext.getBodyAsString(), productosUsuario.class);
 		mySQLPool.preparedQuery(
 				"INSERT INTO productosUsuario (idProducto, idUsuario) VALUES (?,?)",
-				Tuple.of(productoUsuario.getIdProducto(), productoUsuario.getIdUsuario()),
+				Tuple.of(productoUsuario.getIdProducto(), idUsuarioCreado),
 				handler -> {
 					if (handler.succeeded()) {
 						System.out.println(handler.result().rowCount());

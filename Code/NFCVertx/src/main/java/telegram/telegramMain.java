@@ -1,6 +1,9 @@
 package telegram;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.schors.vertx.telegram.bot.LongPollingReceiver;
@@ -134,23 +137,103 @@ public class telegramMain extends AbstractVerticle {
 								.setChatId(handler.getMessage().getChatId()));
 					}
 				});
-				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-				 * A partir de aqui vamos a guardar el rastro de la tabla que hemos elegido
-				 * mediante la variable "tabla", para que el bot nos haga una y otra vez
-				 * preguntas hasta obtener todos los datos necesarios para rellenar la clase
-				 * correspondiente.
-				 * 
-				 * Necesitamos la variable "tabla" para que cuando nosotros respondamos una
-				 * pregunta de una tabla cualquiera, el bot sepa volver a la misma tabla y
-				 * seguir por la siguiente pregunta.
-				 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+				
+			}else if(handler.getMessage().getText().toLowerCase().contains("/info")) {
+				bot.sendMessage(new SendMessage()
+						.setText("A continuación se indica la información disponible: \n"
+								+ " 1. Productos escaneados por ususarios con ciertas intolerancias" + "\n" +
+								"Seleccione la petición deseada, introduciendo su índice:"+ "\n")
+						.setChatId(handler.getMessage().getChatId()));
+				seccion.put(Integer.parseInt(handler.getMessage().getChatId()), "/info");
+				tabla.put(Integer.parseInt(handler.getMessage().getChatId()), " ");
+				
+			}else if ((handler.getMessage().getText().toLowerCase().contentEquals("1")
+					&& (seccion.get(Integer.parseInt(handler.getMessage().getChatId())) == "/info"))
+					|| (seccion.get(Integer.parseInt(handler.getMessage().getChatId())) == "/info"
+							&& tabla.get(Integer.parseInt(handler.getMessage().getChatId())) == "1")) {
+				if((handler.getMessage().getText().toLowerCase().contentEquals("1")
+						&& (seccion.get(Integer.parseInt(handler.getMessage().getChatId())) == "/info"))) {
+					tabla.put((Integer.parseInt(handler.getMessage().getChatId())), "1");
+					bot.sendMessage(new SendMessage()
+							.setText("¿De que intolerancias desea ver los productos escaneados por los usuarios?, alguno"
+									+ " de los ID's mostrados a continuación: " + "\n")
+							.setChatId(handler.getMessage().getChatId()));
+					mySQLPool.query("select idIntolerancia, nombreIntolerancia from intolerancia", res -> {
+						if (res.succeeded()) {
+							RowSet<Row> resultSet = res.result();
+							System.out.println("El número de elementos obtenidos es " + resultSet.size());
+							for (Row row : resultSet) {
+								bot.sendMessage(new SendMessage()
+										.setText(String.valueOf(row.getInteger("idIntolerancia")) + ". "
+												+ row.getString("nombreIntolerancia"))
+										.setChatId(handler.getMessage().getChatId()));
+							}
 
-				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-				 * Tabla: Comercio 
-				 * Columnas: NombreComercio, telefono, CIF 
-				 * KeywordTelegram: comercio
-				 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-			} else if ((handler.getMessage().getText().toLowerCase().contains("comercio")
+						} else {
+							bot.sendMessage(new SendMessage().setText(res.cause().getMessage())
+									.setChatId(handler.getMessage().getChatId()));
+						}
+					});
+					
+				}else {
+					String s = handler.getMessage().getText();
+					List<String> list = new ArrayList<>(Arrays.asList(s.split(" ")));
+					String query = "";
+					for(String ss:list) {
+						
+					}
+					
+					
+					
+					mySQLPool.query("select idIntolerancia, nombreIntolerancia from intolerancia", res -> {
+						if (res.succeeded()) {
+							RowSet<Row> resultSet = res.result();
+							System.out.println("El número de elementos obtenidos es " + resultSet.size());
+							for (Row row : resultSet) {
+								bot.sendMessage(new SendMessage()
+										.setText(String.valueOf(row.getInteger("idIntolerancia")) + ". "
+												+ row.getString("nombreIntolerancia"))
+										.setChatId(handler.getMessage().getChatId()));
+							}
+
+						} else {
+							bot.sendMessage(new SendMessage().setText(res.cause().getMessage())
+									.setChatId(handler.getMessage().getChatId()));
+						}
+					});
+					
+					
+				}
+				
+				
+				
+				
+			}
+			
+			
+			
+			
+			
+			
+			
+			
+			/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+			 * A partir de aqui vamos a guardar el rastro de la tabla que hemos elegido
+			 * mediante la variable "tabla", para que el bot nos haga una y otra vez
+			 * preguntas hasta obtener todos los datos necesarios para rellenar la clase
+			 * correspondiente.
+			 * 
+			 * Necesitamos la variable "tabla" para que cuando nosotros respondamos una
+			 * pregunta de una tabla cualquiera, el bot sepa volver a la misma tabla y
+			 * seguir por la siguiente pregunta.
+			 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+			/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+			 * Tabla: Comercio 
+			 * Columnas: NombreComercio, telefono, CIF 
+			 * KeywordTelegram: comercio
+			 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+			else if ((handler.getMessage().getText().toLowerCase().contains("comercio")
 					&& (seccion.get(Integer.parseInt(handler.getMessage().getChatId())) == "/insertar"))
 					|| (seccion.get(Integer.parseInt(handler.getMessage().getChatId())) == "/insertar"
 							&& tabla.get(Integer.parseInt(handler.getMessage().getChatId())) == "comercio")) {
