@@ -29,7 +29,7 @@ bot:¿Qué dato quiere introducir en codigoBarras?
 admin:123456789123
 bot:¿Qué dato quiere introducir en fabricante?
 admin:Hacendado
-bot:¿Qué dato quiere introducir en telefono?
+bot:¿Qué dato quiere introducir en teléfono?
 admin:666666666
 bot:Se ha añadido la entrada correctamente
 
