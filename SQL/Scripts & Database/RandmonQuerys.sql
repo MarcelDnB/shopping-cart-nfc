@@ -29,4 +29,4 @@ natural join ingredientesproducto natural join ingrediente natural join intolera
 
 
 select idProducto,nombreProducto, count(idProducto) from productosusuario natural join producto where productosusuario.idProducto in (select idProducto from productosusuario natural join producto 
-natural join ingredientesproducto natural join ingrediente natural join intoleranciasingrediente natural join intolerancia where idIntolerancia=3) group by IdProducto;
+natural join ingredientesproducto natural join ingrediente natural join intoleranciasingrediente natural join intolerancia where idIntolerancia=1) group by IdProductoproducto;
