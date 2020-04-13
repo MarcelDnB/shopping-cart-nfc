@@ -92,7 +92,7 @@ admin: 1 2 5
 bot: A continuación se mostraran la lista de productos escaneados por usuarios con intolerancias iguales a las seleccionadas antes.
 
 
-COMPROBAR SI UN PRODUCTO ESTÁ YA EN LA BASE DE DATOS.
+COMPROBAR SI UN PRODUCTO ESTÁ  EN LA BASE DE DATOS.
 admin: /info
 bot: A continuación se indica la información disponible:
 bot: 2.Comprobar si un producto está ya en la base de datos.
