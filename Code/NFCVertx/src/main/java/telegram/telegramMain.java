@@ -1,24 +1,14 @@
 package telegram;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
 import org.schors.vertx.telegram.bot.LongPollingReceiver;
 import org.schors.vertx.telegram.bot.TelegramBot;
 import org.schors.vertx.telegram.bot.TelegramOptions;
 import org.schors.vertx.telegram.bot.api.methods.SendMessage;
 import org.schors.vertx.telegram.bot.api.types.Update;
-
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
-import io.vertx.core.buffer.Buffer;
-import io.vertx.core.json.JsonArray;
-import io.vertx.core.json.JsonObject;
-import io.vertx.ext.web.client.HttpResponse;
-import io.vertx.ext.web.client.WebClient;
 import io.vertx.mysqlclient.MySQLConnectOptions;
 import io.vertx.mysqlclient.MySQLPool;
 import io.vertx.sqlclient.PoolOptions;
@@ -33,7 +23,7 @@ import types.intoleranciasIngrediente;
 import types.producto;
 
 public class telegramMain extends AbstractVerticle {
-
+	
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	 * bot: variable que nos entrega las funcionalidades del bot de Telegram.
 	 * 
@@ -80,124 +70,62 @@ public class telegramMain extends AbstractVerticle {
 						.setText("Hola " + handler.getMessage().getFrom().getFirstName() + " ¿En qué puedo ayudarte?")
 						.setChatId(handler.getMessage().getChatId()));
 				
-				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-				 * Modelo que nos puede venir bien para ver como recibir informacion desde una
-				 * API en este caso recibimos informacion del tiempo.
-				 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-			} else if (handler.getMessage().getText().toLowerCase().contains("/tiempo")) {
-				WebClient client = WebClient.create(vertx);
-				client.get(80, "api.openweathermap.org",
-						"/data/2.5/forecast?id=2510911&APPID=39c0c4d7eb61c60b5809e7303412e70b&units=metric")
-						.send(ar -> {
-							if (ar.succeeded()) {
-								HttpResponse<Buffer> response = ar.result();
-								JsonObject object = response.bodyAsJsonObject();
-								JsonArray list = object.getJsonArray("list");
-								JsonObject lastWeather = list.getJsonObject(list.size() - 1);
-								Float temp = lastWeather.getJsonObject("main").getFloat("temp");
 
-								bot.sendMessage(new SendMessage()
-										.setText("La tempertura actual en Sevilla es de " + temp + " grados")
-										.setChatId(handler.getMessage().getChatId()));
-							} else {
-								bot.sendMessage(new SendMessage().setText("Vaya, algo ha salido mal")
-										.setChatId(handler.getMessage().getChatId()));
-							}
-						});
-				
+			}
 				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 				 * El usuario indica que quiere insertar datos en la tabla por lo que nosotros
 				 * guardamos el keyword en una variable la cual vamos a utilizar posteriormente
 				 * para saber que nos encontramos en esta seccion (de añadir a la base de
 				 * datos), dicha variable es "seccion".
 				 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-			} else if (handler.getMessage().getText().toLowerCase().contains("/insertar")) {
-				bot.sendMessage(new SendMessage()
-						.setText("Hola " + handler.getMessage().getFrom().getFirstName()
-								+ " Indicame en que tabla quieres" + " insertar\n")
-						.setChatId(handler.getMessage().getChatId()));
-				seccion.put(Integer.parseInt(handler.getMessage().getChatId()), "/insertar");
-				tabla.put(Integer.parseInt(handler.getMessage().getChatId()), " ");
-				bot.sendMessage(
-						new SendMessage().setText("Tablas disponibles: ").setChatId(handler.getMessage().getChatId()));
+			 else if (handler.getMessage().getText().toLowerCase().contains("/insertar")) {
+				insertar(handler);
 				
 				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-				 * Un query para ver todas las tablas disponibles de un schema
+				 * El usuario indica que quiere ver cierta información de la base de datos,
+				 * el mecanismo es igual al anterior, guardamos en "seccion" 'info' para saber donde 
+				 * nos encontramos y hacer los bloques if-else correspondientes.
 				 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-				mySQLPool.query("SELECT table_name FROM information_schema.tables WHERE table_schema = 'dad'", res -> {
-					if (res.succeeded()) {
-						RowSet<Row> resultSet = res.result();
-						System.out.println("El número de elementos obtenidos es " + resultSet.size());
-						for (Row row : resultSet) {
-							bot.sendMessage(new SendMessage().setText("- " + row.getString("TABLE_NAME"))
-									.setChatId(handler.getMessage().getChatId()));
-						}
-					} else {
-						bot.sendMessage(new SendMessage().setText(res.cause().getMessage())
-								.setChatId(handler.getMessage().getChatId()));
-					}
-				});
-				
 			}else if(handler.getMessage().getText().toLowerCase().contains("/info")) {
-				bot.sendMessage(new SendMessage()
-						.setText("A continuación se indica la información disponible: \n"
-								+ " a. Productos escaneados por ususarios con cierta intolerancia" + "\n" +
-								"Seleccione la petición deseada, introduciendo su índice:"+ "\n")
-						.setChatId(handler.getMessage().getChatId()));
-				seccion.put(Integer.parseInt(handler.getMessage().getChatId()), "/info");
-				tabla.put(Integer.parseInt(handler.getMessage().getChatId()), " ");
+				info(handler);
 				
+				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+				 * Para entender la variable tabla ver el comentario siguiente, en este caso vamos a reutilizar
+				 * dicha variable para guardar el rastro de la opción que hemos elegido, en este caso a,b o c
+				 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+				
+				
+				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+				 * Se van a ver los productos escaneados y la cantidad de éstos filtrados por cierta intolerancia,
+				 * es decir, vamos a poder ver el interés del usuario con cierta intolerancia hacia ciertos
+				 * productos. 
+				 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 			}else if ((handler.getMessage().getText().toLowerCase().contentEquals("a")
 					&& (seccion.get(Integer.parseInt(handler.getMessage().getChatId())) == "/info"))
 					|| (seccion.get(Integer.parseInt(handler.getMessage().getChatId())) == "/info"
 							&& tabla.get(Integer.parseInt(handler.getMessage().getChatId())) == "a")) {
-				if((handler.getMessage().getText().toLowerCase().contentEquals("a")
-						&& (seccion.get(Integer.parseInt(handler.getMessage().getChatId())) == "/info"))) {
-					tabla.put((Integer.parseInt(handler.getMessage().getChatId())), "a");
-					bot.sendMessage(new SendMessage()
-							.setText("¿De que intolerancia desea ver los productos escaneados por los usuarios?, alguno"
-									+ " de los ID's mostrados a continuación: " + "\n")
-							.setChatId(handler.getMessage().getChatId()));
-					mySQLPool.query("select idIntolerancia, nombreIntolerancia from intolerancia", res -> {
-						if (res.succeeded()) {
-							RowSet<Row> resultSet = res.result();
-							System.out.println("El número de elementos obtenidos es " + resultSet.size());
-							for (Row row : resultSet) {
-								bot.sendMessage(new SendMessage()
-										.setText(String.valueOf(row.getInteger("idIntolerancia")) + ". "
-												+ row.getString("nombreIntolerancia"))
-										.setChatId(handler.getMessage().getChatId()));
-							}
-
-						} else {
-							bot.sendMessage(new SendMessage().setText(res.cause().getMessage())
-									.setChatId(handler.getMessage().getChatId()));
-						}
-					});
-					
-				}else {
-					String s = handler.getMessage().getText();
-
-					mySQLPool.query("select idProducto,nombreProducto, count(idProducto) from productosusuario natural join producto where productosusuario.idProducto in (select idProducto from productosusuario natural join producto \r\n" + 
-							"natural join ingredientesproducto natural join ingrediente natural join intoleranciasingrediente natural join intolerancia where idIntolerancia=" + Integer.parseInt(s) +") group by IdProducto", res -> {
-						if (res.succeeded()) {
-							RowSet<Row> resultSet = res.result();
-							System.out.println("El número de elementos obtenidos es " + resultSet.size());
-							for (Row row : resultSet) {
-								bot.sendMessage(new SendMessage()
-										.setText(String.valueOf(row.getString("nombreProducto")) + " - cantidad="
-												+ row.getInteger("count(idProducto)"))
-										.setChatId(handler.getMessage().getChatId()));
-							}
-
-						} else {
-							bot.sendMessage(new SendMessage().setText(res.cause().getMessage())
-									.setChatId(handler.getMessage().getChatId()));
-						}
-					});
-				}
+				infoProductosEscaneados(handler);
+				
+				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+				 * Introduciendo una palabra clave nos devolverá todos los productos que contengan dicha palabra,
+				 * por lo que será util por ejemplo para ver si ya existe cierto producto en la base de datos.
+				 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+			}else if((handler.getMessage().getText().toLowerCase().contentEquals("b")
+					&& (seccion.get(Integer.parseInt(handler.getMessage().getChatId())) == "/info"))
+					|| (seccion.get(Integer.parseInt(handler.getMessage().getChatId())) == "/info"
+							&& tabla.get(Integer.parseInt(handler.getMessage().getChatId())) == "b")) {
+				comprobarExistenciaProducto(handler);
+				
+				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+				 * Se obtiene el fabricante y numero de teléfono de éste introduciendo el ID de producto
+				 * correspondiente.
+				 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+			}else if((handler.getMessage().getText().toLowerCase().contentEquals("c")
+					&& (seccion.get(Integer.parseInt(handler.getMessage().getChatId())) == "/info"))
+					|| (seccion.get(Integer.parseInt(handler.getMessage().getChatId())) == "/info"
+							&& tabla.get(Integer.parseInt(handler.getMessage().getChatId())) == "c")) {
+				informacionProducto(handler);
 			}
-			
 			
 			
 			/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -211,11 +139,15 @@ public class telegramMain extends AbstractVerticle {
 			 * seguir por la siguiente pregunta.
 			 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-			/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-			 * Tabla: Comercio 
-			 * Columnas: NombreComercio, telefono, CIF 
-			 * KeywordTelegram: comercio
-			 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+			
+			
+			
+			
+				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+				 * Tabla: Comercio 
+				 * Columnas: NombreComercio, telefono, CIF 
+				 * KeywordTelegram: comercio
+				 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 			else if ((handler.getMessage().getText().toLowerCase().contains("comercio")
 					&& (seccion.get(Integer.parseInt(handler.getMessage().getChatId())) == "/insertar"))
 					|| (seccion.get(Integer.parseInt(handler.getMessage().getChatId())) == "/insertar"
@@ -274,6 +206,176 @@ public class telegramMain extends AbstractVerticle {
 			}
 		}));
 		bot.start();
+	}
+	void info(Update handler) {
+		bot.sendMessage(new SendMessage()
+				.setText("A continuación se indica la información disponible: \n"
+						+ " a. Productos escaneados por ususarios con cierta intolerancia" + "\n" +
+						"Seleccione la petición deseada, introduciendo su índice:"+ "\n" + 
+						"b. Comprobar si un producto está en la base de datos\n" + 
+						"c. Ver el nombre y numero de teléfono del fabricante de un producto\n")
+				.setChatId(handler.getMessage().getChatId()));
+		seccion.put(Integer.parseInt(handler.getMessage().getChatId()), "/info");
+		tabla.put(Integer.parseInt(handler.getMessage().getChatId()), " ");
+	}
+	void insertar(Update handler) {
+		bot.sendMessage(new SendMessage()
+				.setText("Hola " + handler.getMessage().getFrom().getFirstName()
+						+ " Indicame en que tabla quieres" + " insertar\n")
+				.setChatId(handler.getMessage().getChatId()));
+		seccion.put(Integer.parseInt(handler.getMessage().getChatId()), "/insertar");
+		tabla.put(Integer.parseInt(handler.getMessage().getChatId()), " ");
+		bot.sendMessage(
+				new SendMessage().setText("Tablas disponibles: ").setChatId(handler.getMessage().getChatId()));
+		
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+		 * Un query para ver todas las tablas disponibles de un schema
+		 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+		mySQLPool.query("SELECT table_name FROM information_schema.tables WHERE table_schema = 'dad'", res -> {
+			if (res.succeeded()) {
+				RowSet<Row> resultSet = res.result();
+				System.out.println("El número de elementos obtenidos es " + resultSet.size());
+				for (Row row : resultSet) {
+					bot.sendMessage(new SendMessage().setText("- " + row.getString("TABLE_NAME"))
+							.setChatId(handler.getMessage().getChatId()));
+				}
+			} else {
+				bot.sendMessage(new SendMessage().setText(res.cause().getMessage())
+						.setChatId(handler.getMessage().getChatId()));
+			}
+		});
+	}
+	
+	
+	void infoProductosEscaneados(Update handler) {
+		if((handler.getMessage().getText().toLowerCase().contentEquals("a")
+				&& (seccion.get(Integer.parseInt(handler.getMessage().getChatId())) == "/info"))) {
+			tabla.put((Integer.parseInt(handler.getMessage().getChatId())), "a");
+			bot.sendMessage(new SendMessage()
+					.setText("¿De que intolerancia desea ver los productos escaneados por los usuarios?, alguno"
+							+ " de los ID's mostrados a continuación: " + "\n")
+					.setChatId(handler.getMessage().getChatId()));
+			mySQLPool.query("select idIntolerancia, nombreIntolerancia from intolerancia", res -> {
+				if (res.succeeded()) {
+					RowSet<Row> resultSet = res.result();
+					System.out.println("El número de elementos obtenidos es " + resultSet.size());
+					for (Row row : resultSet) {
+						bot.sendMessage(new SendMessage()
+								.setText(String.valueOf(row.getInteger("idIntolerancia")) + ". "
+										+ row.getString("nombreIntolerancia"))
+								.setChatId(handler.getMessage().getChatId()));
+					}
+
+				} else {
+					bot.sendMessage(new SendMessage().setText(res.cause().getMessage())
+							.setChatId(handler.getMessage().getChatId()));
+				}
+			});
+			
+		}else {
+			String s = handler.getMessage().getText();
+
+			mySQLPool.query("select idProducto,nombreProducto, count(idProducto) from productosusuario natural join producto where productosusuario.idProducto in (select idProducto from productosusuario natural join producto \r\n" + 
+					"natural join ingredientesproducto natural join ingrediente natural join intoleranciasingrediente natural join intolerancia where idIntolerancia=" + Integer.parseInt(s) +") group by IdProducto", res -> {
+				if (res.succeeded()) {
+					RowSet<Row> resultSet = res.result();
+					System.out.println("El número de elementos obtenidos es " + resultSet.size());
+					for (Row row : resultSet) {
+						bot.sendMessage(new SendMessage()
+								.setText(String.valueOf(row.getString("nombreProducto")) + " - cantidad="
+										+ row.getInteger("count(idProducto)"))
+								.setChatId(handler.getMessage().getChatId()));
+					}
+
+				} else {
+					bot.sendMessage(new SendMessage().setText(res.cause().getMessage())
+							.setChatId(handler.getMessage().getChatId()));
+				}
+			});
+			seccion.remove((Integer.parseInt(handler.getMessage().getChatId())));
+			tabla.remove((Integer.parseInt(handler.getMessage().getChatId())));
+			map.remove(Integer.parseInt(handler.getMessage().getChatId()));
+		}
+		
+		
+	}
+	void comprobarExistenciaProducto(Update handler) {
+		if((handler.getMessage().getText().toLowerCase().contentEquals("b")
+				&& (seccion.get(Integer.parseInt(handler.getMessage().getChatId())) == "/info"))) {
+			tabla.put((Integer.parseInt(handler.getMessage().getChatId())), "b");
+			bot.sendMessage(new SendMessage()
+					.setText("Introduzca el nombre del producto a buscar: " + "\n")
+					.setChatId(handler.getMessage().getChatId()));
+		}else {
+			String s = handler.getMessage().getText();
+
+			mySQLPool.query("select idProducto, nombreProducto from producto where nombreProducto like '%" +
+			s + "%'", res -> {
+				if (res.succeeded()) {
+					RowSet<Row> resultSet = res.result();
+					System.out.println("El número de elementos obtenidos es " + resultSet.size());
+					for (Row row : resultSet) {
+						bot.sendMessage(new SendMessage()
+								.setText(row.getInteger("idProducto")+". "+row.getString("nombreProducto"))
+								.setChatId(handler.getMessage().getChatId()));
+					}
+
+				} else {
+					bot.sendMessage(new SendMessage().setText(res.cause().getMessage())
+							.setChatId(handler.getMessage().getChatId()));
+				}
+			});
+			seccion.remove((Integer.parseInt(handler.getMessage().getChatId())));
+			tabla.remove((Integer.parseInt(handler.getMessage().getChatId())));
+			map.remove(Integer.parseInt(handler.getMessage().getChatId()));
+		}
+	}
+	void informacionProducto(Update handler) {
+		if((handler.getMessage().getText().toLowerCase().contentEquals("c")
+				&& (seccion.get(Integer.parseInt(handler.getMessage().getChatId())) == "/info"))) {
+			tabla.put((Integer.parseInt(handler.getMessage().getChatId())), "c");
+			bot.sendMessage(new SendMessage()
+					.setText("Introduzca el ID del producto: " + "\n")
+					.setChatId(handler.getMessage().getChatId()));
+			mySQLPool.query("select idProducto, nombreProducto from producto", res -> {
+				if (res.succeeded()) {
+					RowSet<Row> resultSet = res.result();
+					System.out.println("El número de elementos obtenidos es " + resultSet.size());
+					for (Row row : resultSet) {
+						bot.sendMessage(new SendMessage()
+								.setText(String.valueOf(row.getInteger("idProducto")) + ". "
+										+ row.getString("nombreProducto"))
+								.setChatId(handler.getMessage().getChatId()));
+					}
+
+				} else {
+					bot.sendMessage(new SendMessage().setText(res.cause().getMessage())
+							.setChatId(handler.getMessage().getChatId()));
+				}
+			});
+		
+		}else {
+			String s = handler.getMessage().getText();
+
+			mySQLPool.query("select fabricante, telefono from producto where idProducto="+Integer.parseInt(s), res -> {
+				if (res.succeeded()) {
+					RowSet<Row> resultSet = res.result();
+					System.out.println("El número de elementos obtenidos es " + resultSet.size());
+					for (Row row : resultSet) {
+						bot.sendMessage(new SendMessage()
+								.setText(row.getString("fabricante")+" | "+row.getInteger("telefono"))
+								.setChatId(handler.getMessage().getChatId()));
+					}
+
+				} else {
+					bot.sendMessage(new SendMessage().setText(res.cause().getMessage())
+							.setChatId(handler.getMessage().getChatId()));
+				}
+			});
+			seccion.remove((Integer.parseInt(handler.getMessage().getChatId())));
+			tabla.remove((Integer.parseInt(handler.getMessage().getChatId())));
+			map.remove(Integer.parseInt(handler.getMessage().getChatId()));
+		}
 	}
 	
 	void tablaIngrediente(Update handler) {
@@ -424,7 +526,6 @@ public class telegramMain extends AbstractVerticle {
 			}
 		}
 	}
-	
 	void ingredientesProducto(Update handler) {
 		if (handler.getMessage().getText().toLowerCase().contentEquals("ingredientesproducto")) {
 			bot.sendMessage(new SendMessage().setText(
