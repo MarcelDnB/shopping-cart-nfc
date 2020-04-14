@@ -1,6 +1,9 @@
 package telegram;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.schors.vertx.telegram.bot.LongPollingReceiver;
 import org.schors.vertx.telegram.bot.TelegramBot;
@@ -46,7 +49,7 @@ public class telegramMain extends AbstractVerticle {
 	private Map<Integer, String> seccion = new HashMap<Integer, String>();
 	private MySQLPool mySQLPool;
 	private Map<Integer, Object> map = new HashMap<Integer, Object>();
-	
+	private Map<Integer, String> ruta = new HashMap<Integer, String>(); // Al no disponer de una clase, poder seguir el rastro en las modificaciones
 	
 	@Override
 	public void start(Promise<Void> future) {
@@ -89,17 +92,52 @@ public class telegramMain extends AbstractVerticle {
 			}else if(handler.getMessage().getText().toLowerCase().contains("/info")) {
 				info(handler);
 				
-				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-				 * Para entender la variable tabla ver el comentario siguiente, en este caso vamos a reutilizar
-				 * dicha variable para guardar el rastro de la opción que hemos elegido, en este caso a,b o c
-				 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+				
+			}else if(handler.getMessage().getText().toLowerCase().contains("/modificar")) {
+				modificar(handler);
+			
 				
 				
-				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-				 * Se van a ver los productos escaneados y la cantidad de éstos filtrados por cierta intolerancia,
-				 * es decir, vamos a poder ver el interés del usuario con cierta intolerancia hacia ciertos
-				 * productos. 
-				 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+				
+			}else if(handler.getMessage().getText().toLowerCase().contains("/eliminar")) {
+				eliminar(handler);
+				
+				
+			}else if((handler.getMessage().getText().toLowerCase().contentEquals("a")
+					&& (seccion.get(Integer.parseInt(handler.getMessage().getChatId())) == "/eliminar"))
+					|| (seccion.get(Integer.parseInt(handler.getMessage().getChatId())) == "/eliminar"
+							&& tabla.get(Integer.parseInt(handler.getMessage().getChatId())) == "a")) {
+				eliminarProducto(handler);
+			
+			}else if((handler.getMessage().getText().toLowerCase().contentEquals("a")
+					&& (seccion.get(Integer.parseInt(handler.getMessage().getChatId())) == "/modificar"))
+					|| (seccion.get(Integer.parseInt(handler.getMessage().getChatId())) == "/modificar"
+							&& tabla.get(Integer.parseInt(handler.getMessage().getChatId())) == "a")) {
+				modificarProducto(handler);
+			}else if((handler.getMessage().getText().toLowerCase().contentEquals("b")
+					&& (seccion.get(Integer.parseInt(handler.getMessage().getChatId())) == "/modificar"))
+					|| (seccion.get(Integer.parseInt(handler.getMessage().getChatId())) == "/modificar"
+							&& tabla.get(Integer.parseInt(handler.getMessage().getChatId())) == "b")) {
+				modificarIngrediente(handler);
+			}else if((handler.getMessage().getText().toLowerCase().contentEquals("c")
+					&& (seccion.get(Integer.parseInt(handler.getMessage().getChatId())) == "/modificar"))
+					|| (seccion.get(Integer.parseInt(handler.getMessage().getChatId())) == "/modificar"
+							&& tabla.get(Integer.parseInt(handler.getMessage().getChatId())) == "c")) {
+				modificarIntolerancia(handler);
+			
+				
+				
+			/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+			 * Para entender la variable tabla ver el comentario siguiente, en este caso vamos a reutilizar
+			 * dicha variable para guardar el rastro de la opción que hemos elegido, en este caso a,b o c
+			 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+			
+			
+			/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+			 * Se van a ver los productos escaneados y la cantidad de éstos filtrados por cierta intolerancia,
+			 * es decir, vamos a poder ver el interés del usuario con cierta intolerancia hacia ciertos
+			 * productos. 
+			 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 			}else if ((handler.getMessage().getText().toLowerCase().contentEquals("a")
 					&& (seccion.get(Integer.parseInt(handler.getMessage().getChatId())) == "/info"))
 					|| (seccion.get(Integer.parseInt(handler.getMessage().getChatId())) == "/info"
@@ -125,7 +163,7 @@ public class telegramMain extends AbstractVerticle {
 					|| (seccion.get(Integer.parseInt(handler.getMessage().getChatId())) == "/info"
 							&& tabla.get(Integer.parseInt(handler.getMessage().getChatId())) == "c")) {
 				informacionProducto(handler);
-			}
+			
 			
 			
 			/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -148,7 +186,7 @@ public class telegramMain extends AbstractVerticle {
 				 * Columnas: NombreComercio, telefono, CIF 
 				 * KeywordTelegram: comercio
 				 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-			else if ((handler.getMessage().getText().toLowerCase().contains("comercio")
+			}else if ((handler.getMessage().getText().toLowerCase().contains("comercio")
 					&& (seccion.get(Integer.parseInt(handler.getMessage().getChatId())) == "/insertar"))
 					|| (seccion.get(Integer.parseInt(handler.getMessage().getChatId())) == "/insertar"
 							&& tabla.get(Integer.parseInt(handler.getMessage().getChatId())) == "comercio")) {
@@ -207,6 +245,8 @@ public class telegramMain extends AbstractVerticle {
 		}));
 		bot.start();
 	}
+	
+	/* Menú */
 	void info(Update handler) {
 		bot.sendMessage(new SendMessage()
 				.setText("A continuación se indica la información disponible: \n"
@@ -245,8 +285,26 @@ public class telegramMain extends AbstractVerticle {
 			}
 		});
 	}
-	
-	
+	void modificar(Update handler) {
+		bot.sendMessage(new SendMessage()
+				.setText("¿Qué tabla desea modificar?\n\n"
+						+ "a. Producto\nb. Ingrediente\nc. Intolerancia")
+				.setChatId(handler.getMessage().getChatId()));
+		seccion.put(Integer.parseInt(handler.getMessage().getChatId()), "/modificar");
+		tabla.put(Integer.parseInt(handler.getMessage().getChatId()), " ");
+		ruta.put(Integer.parseInt(handler.getMessage().getChatId()), " ");
+		
+	}
+	void eliminar(Update handler) {
+		bot.sendMessage(new SendMessage()
+				.setText("¿De qué tabla desea eliminar?\n\n"
+						+ "a. Producto\n")
+				.setChatId(handler.getMessage().getChatId()));
+		seccion.put(Integer.parseInt(handler.getMessage().getChatId()), "/eliminar");
+		tabla.put(Integer.parseInt(handler.getMessage().getChatId()), " ");
+		ruta.put(Integer.parseInt(handler.getMessage().getChatId()), " "); //se necesita?
+	}
+	/* Info */
 	void infoProductosEscaneados(Update handler) {
 		if((handler.getMessage().getText().toLowerCase().contentEquals("a")
 				&& (seccion.get(Integer.parseInt(handler.getMessage().getChatId())) == "/info"))) {
@@ -377,7 +435,7 @@ public class telegramMain extends AbstractVerticle {
 			map.remove(Integer.parseInt(handler.getMessage().getChatId()));
 		}
 	}
-	
+	/* Insertar */
 	void tablaIngrediente(Update handler) {
 		if (handler.getMessage().getText().toLowerCase().contentEquals("ingrediente")) {
 			bot.sendMessage(new SendMessage().setText("Hola " + handler.getMessage().getFrom().getFirstName()
@@ -427,7 +485,6 @@ public class telegramMain extends AbstractVerticle {
 		}
 
 	}
-	
 	void intoleranciasIngrediente(Update handler) {
 		if (handler.getMessage().getText().toLowerCase().contentEquals("intoleranciasingrediente")) {
 			bot.sendMessage(new SendMessage().setText(
@@ -623,7 +680,6 @@ public class telegramMain extends AbstractVerticle {
 			}
 		}
 	}
-	
 	void tablaIntolerancia(Update handler) {
 		if (handler.getMessage().getText().toLowerCase().contentEquals("intolerancia")) {
 			bot.sendMessage(new SendMessage().setText("Hola " + handler.getMessage().getFrom().getFirstName()
@@ -672,7 +728,6 @@ public class telegramMain extends AbstractVerticle {
 			}
 		}
 	}
-	
 	void tablaProducto(Update handler) {
 		if (handler.getMessage().getText().toLowerCase().contentEquals("producto")) {
 			bot.sendMessage(new SendMessage().setText("Hola " + handler.getMessage().getFrom().getFirstName()
@@ -761,7 +816,6 @@ public class telegramMain extends AbstractVerticle {
 
 		
 	}
-	
 	void tablaComercio(Update handler) {
 		if (handler.getMessage().getText().toLowerCase().contentEquals("comercio")) {
 			bot.sendMessage(new SendMessage().setText("Hola " + handler.getMessage().getFrom().getFirstName()
@@ -831,5 +885,237 @@ public class telegramMain extends AbstractVerticle {
 			}
 		}
 	}
+	/* Modificar */
+	void modificarProducto(Update handler) {
+		if ((handler.getMessage().getText().toLowerCase().contentEquals("a")
+				&& (seccion.get(Integer.parseInt(handler.getMessage().getChatId())) == "/modificar"))) {
+			tabla.put((Integer.parseInt(handler.getMessage().getChatId())), "a");
+			mySQLPool.query("SELECT idProducto, nombreProducto FROM producto", res -> {
+				if (res.succeeded()) {
+					RowSet<Row> resultSet = res.result();
+					System.out.println("El número de elementos obtenidos es " + resultSet.size());
+					for (Row row : resultSet) {
+						bot.sendMessage(new SendMessage().setText(row.getInteger("idProducto")
+								+". "+ row.getString("nombreProducto"))
+								.setChatId(handler.getMessage().getChatId()));
+					}
+				} else {
+					bot.sendMessage(new SendMessage().setText(res.cause().getMessage())
+							.setChatId(handler.getMessage().getChatId()));
+				}
+			});
+			bot.sendMessage(new SendMessage().setText("¿Que producto desea modificar? Introduzca el ID")
+					.setChatId(handler.getMessage().getChatId()));
+		}else if(ruta.get(Integer.parseInt(handler.getMessage().getChatId())) == " ") {
+			Integer id = Integer.parseInt(handler.getMessage().getText());
+			ruta.replace(((Integer.parseInt(handler.getMessage().getChatId()))), String.valueOf(id));
+			mySQLPool.query("select * from producto where idProducto=" + id, res -> {
+				if (res.succeeded()) {
+					RowSet<Row> resultSet = res.result();
+					System.out.println("El número de elementos obtenidos es " + resultSet.size());
+					for (Row row : resultSet) {
+						bot.sendMessage(new SendMessage()
+								.setText(row.getInteger("idProducto")+". "+row.getString("nombreProducto"))
+								.setChatId(handler.getMessage().getChatId()));
+					}
 
+				} else {
+					bot.sendMessage(new SendMessage().setText(res.cause().getMessage())
+							.setChatId(handler.getMessage().getChatId()));
+				}
+			});
+			bot.sendMessage(new SendMessage().setText("Introduzca los datos del producto"
+					+ " (nombreProducto, codigoBarras, fabricante, telefono) separando por coma")
+					.setChatId(handler.getMessage().getChatId()));
+		}else if(ruta.get(Integer.parseInt(handler.getMessage().getChatId()))!=" "){
+			List<String> userInput = new ArrayList<String>(
+					Arrays.asList(handler.getMessage().getText().split(",")));
+			if(userInput.size()!=3) {
+			mySQLPool.query("update producto set nombreProducto=" +"'" +userInput.get(0)+"'" + 
+					"," + "codigoBarras=" + Long.parseLong(userInput.get(1))+ "," + "fabricante="+"'" +userInput.get(2)+"'"+
+					"," + "telefono=" + Integer.parseInt(userInput.get(3)) + " where idProducto=" + ruta.get(
+							Integer.parseInt(handler.getMessage().getChatId())), res -> {
+				if (res.succeeded()) {
+					bot.sendMessage(new SendMessage()
+							.setText("Se ha modificado correctamente!")
+							.setChatId(handler.getMessage().getChatId()));
+				} else {
+					bot.sendMessage(new SendMessage().setText(res.cause().getMessage())
+							.setChatId(handler.getMessage().getChatId()));
+				}
+			});
+		}else {
+			bot.sendMessage(new SendMessage().setText("Necesita introducir 3 datos")
+					.setChatId(handler.getMessage().getChatId()));
+		}
+			seccion.remove((Integer.parseInt(handler.getMessage().getChatId())));
+			tabla.remove((Integer.parseInt(handler.getMessage().getChatId())));
+			map.remove(Integer.parseInt(handler.getMessage().getChatId()));
+			ruta.remove(Integer.parseInt(handler.getMessage().getChatId()));
+		}
+	}
+	void modificarIngrediente(Update handler) {
+		if ((handler.getMessage().getText().toLowerCase().contentEquals("b")
+				&& (seccion.get(Integer.parseInt(handler.getMessage().getChatId())) == "/modificar"))) {
+			tabla.put((Integer.parseInt(handler.getMessage().getChatId())), "b");
+			mySQLPool.query("SELECT idIngrediente, nombreIngrediente FROM ingrediente", res -> {
+				if (res.succeeded()) {
+					RowSet<Row> resultSet = res.result();
+					System.out.println("El número de elementos obtenidos es " + resultSet.size());
+					for (Row row : resultSet) {
+						bot.sendMessage(new SendMessage().setText(row.getInteger("idIngrediente")
+								+". "+ row.getString("nombreIngrediente"))
+								.setChatId(handler.getMessage().getChatId()));
+					}
+				} else {
+					bot.sendMessage(new SendMessage().setText(res.cause().getMessage())
+							.setChatId(handler.getMessage().getChatId()));
+				}
+			});
+			bot.sendMessage(new SendMessage().setText("¿Que ingrediente desea modificar? Introduzca el ID")
+					.setChatId(handler.getMessage().getChatId()));
+		}else if(ruta.get(Integer.parseInt(handler.getMessage().getChatId())) == " ") {
+			Integer id = Integer.parseInt(handler.getMessage().getText());
+			ruta.replace(((Integer.parseInt(handler.getMessage().getChatId()))), String.valueOf(id));
+			mySQLPool.query("select * from ingrediente where idIngrediente=" + id, res -> {
+				if (res.succeeded()) {
+					RowSet<Row> resultSet = res.result();
+					System.out.println("El número de elementos obtenidos es " + resultSet.size());
+					for (Row row : resultSet) {
+						bot.sendMessage(new SendMessage()
+								.setText(row.getInteger("idingrediente")+". "+row.getString("nombreIngrediente"))
+								.setChatId(handler.getMessage().getChatId()));
+					}
+
+				} else {
+					bot.sendMessage(new SendMessage().setText(res.cause().getMessage())
+							.setChatId(handler.getMessage().getChatId()));
+				}
+			});
+			bot.sendMessage(new SendMessage().setText("Introduzca los datos del ingrediente"
+					+ " (nombreIngrediente)")
+					.setChatId(handler.getMessage().getChatId()));
+		}else if(ruta.get(Integer.parseInt(handler.getMessage().getChatId()))!=" "){
+			String input = handler.getMessage().getText();
+			mySQLPool.query("update ingrediente set nombreIngrediente="+"'"+input+"'" + " where idIngrediente="+
+			ruta.get(Integer.parseInt(handler.getMessage().getChatId())), res -> {
+				if (res.succeeded()) {
+					bot.sendMessage(new SendMessage()
+							.setText("Se ha modificado correctamente!")
+							.setChatId(handler.getMessage().getChatId()));
+				} else {
+					bot.sendMessage(new SendMessage().setText(res.cause().getMessage())
+							.setChatId(handler.getMessage().getChatId()));
+				}
+			});
+
+			seccion.remove((Integer.parseInt(handler.getMessage().getChatId())));
+			tabla.remove((Integer.parseInt(handler.getMessage().getChatId())));
+			map.remove(Integer.parseInt(handler.getMessage().getChatId()));
+			ruta.remove(Integer.parseInt(handler.getMessage().getChatId()));
+		}
+	}
+	void modificarIntolerancia(Update handler) {
+		if ((handler.getMessage().getText().toLowerCase().contentEquals("c")
+				&& (seccion.get(Integer.parseInt(handler.getMessage().getChatId())) == "/modificar"))) {
+			tabla.put((Integer.parseInt(handler.getMessage().getChatId())), "c");
+			mySQLPool.query("SELECT idintolerancia, nombreIntolerancia FROM intolerancia", res -> {
+				if (res.succeeded()) {
+					RowSet<Row> resultSet = res.result();
+					System.out.println("El número de elementos obtenidos es " + resultSet.size());
+					for (Row row : resultSet) {
+						bot.sendMessage(new SendMessage().setText(row.getInteger("idintolerancia")
+								+". "+ row.getString("nombreIntolerancia"))
+								.setChatId(handler.getMessage().getChatId()));
+					}
+				} else {
+					bot.sendMessage(new SendMessage().setText(res.cause().getMessage())
+							.setChatId(handler.getMessage().getChatId()));
+				}
+			});
+			bot.sendMessage(new SendMessage().setText("¿Que intolerancia desea modificar? Introduzca el ID")
+					.setChatId(handler.getMessage().getChatId()));
+		}else if(ruta.get(Integer.parseInt(handler.getMessage().getChatId())) == " ") {
+			Integer id = Integer.parseInt(handler.getMessage().getText());
+			ruta.replace(((Integer.parseInt(handler.getMessage().getChatId()))), String.valueOf(id));
+			mySQLPool.query("select * from intolerancia where idintolerancia=" + id, res -> {
+				if (res.succeeded()) {
+					RowSet<Row> resultSet = res.result();
+					System.out.println("El número de elementos obtenidos es " + resultSet.size());
+					for (Row row : resultSet) {
+						bot.sendMessage(new SendMessage()
+								.setText(row.getInteger("idintolerancia")+". "+row.getString("nombreIntolerancia"))
+								.setChatId(handler.getMessage().getChatId()));
+					}
+
+				} else {
+					bot.sendMessage(new SendMessage().setText(res.cause().getMessage())
+							.setChatId(handler.getMessage().getChatId()));
+				}
+			});
+			bot.sendMessage(new SendMessage().setText("Introduzca los datos de la intolerancia"
+					+ " (nombreIntolerancia)")
+					.setChatId(handler.getMessage().getChatId()));
+		}else if(ruta.get(Integer.parseInt(handler.getMessage().getChatId()))!=" "){
+			String input = handler.getMessage().getText();
+			mySQLPool.query("update intolerancia set nombreIntolerancia=" +"'" +input+"'" + 
+					 " where idIntolerancia=" + ruta.get(
+							Integer.parseInt(handler.getMessage().getChatId())), res -> {
+				if (res.succeeded()) {
+					bot.sendMessage(new SendMessage()
+							.setText("Se ha modificado correctamente!")
+							.setChatId(handler.getMessage().getChatId()));
+				} else {
+					bot.sendMessage(new SendMessage().setText(res.cause().getMessage())
+							.setChatId(handler.getMessage().getChatId()));
+				}
+			});
+		
+			seccion.remove((Integer.parseInt(handler.getMessage().getChatId())));
+			tabla.remove((Integer.parseInt(handler.getMessage().getChatId())));
+			map.remove(Integer.parseInt(handler.getMessage().getChatId()));
+			ruta.remove(Integer.parseInt(handler.getMessage().getChatId()));
+		}
+	}
+	/* Eliminar */
+	void eliminarProducto(Update handler) {
+		if ((handler.getMessage().getText().toLowerCase().contentEquals("a")
+				&& (seccion.get(Integer.parseInt(handler.getMessage().getChatId())) == "/eliminar"))) {
+			tabla.put((Integer.parseInt(handler.getMessage().getChatId())), "a");
+			mySQLPool.query("SELECT idProducto, nombreProducto FROM producto", res -> {
+				if (res.succeeded()) {
+					RowSet<Row> resultSet = res.result();
+					System.out.println("El número de elementos obtenidos es " + resultSet.size());
+					for (Row row : resultSet) {
+						bot.sendMessage(new SendMessage().setText(row.getInteger("idProducto")
+								+". "+ row.getString("nombreProducto"))
+								.setChatId(handler.getMessage().getChatId()));
+					}
+				} else {
+					bot.sendMessage(new SendMessage().setText(res.cause().getMessage())
+							.setChatId(handler.getMessage().getChatId()));
+				}
+			});
+			bot.sendMessage(new SendMessage().setText("¿Que producto desea eliminar? Introduzca el ID")
+					.setChatId(handler.getMessage().getChatId()));
+		}else if(ruta.get(Integer.parseInt(handler.getMessage().getChatId())) == " ") {
+			Integer id = Integer.parseInt(handler.getMessage().getText());
+			ruta.replace(((Integer.parseInt(handler.getMessage().getChatId()))), String.valueOf(id));
+			mySQLPool.query("delete from producto where idProducto=" + id, res -> {
+				if (res.succeeded()) {
+					bot.sendMessage(new SendMessage()
+							.setText("Se ha eliminado correctamente!")
+							.setChatId(handler.getMessage().getChatId()));
+				} else {
+					bot.sendMessage(new SendMessage().setText(res.cause().getMessage())
+							.setChatId(handler.getMessage().getChatId()));
+				}
+			});
+			seccion.remove((Integer.parseInt(handler.getMessage().getChatId())));
+			tabla.remove((Integer.parseInt(handler.getMessage().getChatId())));
+			map.remove(Integer.parseInt(handler.getMessage().getChatId()));
+			ruta.remove(Integer.parseInt(handler.getMessage().getChatId()));
+		}
+	}
+		
 }
