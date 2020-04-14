@@ -114,5 +114,55 @@ bot:teléfono: "666666666"
 bot:código de barras: 123456789123
  
 
+MODIFICAR INFORMACIÓN DE LAS TABALAS:
+
+MODIFICAR INFORMACIÓN DE LA TABLA PRODUCTO.
+admin: /modificar
+bot: ¿Qué tabla desea modificar?
+bot: a. Producto
+admin: a
+bot: Seleccione el id del producto a modificar (Se mostrarán lista de productos)
+admin: 3
+bot: Producto 3 contiene los siguientes datos (se mostraran los datos de ese producto)
+bot: Introduzca los datos del producto modificado separandolos por comas
+admin: Leche hacendado,123456789123,El pozo,957484848
+bot: la entrada se ha modificado correctamente
+ 
+MODIFICAR INFORMACIÓN DE LA TABLA INGREDIENTE.
+admin: /modificar
+bot: ¿Qué tabla desea modificar?
+bot: b. Ingrediente
+admin: b
+bot: Seleccione el id del ingrediente a modificar (Se mostrarán lista de ingredientes)
+admin: 2
+bot: Ingrediente 2 contiene los siguientes datos (se mostraran los datos de ese ingrediente)
+bot: Introduzca los datos del ingrediente modificado separandolos por comas
+admin: calcio
+bot: la entrada se ha modificado correctamente
+
+MODIFICAR INFORMACIÓN DE LA TABLA INTOLERANCIA.
+admin: /modificar
+bot: ¿Qué tabla desea modificar?
+bot: c. intolerancia
+admin: c
+bot: Seleccione el id de  la intolerancia a modificar (Se mostrarán lista de intolerancias)
+admin: 4
+bot: Intolerancia 4 contiene los siguientes datos (se mostraran los datos de esa intolerancia)
+bot: Introduzca los datos de la intolerancia modificada separandolos por comas
+admin: Intolerancia a la sacarosa
+bot: la entrada se ha modificado correctamente
+ 
+
+ELIMINAR INFORMACIÓN DE LAS TABLAS:
+
+ELIMINAR INFORMACIÓN DE LA TABLA PRODUCTO.
+admin: /eliminar
+bot: ¿De qué tabla desea eliminar?
+bot: a. producto
+admin: a
+bot: Seleccione el id del producto a eliminar (Se mostrarán lista de productos)
+admin: 4
+bot: la entrada se ha eliminado correctamente
+
 
 
