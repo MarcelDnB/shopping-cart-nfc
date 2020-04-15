@@ -6,7 +6,6 @@
 <fullyQualifiedTypeName name="types.productoUsuario"/>
 <fullyQualifiedTypeName name="io.vertx.mysqlclient.MySQLClient"/>
 <fullyQualifiedTypeName name="types.wifiReading"/>
-<fullyQualifiedTypeName name="java.util.List"/>
 <fullyQualifiedTypeName name="types.usuarioIntolerancias"/>
 <fullyQualifiedTypeName name="telegram.telegramMain"/>
 <fullyQualifiedTypeName name="database.DatabaseVerticle"/>
@@ -20,4 +19,7 @@
 <fullyQualifiedTypeName name="java.util.regex.Pattern"/>
 <fullyQualifiedTypeName name="types.usuario"/>
 <fullyQualifiedTypeName name="org.schors.vertx.telegram.bot.api.types.Update"/>
+<fullyQualifiedTypeName name="java.util.List"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="java.util.Arrays"/>
 </qualifiedTypeNameHistroy>
