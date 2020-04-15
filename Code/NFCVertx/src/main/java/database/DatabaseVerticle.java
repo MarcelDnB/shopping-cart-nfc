@@ -53,8 +53,7 @@ public class DatabaseVerticle extends AbstractVerticle{
 		}
 	
 	
-	private void putUsuario(RoutingContext routingContext) { //Funciona
-		try {
+	private void putUsuario(RoutingContext routingContext) {
 			usuario usuarioIntolerancias = Json.decodeValue(routingContext.getBodyAsString(), usuario.class);
 			mySQLPool.preparedQuery(
 					"INSERT INTO usuario (idComercio) VALUES (?)",
@@ -75,13 +74,10 @@ public class DatabaseVerticle extends AbstractVerticle{
 									.end((JsonObject.mapFrom(handler.cause()).encodePrettily()));
 						}
 					});
-		}catch(Exception e) {
-			System.out.println(e.getMessage());
-		}
 	}
 	
 	
-	private void putIntoleranciasUsuario(RoutingContext routingContext) { //Funciona
+	private void putIntoleranciasUsuario(RoutingContext routingContext) {
 		usuarioIntolerancias usuarioIntolerancias = Json.decodeValue(routingContext.getBodyAsString(), usuarioIntolerancias.class);
 		for(Integer i:usuarioIntolerancias.getIntolerancias()) {
 			mySQLPool.preparedQuery(
@@ -102,7 +98,7 @@ public class DatabaseVerticle extends AbstractVerticle{
 	}
 	
 	
-	private void putWifiScan(RoutingContext routingContext) { //Funciona
+	private void putWifiScan(RoutingContext routingContext) {
 			wifiReading wifiReading1 = Json.decodeValue(routingContext.getBodyAsString(), wifiReading.class);
 			mySQLPool.preparedQuery(
 					"INSERT INTO redeswifi (SSID, PWR, captureTime, idComercio) VALUES (?,?,?,?)",
@@ -126,7 +122,7 @@ public class DatabaseVerticle extends AbstractVerticle{
 	}
 	
 	
-	private void putAfterScan(RoutingContext routingContext) { //Funciona
+	private void putAfterScan(RoutingContext routingContext) {
 		productosUsuario productoUsuario = Json.decodeValue(routingContext.getBodyAsString(), productosUsuario.class);
 		mySQLPool.preparedQuery(
 				"INSERT INTO productosUsuario (idProducto, idUsuario) VALUES (?,?)",
@@ -149,8 +145,7 @@ public class DatabaseVerticle extends AbstractVerticle{
 	}
 	
 	
-	private void getIntolerances(RoutingContext routingContext) { //Funciona
-		try {
+	private void getIntolerances(RoutingContext routingContext) {
 		mySQLPool.query("select idIntolerancia from intoleranciasingrediente natural join ingrediente natural join ingredientesproducto"
 				+ " natural join producto where IdProducto = " + 
 				routingContext.request().getParam("idProducto"),
@@ -170,8 +165,5 @@ public class DatabaseVerticle extends AbstractVerticle{
 							.end((JsonObject.mapFrom(res.cause()).encodePrettily()));
 					}
 				});
-		}catch(Exception e) {
-			System.out.println(e.getMessage());
-		}
 	}
 }

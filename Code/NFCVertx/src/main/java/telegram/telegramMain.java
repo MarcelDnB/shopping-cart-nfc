@@ -49,7 +49,11 @@ public class telegramMain extends AbstractVerticle {
 	private Map<Integer, String> seccion = new HashMap<Integer, String>();
 	private MySQLPool mySQLPool;
 	private Map<Integer, Object> map = new HashMap<Integer, Object>();
-	private Map<Integer, String> ruta = new HashMap<Integer, String>(); // Al no disponer de una clase, poder seguir el rastro en las modificaciones
+	
+	private Map<Integer, String> ruta = new HashMap<Integer, String>();/* Al no disponer de una clase, poder seguir
+																		  el rastro en las modificaciones */
+	
+
 	
 	@Override
 	public void start(Promise<Void> future) {
@@ -92,33 +96,54 @@ public class telegramMain extends AbstractVerticle {
 			}else if(handler.getMessage().getText().toLowerCase().contains("/info")) {
 				info(handler);
 				
-				
+				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+				 * Si el usuario quiere modificar datos de ciertas tablas, puede recurrir al siguiente comando
+				 * mediante el cual el bot de Telegram le va a hacer un cuestionario que lo guiará para hacer
+				 * tal modificacion.
+				 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 			}else if(handler.getMessage().getText().toLowerCase().contains("/modificar")) {
 				modificar(handler);
 			
-				
-				
-				
+				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+				 * Se va a recurrir a esta llamada cuando el usuario quiera eliminar algun dato de la 
+				 * base de datos, por ahora solamente se dispone de poder eliminar algun producto ya 
+				 * que eliminar de otras tablas no tendría sentido por ahora.
+				 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 			}else if(handler.getMessage().getText().toLowerCase().contains("/eliminar")) {
 				eliminar(handler);
 				
 				
+				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+				 * Parte del codigo dedicada a la llamada de eliminar la opción a, que pertenece a producto
+				 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 			}else if((handler.getMessage().getText().toLowerCase().contentEquals("a")
 					&& (seccion.get(Integer.parseInt(handler.getMessage().getChatId())) == "/eliminar"))
 					|| (seccion.get(Integer.parseInt(handler.getMessage().getChatId())) == "/eliminar"
 							&& tabla.get(Integer.parseInt(handler.getMessage().getChatId())) == "a")) {
 				eliminarProducto(handler);
 			
+				
+				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+				 * Parte del codigo dedicada a la llamada de eliminar la opción a, que pertenece a producto.
+				 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 			}else if((handler.getMessage().getText().toLowerCase().contentEquals("a")
 					&& (seccion.get(Integer.parseInt(handler.getMessage().getChatId())) == "/modificar"))
 					|| (seccion.get(Integer.parseInt(handler.getMessage().getChatId())) == "/modificar"
 							&& tabla.get(Integer.parseInt(handler.getMessage().getChatId())) == "a")) {
 				modificarProducto(handler);
+				
+				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+				 * Parte del codigo dedicada a la llamada de modificar datos de la tabla de ingredientes.
+				 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 			}else if((handler.getMessage().getText().toLowerCase().contentEquals("b")
 					&& (seccion.get(Integer.parseInt(handler.getMessage().getChatId())) == "/modificar"))
 					|| (seccion.get(Integer.parseInt(handler.getMessage().getChatId())) == "/modificar"
 							&& tabla.get(Integer.parseInt(handler.getMessage().getChatId())) == "b")) {
 				modificarIngrediente(handler);
+				
+				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+				 * Parte del codigo dedicada a la llamada de modificar datos de la tabla de intolerancias.
+				 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 			}else if((handler.getMessage().getText().toLowerCase().contentEquals("c")
 					&& (seccion.get(Integer.parseInt(handler.getMessage().getChatId())) == "/modificar"))
 					|| (seccion.get(Integer.parseInt(handler.getMessage().getChatId())) == "/modificar"
