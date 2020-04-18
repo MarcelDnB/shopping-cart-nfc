@@ -1,0 +1,14 @@
+types\scannedProduct.class
+types\wifiReading.class
+types\intolerancia.class
+types\ingredientesProducto.class
+types\ingrediente.class
+types\comercio.class
+types\productosUsuario.class
+vertxMain\vertxMain.class
+types\usuarioIntolerancias.class
+types\usuario.class
+types\producto.class
+types\intoleranciasIngrediente.class
+database\DatabaseVerticle.class
+telegram\telegramMain.class
