@@ -24,15 +24,15 @@ import types.wifiReading;
 public class DatabaseVerticle extends AbstractVerticle{
 	
 	private MySQLPool mySQLPool;
-	Long idUsuarioCreado; /* Dentro del ESP32 primero se va a ejecutar la funcion que añade un usuario
-	 						 y dentro de esta función asignamos a esta variable el id de este, posteriormente
-	 						 el ESP32 ejecuta la segunda función en la que guardamos las intolerancias introducidas
+	Long idUsuarioCreado; /* Dentro del ESP32 primero se va a ejecutar la funcion que aï¿½ade un usuario
+	 						 y dentro de esta funciï¿½n asignamos a esta variable el id de este, posteriormente
+	 						 el ESP32 ejecuta la segunda funciï¿½n en la que guardamos las intolerancias introducidas
 	 						 por el usuario junto al id (que vamos a obtener de esta variable).*/
 	
 	@Override
 	public void start(Promise<Void> startPromise) {
 		MySQLConnectOptions mySQLConnectOptions = new MySQLConnectOptions().setPort(3306).setHost("localhost")
-				.setDatabase("DAD").setUser("dad").setPassword("dnbmusic");
+				.setDatabase("DAD").setUser("dad").setPassword("cacamaca");
 		PoolOptions poolOptions = new PoolOptions().setMaxSize(5);
 		mySQLPool = MySQLPool.pool(vertx, mySQLConnectOptions, poolOptions);
 		Router router = Router.router(vertx);
@@ -152,7 +152,7 @@ public class DatabaseVerticle extends AbstractVerticle{
 				res -> {
 					if (res.succeeded()) {
 						RowSet<Row> resultSet = res.result();
-						System.out.println("El número de elementos obtenidos es " + resultSet.size());
+						System.out.println("El nï¿½mero de elementos obtenidos es " + resultSet.size());
 						JsonArray result = new JsonArray();
 						for (Row row : resultSet) {
 							result.add(JsonObject.mapFrom(new scannedProduct(row.getInteger("idIntolerancia")

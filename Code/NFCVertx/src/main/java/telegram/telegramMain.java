@@ -26,7 +26,7 @@ import types.intoleranciasIngrediente;
 import types.producto;
 
 public class telegramMain extends AbstractVerticle {
-	
+
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	 * bot: variable que nos entrega las funcionalidades del bot de Telegram.
 	 * 
@@ -74,7 +74,7 @@ public class telegramMain extends AbstractVerticle {
 		bot = TelegramBot.create(vertx, telegramOptions).receiver(new LongPollingReceiver().onUpdate(handler -> {
 			if (handler.getMessage().getText().toLowerCase().contains("/hola")) {
 				bot.sendMessage(new SendMessage()
-						.setText("Hola " + handler.getMessage().getFrom().getFirstName() + " ¿En qué puedo ayudarte?")
+						.setText("Hola " + handler.getMessage().getFrom().getFirstName() + " ï¿½En quï¿½ puedo ayudarte?")
 						.setChatId(handler.getMessage().getChatId()));
 				
 
@@ -82,14 +82,14 @@ public class telegramMain extends AbstractVerticle {
 				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 				 * El usuario indica que quiere insertar datos en la tabla por lo que nosotros
 				 * guardamos el keyword en una variable la cual vamos a utilizar posteriormente
-				 * para saber que nos encontramos en esta seccion (de añadir a la base de
+				 * para saber que nos encontramos en esta seccion (de aï¿½adir a la base de
 				 * datos), dicha variable es "seccion".
 				 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 			 else if (handler.getMessage().getText().toLowerCase().contains("/insertar")) {
 				insertar(handler);
 				
 				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-				 * El usuario indica que quiere ver cierta información de la base de datos,
+				 * El usuario indica que quiere ver cierta informaciï¿½n de la base de datos,
 				 * el mecanismo es igual al anterior, guardamos en "seccion" 'info' para saber donde 
 				 * nos encontramos y hacer los bloques if-else correspondientes.
 				 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -98,7 +98,7 @@ public class telegramMain extends AbstractVerticle {
 				
 				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 				 * Si el usuario quiere modificar datos de ciertas tablas, puede recurrir al siguiente comando
-				 * mediante el cual el bot de Telegram le va a hacer un cuestionario que lo guiará para hacer
+				 * mediante el cual el bot de Telegram le va a hacer un cuestionario que lo guiarï¿½ para hacer
 				 * tal modificacion.
 				 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 			}else if(handler.getMessage().getText().toLowerCase().contains("/modificar")) {
@@ -107,14 +107,14 @@ public class telegramMain extends AbstractVerticle {
 				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 				 * Se va a recurrir a esta llamada cuando el usuario quiera eliminar algun dato de la 
 				 * base de datos, por ahora solamente se dispone de poder eliminar algun producto ya 
-				 * que eliminar de otras tablas no tendría sentido por ahora.
+				 * que eliminar de otras tablas no tendrï¿½a sentido por ahora.
 				 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 			}else if(handler.getMessage().getText().toLowerCase().contains("/eliminar")) {
 				eliminar(handler);
 				
 				
 				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-				 * Parte del codigo dedicada a la llamada de eliminar la opción a, que pertenece a producto
+				 * Parte del codigo dedicada a la llamada de eliminar la opciï¿½n a, que pertenece a producto
 				 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 			}else if((handler.getMessage().getText().toLowerCase().contentEquals("a")
 					&& (seccion.get(Integer.parseInt(handler.getMessage().getChatId())) == "/eliminar"))
@@ -124,7 +124,7 @@ public class telegramMain extends AbstractVerticle {
 			
 				
 				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-				 * Parte del codigo dedicada a la llamada de eliminar la opción a, que pertenece a producto.
+				 * Parte del codigo dedicada a la llamada de eliminar la opciï¿½n a, que pertenece a producto.
 				 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 			}else if((handler.getMessage().getText().toLowerCase().contentEquals("a")
 					&& (seccion.get(Integer.parseInt(handler.getMessage().getChatId())) == "/modificar"))
@@ -154,13 +154,13 @@ public class telegramMain extends AbstractVerticle {
 				
 			/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 			 * Para entender la variable tabla ver el comentario siguiente, en este caso vamos a reutilizar
-			 * dicha variable para guardar el rastro de la opción que hemos elegido, en este caso a,b o c
+			 * dicha variable para guardar el rastro de la opciï¿½n que hemos elegido, en este caso a,b o c
 			 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 			
 			
 			/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-			 * Se van a ver los productos escaneados y la cantidad de éstos filtrados por cierta intolerancia,
-			 * es decir, vamos a poder ver el interés del usuario con cierta intolerancia hacia ciertos
+			 * Se van a ver los productos escaneados y la cantidad de ï¿½stos filtrados por cierta intolerancia,
+			 * es decir, vamos a poder ver el interï¿½s del usuario con cierta intolerancia hacia ciertos
 			 * productos. 
 			 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 			}else if ((handler.getMessage().getText().toLowerCase().contentEquals("a")
@@ -170,8 +170,8 @@ public class telegramMain extends AbstractVerticle {
 				infoProductosEscaneados(handler);
 				
 				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-				 * Introduciendo una palabra clave nos devolverá todos los productos que contengan dicha palabra,
-				 * por lo que será util por ejemplo para ver si ya existe cierto producto en la base de datos.
+				 * Introduciendo una palabra clave nos devolverï¿½ todos los productos que contengan dicha palabra,
+				 * por lo que serï¿½ util por ejemplo para ver si ya existe cierto producto en la base de datos.
 				 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 			}else if((handler.getMessage().getText().toLowerCase().contentEquals("b")
 					&& (seccion.get(Integer.parseInt(handler.getMessage().getChatId())) == "/info"))
@@ -180,7 +180,7 @@ public class telegramMain extends AbstractVerticle {
 				comprobarExistenciaProducto(handler);
 				
 				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-				 * Se obtiene el fabricante y numero de teléfono de éste introduciendo el ID de producto
+				 * Se obtiene el fabricante y numero de telï¿½fono de ï¿½ste introduciendo el ID de producto
 				 * correspondiente.
 				 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 			}else if((handler.getMessage().getText().toLowerCase().contentEquals("c")
@@ -271,14 +271,14 @@ public class telegramMain extends AbstractVerticle {
 		bot.start();
 	}
 	
-	/* Menú */
+	/* Menï¿½ */
 	void info(Update handler) {
 		bot.sendMessage(new SendMessage()
-				.setText("A continuación se indica la información disponible: \n"
+				.setText("A continuaciï¿½n se indica la informaciï¿½n disponible: \n"
 						+ " a. Productos escaneados por ususarios con cierta intolerancia" + "\n" +
-						"Seleccione la petición deseada, introduciendo su índice:"+ "\n" + 
-						"b. Comprobar si un producto está en la base de datos\n" + 
-						"c. Ver el nombre y numero de teléfono del fabricante de un producto\n")
+						"Seleccione la peticiï¿½n deseada, introduciendo su ï¿½ndice:"+ "\n" + 
+						"b. Comprobar si un producto estï¿½ en la base de datos\n" + 
+						"c. Ver el nombre y numero de telï¿½fono del fabricante de un producto\n")
 				.setChatId(handler.getMessage().getChatId()));
 		seccion.put(Integer.parseInt(handler.getMessage().getChatId()), "/info");
 		tabla.put(Integer.parseInt(handler.getMessage().getChatId()), " ");
@@ -299,7 +299,7 @@ public class telegramMain extends AbstractVerticle {
 		mySQLPool.query("SELECT table_name FROM information_schema.tables WHERE table_schema = 'dad'", res -> {
 			if (res.succeeded()) {
 				RowSet<Row> resultSet = res.result();
-				System.out.println("El número de elementos obtenidos es " + resultSet.size());
+				System.out.println("El nï¿½mero de elementos obtenidos es " + resultSet.size());
 				for (Row row : resultSet) {
 					bot.sendMessage(new SendMessage().setText("- " + row.getString("TABLE_NAME"))
 							.setChatId(handler.getMessage().getChatId()));
@@ -312,7 +312,7 @@ public class telegramMain extends AbstractVerticle {
 	}
 	void modificar(Update handler) {
 		bot.sendMessage(new SendMessage()
-				.setText("¿Qué tabla desea modificar?\n\n"
+				.setText("ï¿½Quï¿½ tabla desea modificar?\n\n"
 						+ "a. Producto\nb. Ingrediente\nc. Intolerancia")
 				.setChatId(handler.getMessage().getChatId()));
 		seccion.put(Integer.parseInt(handler.getMessage().getChatId()), "/modificar");
@@ -322,7 +322,7 @@ public class telegramMain extends AbstractVerticle {
 	}
 	void eliminar(Update handler) {
 		bot.sendMessage(new SendMessage()
-				.setText("¿De qué tabla desea eliminar?\n\n"
+				.setText("ï¿½De quï¿½ tabla desea eliminar?\n\n"
 						+ "a. Producto\n")
 				.setChatId(handler.getMessage().getChatId()));
 		seccion.put(Integer.parseInt(handler.getMessage().getChatId()), "/eliminar");
@@ -335,13 +335,13 @@ public class telegramMain extends AbstractVerticle {
 				&& (seccion.get(Integer.parseInt(handler.getMessage().getChatId())) == "/info"))) {
 			tabla.put((Integer.parseInt(handler.getMessage().getChatId())), "a");
 			bot.sendMessage(new SendMessage()
-					.setText("¿De que intolerancia desea ver los productos escaneados por los usuarios?, alguno"
-							+ " de los ID's mostrados a continuación: " + "\n")
+					.setText("ï¿½De que intolerancia desea ver los productos escaneados por los usuarios?, alguno"
+							+ " de los ID's mostrados a continuaciï¿½n: " + "\n")
 					.setChatId(handler.getMessage().getChatId()));
 			mySQLPool.query("select idIntolerancia, nombreIntolerancia from intolerancia", res -> {
 				if (res.succeeded()) {
 					RowSet<Row> resultSet = res.result();
-					System.out.println("El número de elementos obtenidos es " + resultSet.size());
+					System.out.println("El nï¿½mero de elementos obtenidos es " + resultSet.size());
 					for (Row row : resultSet) {
 						bot.sendMessage(new SendMessage()
 								.setText(String.valueOf(row.getInteger("idIntolerancia")) + ". "
@@ -362,7 +362,7 @@ public class telegramMain extends AbstractVerticle {
 					"natural join ingredientesproducto natural join ingrediente natural join intoleranciasingrediente natural join intolerancia where idIntolerancia=" + Integer.parseInt(s) +") group by IdProducto", res -> {
 				if (res.succeeded()) {
 					RowSet<Row> resultSet = res.result();
-					System.out.println("El número de elementos obtenidos es " + resultSet.size());
+					System.out.println("El nï¿½mero de elementos obtenidos es " + resultSet.size());
 					for (Row row : resultSet) {
 						bot.sendMessage(new SendMessage()
 								.setText(String.valueOf(row.getString("nombreProducto")) + " - cantidad="
@@ -396,7 +396,7 @@ public class telegramMain extends AbstractVerticle {
 			s + "%'", res -> {
 				if (res.succeeded()) {
 					RowSet<Row> resultSet = res.result();
-					System.out.println("El número de elementos obtenidos es " + resultSet.size());
+					System.out.println("El nï¿½mero de elementos obtenidos es " + resultSet.size());
 					for (Row row : resultSet) {
 						bot.sendMessage(new SendMessage()
 								.setText(row.getInteger("idProducto")+". "+row.getString("nombreProducto"))
@@ -423,7 +423,7 @@ public class telegramMain extends AbstractVerticle {
 			mySQLPool.query("select idProducto, nombreProducto from producto", res -> {
 				if (res.succeeded()) {
 					RowSet<Row> resultSet = res.result();
-					System.out.println("El número de elementos obtenidos es " + resultSet.size());
+					System.out.println("El nï¿½mero de elementos obtenidos es " + resultSet.size());
 					for (Row row : resultSet) {
 						bot.sendMessage(new SendMessage()
 								.setText(String.valueOf(row.getInteger("idProducto")) + ". "
@@ -443,7 +443,7 @@ public class telegramMain extends AbstractVerticle {
 			mySQLPool.query("select fabricante, telefono from producto where idProducto="+Integer.parseInt(s), res -> {
 				if (res.succeeded()) {
 					RowSet<Row> resultSet = res.result();
-					System.out.println("El número de elementos obtenidos es " + resultSet.size());
+					System.out.println("El nï¿½mero de elementos obtenidos es " + resultSet.size());
 					for (Row row : resultSet) {
 						bot.sendMessage(new SendMessage()
 								.setText(row.getString("fabricante")+" | "+row.getInteger("telefono"))
@@ -521,7 +521,7 @@ public class telegramMain extends AbstractVerticle {
 			mySQLPool.query("select idIntolerancia, nombreIntolerancia from intolerancia", res -> {
 				if (res.succeeded()) {
 					RowSet<Row> resultSet = res.result();
-					System.out.println("El número de elementos obtenidos es " + resultSet.size());
+					System.out.println("El nï¿½mero de elementos obtenidos es " + resultSet.size());
 					for (Row row : resultSet) {
 						bot.sendMessage(new SendMessage()
 								.setText(String.valueOf(row.getInteger("idIntolerancia")) + ". "
@@ -555,7 +555,7 @@ public class telegramMain extends AbstractVerticle {
 					mySQLPool.query("select idIngrediente, nombreIngrediente from ingrediente", res -> {
 						if (res.succeeded()) {
 							RowSet<Row> resultSet = res.result();
-							System.out.println("El número de elementos obtenidos es " + resultSet.size());
+							System.out.println("El nï¿½mero de elementos obtenidos es " + resultSet.size());
 							for (Row row : resultSet) {
 								bot.sendMessage(new SendMessage()
 										.setText(String.valueOf(row.getInteger("idIngrediente")) + ". "
@@ -619,7 +619,7 @@ public class telegramMain extends AbstractVerticle {
 			mySQLPool.query("select idIngrediente, nombreIngrediente from ingrediente", res -> {
 				if (res.succeeded()) {
 					RowSet<Row> resultSet = res.result();
-					System.out.println("El número de elementos obtenidos es " + resultSet.size());
+					System.out.println("El nï¿½mero de elementos obtenidos es " + resultSet.size());
 					for (Row row : resultSet) {
 						bot.sendMessage(new SendMessage()
 								.setText(String.valueOf(row.getInteger("idIngrediente")) + ". "
@@ -652,7 +652,7 @@ public class telegramMain extends AbstractVerticle {
 					mySQLPool.query("select idProducto, nombreProducto from producto", res -> {
 						if (res.succeeded()) {
 							RowSet<Row> resultSet = res.result();
-							System.out.println("El número de elementos obtenidos es " + resultSet.size());
+							System.out.println("El nï¿½mero de elementos obtenidos es " + resultSet.size());
 							for (Row row : resultSet) {
 								bot.sendMessage(new SendMessage()
 										.setText(String.valueOf(row.getInteger("idProducto")) + ". "
@@ -795,7 +795,7 @@ public class telegramMain extends AbstractVerticle {
 					prod.setFabricante(handler.getMessage().getText());
 					map.put(Integer.parseInt(handler.getMessage().getChatId()), prod);
 					bot.sendMessage(
-							new SendMessage().setText("Teléfono").setChatId(handler.getMessage().getChatId()));
+							new SendMessage().setText("Telï¿½fono").setChatId(handler.getMessage().getChatId()));
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					bot.sendMessage(
@@ -918,7 +918,7 @@ public class telegramMain extends AbstractVerticle {
 			mySQLPool.query("SELECT idProducto, nombreProducto FROM producto", res -> {
 				if (res.succeeded()) {
 					RowSet<Row> resultSet = res.result();
-					System.out.println("El número de elementos obtenidos es " + resultSet.size());
+					System.out.println("El nï¿½mero de elementos obtenidos es " + resultSet.size());
 					for (Row row : resultSet) {
 						bot.sendMessage(new SendMessage().setText(row.getInteger("idProducto")
 								+". "+ row.getString("nombreProducto"))
@@ -929,7 +929,7 @@ public class telegramMain extends AbstractVerticle {
 							.setChatId(handler.getMessage().getChatId()));
 				}
 			});
-			bot.sendMessage(new SendMessage().setText("¿Que producto desea modificar? Introduzca el ID")
+			bot.sendMessage(new SendMessage().setText("ï¿½Que producto desea modificar? Introduzca el ID")
 					.setChatId(handler.getMessage().getChatId()));
 		}else if(ruta.get(Integer.parseInt(handler.getMessage().getChatId())) == " ") {
 			Integer id = Integer.parseInt(handler.getMessage().getText());
@@ -937,7 +937,7 @@ public class telegramMain extends AbstractVerticle {
 			mySQLPool.query("select * from producto where idProducto=" + id, res -> {
 				if (res.succeeded()) {
 					RowSet<Row> resultSet = res.result();
-					System.out.println("El número de elementos obtenidos es " + resultSet.size());
+					System.out.println("El nï¿½mero de elementos obtenidos es " + resultSet.size());
 					for (Row row : resultSet) {
 						bot.sendMessage(new SendMessage()
 								.setText(row.getInteger("idProducto")+". "+row.getString("nombreProducto"))
@@ -986,7 +986,7 @@ public class telegramMain extends AbstractVerticle {
 			mySQLPool.query("SELECT idIngrediente, nombreIngrediente FROM ingrediente", res -> {
 				if (res.succeeded()) {
 					RowSet<Row> resultSet = res.result();
-					System.out.println("El número de elementos obtenidos es " + resultSet.size());
+					System.out.println("El nï¿½mero de elementos obtenidos es " + resultSet.size());
 					for (Row row : resultSet) {
 						bot.sendMessage(new SendMessage().setText(row.getInteger("idIngrediente")
 								+". "+ row.getString("nombreIngrediente"))
@@ -997,7 +997,7 @@ public class telegramMain extends AbstractVerticle {
 							.setChatId(handler.getMessage().getChatId()));
 				}
 			});
-			bot.sendMessage(new SendMessage().setText("¿Que ingrediente desea modificar? Introduzca el ID")
+			bot.sendMessage(new SendMessage().setText("ï¿½Que ingrediente desea modificar? Introduzca el ID")
 					.setChatId(handler.getMessage().getChatId()));
 		}else if(ruta.get(Integer.parseInt(handler.getMessage().getChatId())) == " ") {
 			Integer id = Integer.parseInt(handler.getMessage().getText());
@@ -1005,7 +1005,7 @@ public class telegramMain extends AbstractVerticle {
 			mySQLPool.query("select * from ingrediente where idIngrediente=" + id, res -> {
 				if (res.succeeded()) {
 					RowSet<Row> resultSet = res.result();
-					System.out.println("El número de elementos obtenidos es " + resultSet.size());
+					System.out.println("El nï¿½mero de elementos obtenidos es " + resultSet.size());
 					for (Row row : resultSet) {
 						bot.sendMessage(new SendMessage()
 								.setText(row.getInteger("idingrediente")+". "+row.getString("nombreIngrediente"))
@@ -1047,7 +1047,7 @@ public class telegramMain extends AbstractVerticle {
 			mySQLPool.query("SELECT idintolerancia, nombreIntolerancia FROM intolerancia", res -> {
 				if (res.succeeded()) {
 					RowSet<Row> resultSet = res.result();
-					System.out.println("El número de elementos obtenidos es " + resultSet.size());
+					System.out.println("El nï¿½mero de elementos obtenidos es " + resultSet.size());
 					for (Row row : resultSet) {
 						bot.sendMessage(new SendMessage().setText(row.getInteger("idintolerancia")
 								+". "+ row.getString("nombreIntolerancia"))
@@ -1058,7 +1058,7 @@ public class telegramMain extends AbstractVerticle {
 							.setChatId(handler.getMessage().getChatId()));
 				}
 			});
-			bot.sendMessage(new SendMessage().setText("¿Que intolerancia desea modificar? Introduzca el ID")
+			bot.sendMessage(new SendMessage().setText("ï¿½Que intolerancia desea modificar? Introduzca el ID")
 					.setChatId(handler.getMessage().getChatId()));
 		}else if(ruta.get(Integer.parseInt(handler.getMessage().getChatId())) == " ") {
 			Integer id = Integer.parseInt(handler.getMessage().getText());
@@ -1066,7 +1066,7 @@ public class telegramMain extends AbstractVerticle {
 			mySQLPool.query("select * from intolerancia where idintolerancia=" + id, res -> {
 				if (res.succeeded()) {
 					RowSet<Row> resultSet = res.result();
-					System.out.println("El número de elementos obtenidos es " + resultSet.size());
+					System.out.println("El nï¿½mero de elementos obtenidos es " + resultSet.size());
 					for (Row row : resultSet) {
 						bot.sendMessage(new SendMessage()
 								.setText(row.getInteger("idintolerancia")+". "+row.getString("nombreIntolerancia"))
@@ -1110,7 +1110,7 @@ public class telegramMain extends AbstractVerticle {
 			mySQLPool.query("SELECT idProducto, nombreProducto FROM producto", res -> {
 				if (res.succeeded()) {
 					RowSet<Row> resultSet = res.result();
-					System.out.println("El número de elementos obtenidos es " + resultSet.size());
+					System.out.println("El nï¿½mero de elementos obtenidos es " + resultSet.size());
 					for (Row row : resultSet) {
 						bot.sendMessage(new SendMessage().setText(row.getInteger("idProducto")
 								+". "+ row.getString("nombreProducto"))
@@ -1121,7 +1121,7 @@ public class telegramMain extends AbstractVerticle {
 							.setChatId(handler.getMessage().getChatId()));
 				}
 			});
-			bot.sendMessage(new SendMessage().setText("¿Que producto desea eliminar? Introduzca el ID")
+			bot.sendMessage(new SendMessage().setText("ï¿½Que producto desea eliminar? Introduzca el ID")
 					.setChatId(handler.getMessage().getChatId()));
 		}else if(ruta.get(Integer.parseInt(handler.getMessage().getChatId())) == " ") {
 			Integer id = Integer.parseInt(handler.getMessage().getText());
@@ -1142,5 +1142,12 @@ public class telegramMain extends AbstractVerticle {
 			ruta.remove(Integer.parseInt(handler.getMessage().getChatId()));
 		}
 	}
+	
+	/* FunciÃ³n de log */
+	/* TODO: Funcion de log para el bot de Telegram, es necesario imprimir cosas de los metodos 
+	por pantalla (sysout)
+	de forma que venga reflejado en telegram.log que se encuentra dentro del proyecto*/
+	void funcionLog(Update handler) {
 		
+	}
 }
