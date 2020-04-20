@@ -32,7 +32,6 @@
           </execution>
         </executions>
       </plugin>
-      
     </plugins> 
 </build> 
   <properties>
@@ -65,6 +64,11 @@
 	<groupId>io.vertx</groupId>
 	<artifactId>vertx-web-client</artifactId>
 	<version>3.8.5</version>
+  </dependency>
+  <dependency>
+  <groupId>io.vertx</groupId>
+  <artifactId>vertx-mqtt</artifactId>
+  <version>3.8.5</version>
   </dependency>
   <dependency>
 	<groupId>com.github.flicus</groupId>

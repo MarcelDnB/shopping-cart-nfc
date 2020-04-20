@@ -53,6 +53,7 @@ public class DatabaseVerticle extends AbstractVerticle{
 		}
 	
 	
+	
 	private void putUsuario(RoutingContext routingContext) {
 			usuario usuarioIntolerancias = Json.decodeValue(routingContext.getBodyAsString(), usuario.class);
 			mySQLPool.preparedQuery(
