@@ -9,18 +9,17 @@ import mqtt.mqttClientVerticle;
 import mqtt.mqttServerVerticle;
 import telegram.telegramMain;
 
-public class vertxMain extends AbstractVerticle{
+public class vertxMain extends AbstractVerticle {
 
-	
 	@Override
 	public void start(Promise<Void> startPromise) {
 		Router router = Router.router(vertx);
 		router.route().handler(BodyHandler.create());
-		//Descomentar para ver el funcionamiento de la API Rest
-		//vertx.deployVerticle(telegramMain.class.getName());
-		//vertx.deployVerticle(DatabaseVerticle.class.getName());
+		// Descomentar para ver el funcionamiento de la API Rest
+		// vertx.deployVerticle(telegramMain.class.getName());
+		// vertx.deployVerticle(DatabaseVerticle.class.getName());
 		vertx.deployVerticle(mqttServerVerticle.class.getName());
 		vertx.deployVerticle(mqttClientVerticle.class.getName());
-		vertx.deployVerticle(mqttClientVerticle.class.getName());	
+		vertx.deployVerticle(mqttClientVerticle.class.getName());
 	}
 }
