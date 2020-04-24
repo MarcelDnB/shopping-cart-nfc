@@ -19,10 +19,9 @@ import io.vertx.mqtt.messages.MqttPublishMessage;
 public class mqttServerVerticle extends AbstractVerticle {
 
 	public static final String TOPIC_WIFI = "wifi";
-	
-	
+
 	public static final SetMultimap<String, MqttEndpoint> clients = LinkedHashMultimap.create();
-	
+
 	public void start(Promise<Void> promise) {
 		MqttServerOptions options = new MqttServerOptions();
 		options.setClientAuth(ClientAuth.REQUIRED);
@@ -32,17 +31,18 @@ public class mqttServerVerticle extends AbstractVerticle {
 	}
 
 	private static void init(MqttServer mqttServer) {
-		
+
 		mqttServer.endpointHandler(endpoint -> {
 			System.out.println("MQTT client [" + endpoint.clientIdentifier() + "] request to connect, clean session = "
 					+ endpoint.isCleanSession());
 			endpoint.accept(false);
-			if (endpoint.auth().getPassword().contentEquals("mqttbrokerpass") && endpoint.auth().getUsername().contentEquals("mqttbroker")) {
+			if (endpoint.auth().getPassword().contentEquals("mqttbrokerpass")
+					&& endpoint.auth().getUsername().contentEquals("mqttbroker")) {
 				handleSubscription(endpoint);
 				handleUnsubscription(endpoint);
 				publishHandler(endpoint);
-				handleClientDisconnect(endpoint);	
-			}else {
+				handleClientDisconnect(endpoint);
+			} else {
 				endpoint.reject(MqttConnectReturnCode.CONNECTION_REFUSED_BAD_USER_NAME_OR_PASSWORD);
 			}
 		}).listen(ar -> {
@@ -68,14 +68,14 @@ public class mqttServerVerticle extends AbstractVerticle {
 	}
 
 	private static void handleUnsubscription(MqttEndpoint endpoint) {
-        endpoint.unsubscribeHandler(unsubscribe -> {
-            for (String t: unsubscribe.topics()) {
-                System.out.println("Unsubscription for " + t);
-                clients.remove(t, endpoint);
-            }
-            endpoint.unsubscribeAcknowledge(unsubscribe.messageId());
-        });
-    }
+		endpoint.unsubscribeHandler(unsubscribe -> {
+			for (String t : unsubscribe.topics()) {
+				System.out.println("Unsubscription for " + t);
+				clients.remove(t, endpoint);
+			}
+			endpoint.unsubscribeAcknowledge(unsubscribe.messageId());
+		});
+	}
 
 	private static void publishHandler(MqttEndpoint endpoint) {
 		endpoint.publishHandler(message -> {
@@ -89,12 +89,13 @@ public class mqttServerVerticle extends AbstractVerticle {
 		if (message.qosLevel() == MqttQoS.AT_LEAST_ONCE) {
 			String topicName = message.topicName();
 			switch (topicName) {
-			case TOPIC_WIFI:
-				System.out.println("Wifi published");
-				break;
+				case TOPIC_WIFI:
+					System.out.println("Wifi published");
+					break;
 			}
-			for (MqttEndpoint subscribed: clients.get(message.topicName())) {
-				subscribed.publish(message.topicName(), message.payload(), message.qosLevel(), message.isDup(), message.isRetain());
+			for (MqttEndpoint subscribed : clients.get(message.topicName())) {
+				subscribed.publish(message.topicName(), message.payload(), message.qosLevel(), message.isDup(),
+						message.isRetain());
 			}
 			endpoint.publishAcknowledge(message.messageId());
 		} else if (message.qosLevel() == MqttQoS.EXACTLY_ONCE) {
