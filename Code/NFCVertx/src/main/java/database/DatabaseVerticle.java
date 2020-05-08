@@ -1,5 +1,8 @@
 package database;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
 import io.vertx.core.json.Json;
@@ -15,6 +18,7 @@ import io.vertx.sqlclient.PoolOptions;
 import io.vertx.sqlclient.Row;
 import io.vertx.sqlclient.RowSet;
 import io.vertx.sqlclient.Tuple;
+import types.intolerancia;
 import types.productosUsuario;
 import types.scannedProduct;
 import types.usuario;
@@ -35,12 +39,12 @@ public class DatabaseVerticle extends AbstractVerticle {
 	@Override
 	public void start(Promise<Void> startPromise) {
 		MySQLConnectOptions mySQLConnectOptions = new MySQLConnectOptions().setPort(3306).setHost("localhost")
-				.setDatabase("DAD").setUser("dad").setPassword("cacamaca");
+				.setDatabase("DAD").setUser("dad").setPassword("50641145K");
 		PoolOptions poolOptions = new PoolOptions().setMaxSize(5);
 		mySQLPool = MySQLPool.pool(vertx, mySQLConnectOptions, poolOptions);
 		Router router = Router.router(vertx);
 		router.route().handler(BodyHandler.create());
-		vertx.createHttpServer().requestHandler(router::handle).listen(8081, result -> {
+		vertx.createHttpServer().requestHandler(router::handle).listen(8081,"0.0.0.0", result -> {
 			if (result.succeeded()) {
 				startPromise.complete();
 			} else {
@@ -53,6 +57,7 @@ public class DatabaseVerticle extends AbstractVerticle {
 		router.put("/api/scan/put/produs/values").handler(this::putAfterScan);
 		router.put("/api/scan/put/usuario/values").handler(this::putUsuario);
 		router.put("/api/scan/put/usuint/values").handler(this::putIntoleranciasUsuario);
+		router.get("/api/scan/get/intolerances").handler(this::getIntolerancesAll);
 	}
 
 	private void putUsuario(RoutingContext routingContext) {
@@ -146,9 +151,34 @@ public class DatabaseVerticle extends AbstractVerticle {
 					if (res.succeeded()) {
 						RowSet<Row> resultSet = res.result();
 						System.out.println("El n�mero de elementos obtenidos es " + resultSet.size());
+						JsonObject result = new JsonObject();
+						List<Integer> intole = new ArrayList<>();
+						for (Row row : resultSet) {
+							intole.add(row.getInteger("idIntolerancia"));
+						}
+						result = JsonObject.mapFrom(new scannedProduct(intole));
+						routingContext.response().setStatusCode(200).putHeader("content-type", "application/json")
+								.end(result.encodePrettily());
+					} else {
+						routingContext.response().setStatusCode(401).putHeader("content-type", "application/json")
+								.end((JsonObject.mapFrom(res.cause()).encodePrettily()));
+					}
+				});
+	}
+
+	private void getIntolerancesAll(RoutingContext routingContext) {
+		try {
+		mySQLPool.query(
+				"select idIntolerancia, nombreIntolerancia from intolerancia"
+						,
+				res -> {
+					if (res.succeeded()) {
+						RowSet<Row> resultSet = res.result();
+						System.out.println("El numero de elementos obtenidos es " + resultSet.size());
 						JsonArray result = new JsonArray();
 						for (Row row : resultSet) {
-							result.add(JsonObject.mapFrom(new scannedProduct(row.getInteger("idIntolerancia"))));
+							result.add(JsonObject.mapFrom(new intolerancia(row.getString("nombreIntolerancia"),
+									row.getInteger("idIntolerancia"))));
 						}
 						routingContext.response().setStatusCode(200).putHeader("content-type", "application/json")
 								.end(result.encodePrettily());
@@ -157,5 +187,9 @@ public class DatabaseVerticle extends AbstractVerticle {
 								.end((JsonObject.mapFrom(res.cause()).encodePrettily()));
 					}
 				});
+		}catch(Exception e) {
+			System.out.println(e.getMessage());
+		}
+
 	}
 }
