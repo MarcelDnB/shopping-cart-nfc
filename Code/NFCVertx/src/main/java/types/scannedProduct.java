@@ -1,21 +1,23 @@
 package types;
 
+import java.util.List;
+
 public class scannedProduct {
 	
 	
 	
-	private Integer idIntolerancia;
+	private List<Integer> idIntolerancia;
 	
-	public scannedProduct(Integer idIntolerancia) {
+	public scannedProduct(List<Integer> idIntolerancia) {
 		super();
 		this.idIntolerancia = idIntolerancia;
 	}
 
-	public Integer getIdIntolerancia() {
+	public List<Integer> getIdIntolerancia() {
 		return idIntolerancia;
 	}
 
-	public void setIdIntolerancia(Integer idIntolerancia) {
+	public void setIdIntolerancia(List<Integer> idIntolerancia) {
 		this.idIntolerancia = idIntolerancia;
 	}
 
@@ -48,7 +50,10 @@ public class scannedProduct {
 			return false;
 		return true;
 	}
-	
+
+
+
+
 	
 	
 	
