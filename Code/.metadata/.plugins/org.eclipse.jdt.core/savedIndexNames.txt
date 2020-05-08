@@ -1,4 +1,4 @@
-INDEX VERSION 1.131+D:\Sergio\SERGIO\UNIVERSIDAD\3ºAÑO\2º CUATRIMESTRE\DAD\PROYECTO\shopping-cart-nfc\Code\.metadata\.plugins\org.eclipse.jdt.core
+INDEX VERSION 1.131+D:\Sergio\SERGIO\UNIVERSIDAD\3ï¿½Aï¿½O\2ï¿½ CUATRIMESTRE\DAD\PROYECTO\shopping-cart-nfc\Code\.metadata\.plugins\org.eclipse.jdt.core
 158919221.index
 1946128649.index
 3742469908.index

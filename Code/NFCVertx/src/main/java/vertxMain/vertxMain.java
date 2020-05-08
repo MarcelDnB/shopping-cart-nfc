@@ -15,7 +15,7 @@ public class vertxMain extends AbstractVerticle {
 	public void start(Promise<Void> startPromise) {
 		Router router = Router.router(vertx);
 		router.route().handler(BodyHandler.create());
-		// Descomentar para ver el funcionamiento de la API Rest
+		// Descomentar para ver el funcionamiento de la API Rest o MQTT
 		// vertx.deployVerticle(telegramMain.class.getName());
 		 vertx.deployVerticle(DatabaseVerticle.class.getName());
 		//vertx.deployVerticle(mqttServerVerticle.class.getName());
