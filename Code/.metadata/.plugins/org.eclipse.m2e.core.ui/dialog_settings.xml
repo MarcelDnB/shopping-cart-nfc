@@ -1,7 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
+	<section name="org.eclipse.m2e.core.pom.dependencies">
+	</section>
+	<section name="org.eclipse.m2e.core.pom.overview">
+		<list key="ciManagementUrl">
+		</list>
+		<list key="ciManagementSystem">
+		</list>
+		<list key="issueManagementSystem">
+		</list>
+		<list key="issueManagementUrl">
+		</list>
+	</section>
 	<section name="MavenProjectImportWizardPage">
 		<list key="rootDirectory">
+			<item value="D:\Sergio\SERGIO\UNIVERSIDAD\3ºAÑO\2º CUATRIMESTRE\DAD\PROYECTO\shopping-cart-nfc\Code\NFCVertx"/>
 			<item value="C:\Users\Marcel\OneDrive - UNIVERSIDAD DE SEVILLA\GitHub\shopping-cart-nfc\Code\NFCVertx"/>
 		</list>
 		<list key="projectNameTemplate">
@@ -12,9 +25,5 @@
 			<item value="[groupId].[artifactId]-[version]"/>
 			<item value="[name]"/>
 		</list>
-	</section>
-	<section name="org.eclipse.m2e.core.pom.overview">
-	</section>
-	<section name="org.eclipse.m2e.core.pom.dependencies">
 	</section>
 </section>

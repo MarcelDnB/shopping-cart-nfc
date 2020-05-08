@@ -19,8 +19,9 @@
 <fullyQualifiedTypeName name="java.util.regex.Pattern"/>
 <fullyQualifiedTypeName name="types.usuario"/>
 <fullyQualifiedTypeName name="org.schors.vertx.telegram.bot.api.types.Update"/>
-<fullyQualifiedTypeName name="java.util.List"/>
-<fullyQualifiedTypeName name="java.util.ArrayList"/>
 <fullyQualifiedTypeName name="java.util.Arrays"/>
 <fullyQualifiedTypeName name="mqtt.mqttServerVerticle"/>
+<fullyQualifiedTypeName name="types.intolerancia"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="java.util.List"/>
 </qualifiedTypeNameHistroy>
