@@ -3,7 +3,6 @@ types\wifiReading.class
 types\intolerancia.class
 types\ingredientesProducto.class
 mqtt\mqttServerVerticle.class
-mqtt\DomoState.class
 mqtt\mqttClientVerticle.class
 types\ingrediente.class
 types\comercio.class
