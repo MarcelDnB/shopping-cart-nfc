@@ -59,6 +59,7 @@ void setup()
   nfc.setPassiveActivationRetries(0xFF);
   nfc.SAMConfig();
 
+
   /* WIFI INIT */
   WiFi.begin(SSID, PASS);
   Serial.print("Connecting...");
@@ -69,6 +70,7 @@ void setup()
   }
   Serial.print("Connected, IP address: ");
   Serial.print(WiFi.localIP());
+
   /* sendPutNuevoUsuario(); // 1. Se ejecuta una vez por reset, se crea el perfil de usuario + sus intolerncias y se envian a la bbdd */
 }
 
@@ -92,6 +94,7 @@ void loop()
   {
     /* lcd.print("Esperando escaneo"); */
   }
+
 
   /* TODO: Funcionalidad que se me ha ocurrido, tener que darle a reset cada vez que un nuevo cliente manipula el aparato */
 }
@@ -301,6 +304,7 @@ void sendPutWifiRead()
   Serial.print("RSSI:");
   Serial.println(rssi);*/
   /*
+
     HTTPClient http;
     http.begin(client, SERVER_IP, SERVER_PORT, "/api/scan/put/wifi/values", true);
     http.addHeader("Content-Type", "application/json");
