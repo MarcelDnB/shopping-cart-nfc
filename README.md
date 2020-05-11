@@ -7,25 +7,9 @@ La placa que vamos a usar es llamada ESP32, evidentemente tenemos tambien un rec
 
 ##### La idea parte de un supermercado
 
-##### cuyas etiquetas de los productos son
+cuyas etiquetas de los productos son compatibles con la tecnología de NFC. El proyecto consiste en el desarrollo de un dispositivo compatible con esta tecnología de manera que, se le podrán dar varias funcionalidades a dicho dispositivo.
 
-##### compatibles con la tecnología de
-
-##### NFC. El proyecto consiste en el
-
-##### desarrollo de un dispositivo
-
-##### compatible con esta tecnología de
-
-##### manera que, se le podrán dar varias
-
-##### funcionalidades a dicho dispositivo.
-
-## Desarrollo de
-
-## Aplicaciones Distribuidas
-
-## Dispositivo con NFC
+## Desarrollo de Aplicaciones Distribuidas | Dispositivo con NFC
 
 ```
 Autores: Pérez López Sergio, Dan Gigi Marcel
