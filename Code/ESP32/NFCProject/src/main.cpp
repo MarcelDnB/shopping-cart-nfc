@@ -40,9 +40,18 @@ void grabarNFC(void);
 void sendPutAfterScan(int );
 void sendPutWifiRead();
 
+
+
+
 void setup() {
   Serial.begin(9600);
-
+  /*pinMode(18, OUTPUT);
+  pinMode(19, OUTPUT);
+  pinMode(32, OUTPUT);
+  pinMode(33, OUTPUT);
+  pinMode(25, OUTPUT);
+  pinMode(26, OUTPUT);*/
+  Serial.println("He llegado al primer lugar");
   // Configurar para leer/grabar etiquetas RFID
    nfc.begin();
    nfc.setPassiveActivationRetries(0xFF);
@@ -58,11 +67,19 @@ void setup() {
   Serial.print("Connected, IP address: ");
   Serial.print(WiFi.localIP());
   //sendPutNuevoUsuario(); // 1. Se ejecuta una vez por reset, se crea el perfil de usuario + sus intolerncias y se envian a la bbdd
+  Serial.println("He llegado al segundo lugar");
+  //hola mundo lcd
+/*  LiquidCrystal lcd(12,14,32,33,25,26);//pines en los que se conecta
+  lcd.begin(16, 2);
+  lcd.setCursor(0,0);
+  lcd.print("HOLA, MUNDO!");*/
 }
 
 void loop() {
-
-sendPutWifiRead();
+//hola mundo WL_CONNECTED
+//lcd.setCursor(9,1);
+//lcd.setCursor(0,1);
+//sendPutWifiRead();
   //leerNFC(); // 2. El if que hay dentro se ejecuta, ir a la funcion
   //if(resultado!=0) {
     //mostramos por pantalla el valor que tenga el resultado de haber escaneado un producto
@@ -278,12 +295,12 @@ void sendPutWifiRead() {
   // if you are connected, print out info about the connection:
   else {*/
    // print the received signal strength:
-   string str = "vodafone644A";
+  /* string str = "vodafone644A";
   const char*c = str.c_str();
   long rssi = WiFi.RSSI(c);
 
   Serial.print("RSSI:");
-  Serial.println(rssi);
+  Serial.println(rssi);*/
 /*
     HTTPClient http;
     http.begin(client, SERVER_IP, SERVER_PORT, "/api/scan/put/wifi/values", true);
