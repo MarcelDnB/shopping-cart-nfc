@@ -5,9 +5,7 @@
 Consiste en una placa situada en un carro de compra con el cual vamos a escanear etiquetas NFC situadas cerca de los productos las cuales indican a estos. Esta placa tiene el objetivo de dar a conocer al usuario de si un producto es adecuado para el en cuanto a las intolerancias, alergias, etc.
 La placa que vamos a usar es llamada ESP32, evidentemente tenemos tambien un receptor NFC, algunos LED's RGB para indicar cuanto de malo es un producto para un usuario especifico, por ejemplo en cuanto a las intolerancias. Tenemos tambien un LCD para que el usuario pueda elegir su perfil de intolerancias.
 
-##### La idea parte de un supermercado
-
-cuyas etiquetas de los productos son compatibles con la tecnología de NFC. El proyecto consiste en el desarrollo de un dispositivo compatible con esta tecnología de manera que, se le podrán dar varias funcionalidades a dicho dispositivo.
+##### La idea parte de un supermercado cuyas etiquetas de los productos son compatibles con la tecnología de NFC. El proyecto consiste en el desarrollo de un dispositivo compatible con esta tecnología de manera que, se le podrán dar varias funcionalidades a dicho dispositivo.
 
 ## Desarrollo de Aplicaciones Distribuidas | Dispositivo con NFC
 
