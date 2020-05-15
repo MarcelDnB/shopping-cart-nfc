@@ -9,12 +9,23 @@
 #include <LiquidCrystal.h>
 #include <iostream>
 #include <vector>
+#include <PubSubClient.h>
+#include "DHTesp.h"
+#include <stdlib.h>
+
+
+
 #define PN532_IRQ (15)
 #define PN532_RESET (2)
 using namespace std;
 const char *SSID = "MiFibra-5058";
 const char *PASS = "wdwj5mqF";
 const int COMERCIO = 1;
+
+//para MQTT
+const int mqttPort = 11393;
+const char* mqttUser = "dqyoxjgo";
+const char* mqttPassword = "bDFPyIOx5Mln";
 
 void sendPutNuevoUsuario();
 void leerNFC(void);
@@ -26,6 +37,7 @@ void sendPutWifiRead();
 void sendGetAllIntelerances();
 void sendPutUsuario();
 void sendPutIntoleranciasUsuario();
+void conectarMQTT();
 
 /*
   nfc: variable mediante la cual inicializamos el nfc, pasandole la direccion de interrupcion y el reset
@@ -46,6 +58,9 @@ vector<int> intoleranciasProducto; //desde la funcion sendGetIntolerancias()
 int resultado;                     //desde la funcion getCompatibilidad()
 
 
+//para mqtt
+WiFiClient espClient;
+PubSubClient client(espClient);
 /*
 Funciones:
   1. Inicialización del Serial
@@ -74,6 +89,26 @@ void setup()
   Serial.print(WiFi.localIP());
 
 
+//para mqtt
+while (!client.connected()) {
+   Serial.println("Conectando a Broquer MQTT...");
+
+   if (client.connect("wifi", mqttUser, mqttPassword )) {
+
+     Serial.println("conectado");
+
+   } else {
+
+     Serial.print("conexion fallida ");
+     Serial.print(client.state());
+     delay(2000);
+
+   }
+ }
+
+
+
+
   /* sendPutNuevoUsuario(); // 1. Se ejecuta una vez por reset, se crea el perfil de usuario + sus intolerncias y se envian a la bbdd */
 Serial.println("Esperando tarjeta");
 }
@@ -88,6 +123,14 @@ Funciones:
 */
 void loop()
 {
+  //para mqtt
+  conectarMQTT();
+
+
+
+
+
+
   /* sendPutWifiRead(); Funcionalidad de muestrear el Wifi periodicamente. */
 
   leerNFC();  //Se ejecuta constantemente
@@ -519,3 +562,19 @@ void grabarNFC()
     }
   }
 }
+
+
+
+
+
+// PARTE DE MQTT
+ void conectarMQTT(){
+  delay(dht.getMinimumSamplingPeriod());
+  float temperature = dht.getTemperature();
+  char tempstring[3];
+  dtostrf(temperature,3,1,tempstring);
+  if(){
+  client.publish("SENSOR1/TEMPERATURA", tempstring);
+  }
+  client.loop();
+ }
