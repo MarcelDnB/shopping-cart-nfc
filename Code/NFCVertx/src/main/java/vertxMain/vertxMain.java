@@ -6,6 +6,8 @@ import io.vertx.core.Promise;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.BodyHandler;
 import mqtt.mqttClientVerticle;
+import mqtt.mqttClientVerticle1;
+import mqtt.mqttClientVerticle2;
 import mqtt.mqttServerVerticle;
 import telegram.telegramMain;
 
@@ -17,9 +19,10 @@ public class vertxMain extends AbstractVerticle {
 		router.route().handler(BodyHandler.create());
 		// Descomentar para ver el funcionamiento de la API Rest o MQTT
 		// vertx.deployVerticle(telegramMain.class.getName());
-		 vertx.deployVerticle(DatabaseVerticle.class.getName());
-		//vertx.deployVerticle(mqttServerVerticle.class.getName());
-		//vertx.deployVerticle(mqttClientVerticle.class.getName());
-		//vertx.deployVerticle(mqttClientVerticle.class.getName());
+		// vertx.deployVerticle(DatabaseVerticle.class.getName());
+		vertx.deployVerticle(mqttServerVerticle.class.getName());
+		// vertx.deployVerticle(mqttClientVerticle1.class.getName());
+		vertx.deployVerticle(mqttClientVerticle.class.getName());
+		// vertx.deployVerticle(mqttClientVerticle2.class.getName());
 	}
 }

@@ -10,13 +10,24 @@ import io.netty.handler.codec.mqtt.MqttQoS;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
 import io.vertx.core.http.ClientAuth;
+import io.vertx.core.json.Json;
+import io.vertx.ext.web.RoutingContext;
 import io.vertx.mqtt.MqttEndpoint;
 import io.vertx.mqtt.MqttServer;
 import io.vertx.mqtt.MqttServerOptions;
 import io.vertx.mqtt.MqttTopicSubscription;
 import io.vertx.mqtt.messages.MqttPublishMessage;
+import io.vertx.mysqlclient.MySQLClient;
+import io.vertx.mysqlclient.MySQLConnectOptions;
+import io.vertx.mysqlclient.MySQLPool;
+import io.vertx.sqlclient.PoolOptions;
+import io.vertx.sqlclient.Row;
+import io.vertx.sqlclient.RowSet;
+import io.vertx.sqlclient.Tuple;
+import types.wifiReading;
 
 public class mqttServerVerticle extends AbstractVerticle {
+	public static MySQLPool mySQLPool;
 
 	public static final String TOPIC_WIFI = "wifi";
 
@@ -28,6 +39,10 @@ public class mqttServerVerticle extends AbstractVerticle {
 		options.setPort(1885);
 		MqttServer mqttServer = MqttServer.create(vertx, options);
 		init(mqttServer);
+		MySQLConnectOptions mySQLConnectOptions = new MySQLConnectOptions().setPort(3306).setHost("localhost")
+				.setDatabase("DAD").setUser("dad").setPassword("dnbmusic");
+		PoolOptions poolOptions = new PoolOptions().setMaxSize(5);
+		mySQLPool = MySQLPool.pool(vertx, mySQLConnectOptions, poolOptions);
 	}
 
 	private static void init(MqttServer mqttServer) {
@@ -86,7 +101,7 @@ public class mqttServerVerticle extends AbstractVerticle {
 	}
 
 	private static void handleQoS(MqttPublishMessage message, MqttEndpoint endpoint) {
-		if (message.qosLevel() == MqttQoS.AT_LEAST_ONCE) { 
+		if (message.qosLevel() == MqttQoS.AT_LEAST_ONCE) {
 			String topicName = message.topicName();
 			switch (topicName) {
 				case TOPIC_WIFI:
@@ -101,6 +116,21 @@ public class mqttServerVerticle extends AbstractVerticle {
 		} else if (message.qosLevel() == MqttQoS.EXACTLY_ONCE) {
 			endpoint.publishRelease(message.messageId());
 		}
+		// MYSQL
+		wifiReading wifiAIntroducir = Json.decodeValue(message.payload().toString(), wifiReading.class);
+		// System.out.println("Este es el mensaje: " + message.payload().toString());
+
+		mySQLPool.preparedQuery("INSERT INTO redesWifi (SSID, PWR, captureTime, idComercio) VALUES (?,?,?,?)",
+				Tuple.of(wifiAIntroducir.getSSID(), wifiAIntroducir.getPower(), wifiAIntroducir.getTimestamp(),
+						wifiAIntroducir.getIdComercio()),
+				handler -> {
+					if (handler.succeeded()) {
+						System.out.println(handler.result().rowCount());
+					} else {
+						System.out.println(handler.cause().toString());
+					}
+				});
+		// MYSQL
 	}
 
 	private static void handleClientDisconnect(MqttEndpoint endpoint) {

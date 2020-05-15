@@ -13,7 +13,7 @@ import io.vertx.mqtt.MqttClient;
 import io.vertx.mqtt.MqttClientOptions;
 import io.vertx.mqtt.impl.MqttClientImpl;
 
-public class mqttClientVerticle extends AbstractVerticle {
+public class mqttClientVerticle2 extends AbstractVerticle {
 	private static Boolean sync = new Boolean(true);
 	private String classInstanceId;
 
@@ -41,16 +41,19 @@ public class mqttClientVerticle extends AbstractVerticle {
 			}
 		});
 
-		String enviar = "enviar";
+		Random randomTimeSeconds = new Random();
+
 		mqttClient.connect(1885, "localhost", handler -> {
 			if (handler.result().code() == MqttConnectReturnCode.CONNECTION_ACCEPTED) {
 				mqttClient.subscribe(mqttServerVerticle.TOPIC_WIFI, MqttQoS.AT_LEAST_ONCE.value(), handlerSubscribe -> {
 					if (handlerSubscribe.succeeded()) {
 						System.out.println(
 								classInstanceId + " subscribed to " + mqttServerVerticle.TOPIC_WIFI + " channel");
-						vertx.setPeriodic(5000, handlerPeriodic -> {
-							mqttClient.publish(mqttServerVerticle.TOPIC_WIFI, Buffer.buffer(enviar),
-									MqttQoS.AT_LEAST_ONCE, false, true);
+						vertx.setPeriodic((7 + randomTimeSeconds.nextInt(5)) * 1000, handlerPeriodic -> {
+							wifiReading wreading = new wifiReading("WLAN_RED3", -60.7,
+									Calendar.getInstance().getTimeInMillis(), 0, 1);
+							mqttClient.publish(mqttServerVerticle.TOPIC_WIFI,
+									Buffer.buffer(Json.encodePrettily(wreading)), MqttQoS.AT_LEAST_ONCE, false, true);
 						});
 
 					} else {
