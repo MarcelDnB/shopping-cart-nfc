@@ -13,8 +13,6 @@
 #include "DHTesp.h"
 #include <stdlib.h>
 
-
-
 #define PN532_IRQ (15)
 #define PN532_RESET (2)
 using namespace std;
@@ -24,20 +22,21 @@ const int COMERCIO = 1;
 
 //para MQTT
 const int mqttPort = 11393;
-const char* mqttUser = "dqyoxjgo";
-const char* mqttPassword = "bDFPyIOx5Mln";
+const char *mqttUser = "dqyoxjgo";
+const char *mqttPassword = "bDFPyIOx5Mln";
 
 void sendPutNuevoUsuario();
-void leerNFC(void);
+void leerNFC();
 void sendGetIntolerancias(int);
 int getCompatibilidad();
-void grabarNFC(void);
+void grabarNFC();
 void sendPutAfterScan(int);
 void sendPutWifiRead();
 void sendGetAllIntelerances();
 void sendPutUsuario();
 void sendPutIntoleranciasUsuario();
 void conectarMQTT();
+void callback(char *, byte *, unsigned int);
 
 /*
   nfc: variable mediante la cual inicializamos el nfc, pasandole la direccion de interrupcion y el reset
@@ -49,7 +48,7 @@ void conectarMQTT();
   resultado: el ultimo resultado de un escaneo de producto.
 */
 //Adafruit_PN532 nfc(PN532_IRQ,PN532_RESET);
-Adafruit_PN532 nfc(2,15,4,5);
+Adafruit_PN532 nfc(2, 15, 4, 5);
 WiFiClient client;
 String SERVER_IP = "192.168.1.34";
 int SERVER_PORT = 8081;
@@ -57,10 +56,9 @@ vector<int> intoleranciasUsuario;  //desde la funcion sendPutNuevoUsuario()
 vector<int> intoleranciasProducto; //desde la funcion sendGetIntolerancias()
 int resultado;                     //desde la funcion getCompatibilidad()
 
-
 //para mqtt
-WiFiClient espClient;
-PubSubClient client(espClient);
+PubSubClient client1(client);
+PubSubClient stream();
 /*
 Funciones:
   1. Inicialización del Serial
@@ -76,7 +74,6 @@ void setup()
   nfc.setPassiveActivationRetries(0xFF);
   nfc.SAMConfig();
 
-
   /* WIFI INIT */
   WiFi.begin(SSID, PASS);
   Serial.print("Connecting...");
@@ -88,29 +85,27 @@ void setup()
   Serial.print("Connected, IP address: ");
   Serial.print(WiFi.localIP());
 
+  //para mqtt
+  while (!client1.connected())
+  {
+    Serial.println("Conectando a Broker MQTT...");
+    if (client1.connect("wifi", "mqttbroker", "mqttbrokerpass"))
+    {
+      Serial.println("conectado");
+      client1.setCallback(callback);
+      client1.subscribe("wifi");
+    }
+    else
+    {
 
-//para mqtt
-while (!client.connected()) {
-   Serial.println("Conectando a Broquer MQTT...");
-
-   if (client.connect("wifi", mqttUser, mqttPassword )) {
-
-     Serial.println("conectado");
-
-   } else {
-
-     Serial.print("conexion fallida ");
-     Serial.print(client.state());
-     delay(2000);
-
-   }
- }
-
-
-
+      Serial.print("conexion fallida ");
+      Serial.print(client1.state());
+      delay(2000);
+    }
+  }
 
   /* sendPutNuevoUsuario(); // 1. Se ejecuta una vez por reset, se crea el perfil de usuario + sus intolerncias y se envian a la bbdd */
-Serial.println("Esperando tarjeta");
+  Serial.println("\nEsperando tarjeta NFC...");
 }
 
 /*
@@ -126,16 +121,11 @@ void loop()
   //para mqtt
   conectarMQTT();
 
-
-
-
-
-
   /* sendPutWifiRead(); Funcionalidad de muestrear el Wifi periodicamente. */
 
-  leerNFC();  //Se ejecuta constantemente
+  leerNFC(); //Se ejecuta constantemente
   //grabarNFC();
-/*  if (resultado != 0)
+  /*  if (resultado != 0)
   {
     // lcd.print();
   }
@@ -345,7 +335,7 @@ void leerNFC(void)
           Serial.println("");
           Serial.println("Esto es el DATA:");
           data[15] = '\0';
-          Serial.print((char*)data);
+          Serial.print((char *)data);
 
           // Wait a bit before reading the card again
           delay(1000);
@@ -377,7 +367,7 @@ void leerNFC(void)
         Serial.println("");
         Serial.println("Esto es el DATA:");
         data[15] = '\0';
-        Serial.print((char*)data);
+        Serial.print((char *)data);
 
         // Wait a bit before reading the card again
         delay(1000);
@@ -563,18 +553,29 @@ void grabarNFC()
   }
 }
 
-
-
-
-
 // PARTE DE MQTT
- void conectarMQTT(){
-  delay(dht.getMinimumSamplingPeriod());
-  float temperature = dht.getTemperature();
-  char tempstring[3];
-  dtostrf(temperature,3,1,tempstring);
-  if(){
-  client.publish("SENSOR1/TEMPERATURA", tempstring);
+void conectarMQTT()
+{
+  /* char tempstring[3];
+  dtostrf(temperature, 3, 1, tempstring);
+  if ()
+  {
+    client1.publish("SENSOR1/TEMPERATURA", tempstring);
+  }*/
+  client1.loop();
+}
+
+void callback(char *topic, byte *payload, unsigned int length)
+{
+  Serial.print("Message arrived [");
+  Serial.print(topic);
+  Serial.print("] - Longitud Mensaje: ");
+  Serial.print(length);
+  Serial.print(" bytes - Mensaje: ");
+  int i = 0;
+  for (i = 0; i < length; i++)
+  {
+    Serial.print((char)payload[i]);
   }
-  client.loop();
- }
+  Serial.println();
+}
