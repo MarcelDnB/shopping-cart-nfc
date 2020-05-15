@@ -43,7 +43,7 @@ public class mqttClientVerticle1 extends AbstractVerticle {
 
 		Random randomTimeSeconds = new Random();
 
-		mqttClient.connect(1885, "localhost", handler -> {
+		mqttClient.connect(1885, "192.168.1.34", handler -> {
 			if (handler.result().code() == MqttConnectReturnCode.CONNECTION_ACCEPTED) {
 				mqttClient.subscribe(mqttServerVerticle.TOPIC_WIFI, MqttQoS.AT_LEAST_ONCE.value(), handlerSubscribe -> {
 					if (handlerSubscribe.succeeded()) {

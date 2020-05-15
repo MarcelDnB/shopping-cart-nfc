@@ -1,5 +1,5 @@
 #include <Arduino.h>
-#include "ArduinoJson.h"
+#include <ArduinoJson.h>
 #include <WiFi.h>
 #include <HTTPClient.h>
 #include <ArduinoOTA.h>
@@ -21,9 +21,10 @@ const char *PASS = "wdwj5mqF";
 const int COMERCIO = 1;
 
 //para MQTT
-const int mqttPort = 11393;
-const char *mqttUser = "dqyoxjgo";
-const char *mqttPassword = "bDFPyIOx5Mln";
+const int mqttPort = 1885;
+const char* mqttServer = "192.168.1.34";
+const char *mqttUser = "mqttbroker";
+const char *mqttPassword = "mqttbrokerpass";
 
 void sendPutNuevoUsuario();
 void leerNFC();
@@ -37,6 +38,7 @@ void sendPutUsuario();
 void sendPutIntoleranciasUsuario();
 void conectarMQTT();
 void callback(char *, byte *, unsigned int);
+void enviarMQTT();
 
 /*
   nfc: variable mediante la cual inicializamos el nfc, pasandole la direccion de interrupcion y el reset
@@ -58,7 +60,7 @@ int resultado;                     //desde la funcion getCompatibilidad()
 
 //para mqtt
 PubSubClient client1(client);
-PubSubClient stream();
+
 /*
 Funciones:
   1. Inicialización del Serial
@@ -85,27 +87,11 @@ void setup()
   Serial.print("Connected, IP address: ");
   Serial.print(WiFi.localIP());
 
-  //para mqtt
-  while (!client1.connected())
-  {
-    Serial.println("Conectando a Broker MQTT...");
-    if (client1.connect("wifi", "mqttbroker", "mqttbrokerpass"))
-    {
-      Serial.println("conectado");
-      client1.setCallback(callback);
-      client1.subscribe("wifi");
-    }
-    else
-    {
-
-      Serial.print("conexion fallida ");
-      Serial.print(client1.state());
-      delay(2000);
-    }
-  }
+  client1.setServer(mqttServer, mqttPort);
+  client1.setCallback(callback);
 
   /* sendPutNuevoUsuario(); // 1. Se ejecuta una vez por reset, se crea el perfil de usuario + sus intolerncias y se envian a la bbdd */
-  Serial.println("\nEsperando tarjeta NFC...");
+  Serial.println("\n Esperando tarjeta NFC...");
 }
 
 /*
@@ -119,11 +105,23 @@ Funciones:
 void loop()
 {
   //para mqtt
-  conectarMQTT();
+  if (!client1.connected()) {
+    Serial.print("Connecting ...");
+    if (client1.connect("Luismijeje", "mqttbroker", "mqttbrokerpass")) {  //Sustituir XX por número de puesto
+      Serial.println("connected");
+      client1.subscribe("wifi");
+    } else {
+      delay(5000);
+    }
+  }
+  // Cliente a la escucha
+  client1.loop();
+  enviarMQTT();
+  //conectarMQTT();
 
   /* sendPutWifiRead(); Funcionalidad de muestrear el Wifi periodicamente. */
 
-  leerNFC(); //Se ejecuta constantemente
+  //leerNFC(); //Se ejecuta constantemente
   //grabarNFC();
   /*  if (resultado != 0)
   {
@@ -222,7 +220,6 @@ Fuciones:
 */
 void sendPutNuevoUsuario()
 {
-  const size_t capacity = JSON_OBJECT_SIZE(3) + JSON_ARRAY_SIZE(2) + 60;
   if (WiFi.status() == WL_CONNECTED)
   {
     sendPutUsuario();
@@ -556,26 +553,49 @@ void grabarNFC()
 // PARTE DE MQTT
 void conectarMQTT()
 {
-  /* char tempstring[3];
-  dtostrf(temperature, 3, 1, tempstring);
-  if ()
-  {
-    client1.publish("SENSOR1/TEMPERATURA", tempstring);
-  }*/
-  client1.loop();
+  if (!client1.connected()) {
+      Serial.print("Connecting ...");
+      if (client1.connect("wifi", "mqttbroker", "mqttbrokerpass")) {  //Sustituir XX por número de puesto
+        Serial.println("connected");
+        client1.subscribe("wifi");
+      } else {
+        delay(5000);
+      }
+    }
+    // Cliente a la escucha
+    client1.loop();
 }
 
-void callback(char *topic, byte *payload, unsigned int length)
-{
-  Serial.print("Message arrived [");
-  Serial.print(topic);
-  Serial.print("] - Longitud Mensaje: ");
-  Serial.print(length);
-  Serial.print(" bytes - Mensaje: ");
-  int i = 0;
-  for (i = 0; i < length; i++)
-  {
-    Serial.print((char)payload[i]);
-  }
-  Serial.println();
+void callback(char* topic, byte* payload, unsigned int length) {
+    payload[length] = '\0';
+    String strTopic = String((char*)topic);
+    String msg = "";
+    if (strTopic == "wifi") {
+      msg = (char*)payload;
+      Serial.println(msg);
+    }
+}
+
+void enviarMQTT() {
+const size_t capacity = JSON_OBJECT_SIZE(3) + JSON_ARRAY_SIZE(2) + 60;
+  DynamicJsonDocument doc(capacity);
+  doc["power"] = WiFi.RSSI();
+  doc["timestamp"] = 1231211;
+  doc["idWifi"] = 1;
+  doc["idComercio"] = COMERCIO;
+  doc["ssid"] = "WLAN_KEKE";
+
+  String output;
+  serializeJson(doc, output);
+    char JSONmessageBuffer[100];
+    output.toCharArray(JSONmessageBuffer, sizeof(JSONmessageBuffer));
+    Serial.println("Sending message to MQTT topic..");
+    Serial.println(output);
+
+
+  if (client1.publish("wifi", JSONmessageBuffer) == true) {
+    Serial.println("Success sending message");
+  } else {
+    Serial.println("Error sending message");
+}
 }
