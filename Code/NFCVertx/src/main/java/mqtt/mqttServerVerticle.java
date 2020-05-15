@@ -37,10 +37,11 @@ public class mqttServerVerticle extends AbstractVerticle {
 		MqttServerOptions options = new MqttServerOptions();
 		options.setClientAuth(ClientAuth.REQUIRED);
 		options.setPort(1885);
+		options.setHost("0.0.0.0");
 		MqttServer mqttServer = MqttServer.create(vertx, options);
 		init(mqttServer);
 		MySQLConnectOptions mySQLConnectOptions = new MySQLConnectOptions().setPort(3306).setHost("localhost")
-				.setDatabase("DAD").setUser("dad").setPassword("dnbmusic");
+				.setDatabase("DAD").setUser("dad").setPassword("50641145K");
 		PoolOptions poolOptions = new PoolOptions().setMaxSize(5);
 		mySQLPool = MySQLPool.pool(vertx, mySQLConnectOptions, poolOptions);
 	}
@@ -118,7 +119,6 @@ public class mqttServerVerticle extends AbstractVerticle {
 		}
 		// MYSQL
 		wifiReading wifiAIntroducir = Json.decodeValue(message.payload().toString(), wifiReading.class);
-		// System.out.println("Este es el mensaje: " + message.payload().toString());
 
 		mySQLPool.preparedQuery("INSERT INTO redesWifi (SSID, PWR, captureTime, idComercio) VALUES (?,?,?,?)",
 				Tuple.of(wifiAIntroducir.getSSID(), wifiAIntroducir.getPower(), wifiAIntroducir.getTimestamp(),

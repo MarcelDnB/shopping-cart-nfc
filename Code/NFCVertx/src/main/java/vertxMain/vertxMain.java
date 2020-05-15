@@ -21,8 +21,8 @@ public class vertxMain extends AbstractVerticle {
 		// vertx.deployVerticle(telegramMain.class.getName());
 		// vertx.deployVerticle(DatabaseVerticle.class.getName());
 		vertx.deployVerticle(mqttServerVerticle.class.getName());
-		// vertx.deployVerticle(mqttClientVerticle1.class.getName());
-		vertx.deployVerticle(mqttClientVerticle.class.getName());
+		//vertx.deployVerticle(mqttClientVerticle1.class.getName());
+		//vertx.deployVerticle(mqttClientVerticle.class.getName());
 		// vertx.deployVerticle(mqttClientVerticle2.class.getName());
 	}
 }
