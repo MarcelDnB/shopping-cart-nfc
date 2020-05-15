@@ -9,8 +9,8 @@
 #include <LiquidCrystal.h>
 #include <iostream>
 #include <vector>
-#define PN532_IRQ (2)
-#define PN532_RESET (3)
+#define PN532_IRQ (15)
+#define PN532_RESET (2)
 using namespace std;
 const char *SSID = "MiFibra-5058";
 const char *PASS = "wdwj5mqF";
@@ -36,13 +36,15 @@ void sendPutIntoleranciasUsuario();
   intoleranciasProducto: vector en el cual vamos a guardar las intolerancias de un producto.
   resultado: el ultimo resultado de un escaneo de producto.
 */
-Adafruit_PN532 nfc(PN532_IRQ, PN532_RESET);
+//Adafruit_PN532 nfc(PN532_IRQ,PN532_RESET);
+Adafruit_PN532 nfc(2,15,4,5);
 WiFiClient client;
 String SERVER_IP = "192.168.1.34";
 int SERVER_PORT = 8081;
 vector<int> intoleranciasUsuario;  //desde la funcion sendPutNuevoUsuario()
 vector<int> intoleranciasProducto; //desde la funcion sendGetIntolerancias()
 int resultado;                     //desde la funcion getCompatibilidad()
+
 
 /*
 Funciones:
@@ -71,7 +73,9 @@ void setup()
   Serial.print("Connected, IP address: ");
   Serial.print(WiFi.localIP());
 
+
   /* sendPutNuevoUsuario(); // 1. Se ejecuta una vez por reset, se crea el perfil de usuario + sus intolerncias y se envian a la bbdd */
+Serial.println("Esperando tarjeta");
 }
 
 /*
@@ -85,16 +89,18 @@ Funciones:
 void loop()
 {
   /* sendPutWifiRead(); Funcionalidad de muestrear el Wifi periodicamente. */
-  leerNFC(); /* Se ejecuta constantemente */
-  if (resultado != 0)
+
+  leerNFC();  //Se ejecuta constantemente
+  //grabarNFC();
+/*  if (resultado != 0)
   {
-    /* lcd.print(); */
+    // lcd.print();
   }
   else
   {
-    /* lcd.print("Esperando escaneo"); */
+    // lcd.print("Esperando escaneo"); //
   }
-
+*/
 
   /* TODO: Funcionalidad que se me ha ocurrido, tener que darle a reset cada vez que un nuevo cliente manipula el aparato */
 }
@@ -156,11 +162,12 @@ void sendGetAllIntelerances()
 {
   HTTPClient http1;
   http1.begin(client, SERVER_IP, SERVER_PORT, "/api/scan/get/intolerances", true);
+  const size_t capacity = JSON_OBJECT_SIZE(3) + JSON_ARRAY_SIZE(2) + 60;
   DynamicJsonDocument doc1(capacity);
   int httpCode1 = http1.GET();
   Serial.println("Response code: " + httpCode1);
   String payload1 = http1.getString();
-  DeserializationError error = deserializeJson(doc1, payload);
+  DeserializationError error = deserializeJson(doc1, payload1);
   if (error)
   {
     Serial.print("deserializeJson() failed: ");
@@ -198,8 +205,8 @@ void sendPutNuevoUsuario()
     /* TODO:Cuando pongamos en marcha el display, recoger mediante los valores de los botones,
     hacer el scroll en el display y un sistema de seleccion mediante los botones
     meter dichos valores en la variable global intoleranciasUsuario
-    
-    while(1) {} 
+
+    while(1) {}
     */
   }
   sendPutIntoleranciasUsuario();
@@ -214,6 +221,7 @@ void sendPutIntoleranciasUsuario()
   HTTPClient http2;
   http2.begin(client, SERVER_IP, SERVER_PORT, "/api/scan/put/usuint/values", true);
   http2.addHeader("Content-Type", "application/json");
+  const size_t capacity = JSON_OBJECT_SIZE(3) + JSON_ARRAY_SIZE(2) + 60;
   DynamicJsonDocument doc2(capacity);
   JsonArray intolerances = doc2.createNestedArray("intolerances");
   for (int i : intoleranciasUsuario)
@@ -239,52 +247,120 @@ Funciones:
 void leerNFC(void)
 {
   uint8_t success;
-  uint8_t uid[] = {0, 0, 0, 0, 0, 0, 0};
-  uint8_t uidLength;
+  uint8_t uid[] = {0, 0, 0, 0, 0, 0, 0}; // Buffer to store the returned UID
+  uint8_t uidLength;                     // Length of the UID (4 or 7 bytes depending on ISO14443A card type)
 
+  // Wait for an ISO14443A type cards (Mifare, etc.).  When one is found
+  // 'uid' will be populated with the UID, and uidLength will indicate
+  // if the uid is 4 bytes (Mifare Classic) or 7 bytes (Mifare Ultralight)
   success = nfc.readPassiveTargetID(PN532_MIFARE_ISO14443A, uid, &uidLength);
+
   if (success)
   {
-    Serial.println("Intentando autentificar bloque 4 con clave KEYA");
-    uint8_t keya[6] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
-    success = nfc.mifareclassic_AuthenticateBlock(uid, uidLength, 4, 0, keya);
-    if (success)
+    // Display some basic information about the card
+    Serial.println("Found an ISO14443A card");
+    Serial.print("  UID Length: ");
+    Serial.print(uidLength, DEC);
+    Serial.println(" bytes");
+    Serial.print("  UID Value: ");
+    nfc.PrintHex(uid, uidLength);
+    Serial.println("");
+
+    if (uidLength == 4)
     {
-      Serial.println("Sector 1 (Bloques 4 a 7) autentificados");
-      uint8_t data[16];
-      success = nfc.mifareclassic_ReadDataBlock(4, data);
+      // We probably have a Mifare Classic card ...
+      Serial.println("Seems to be a Mifare Classic card (4 byte UID)");
+
+      // Now we need to try to authenticate it for read/write access
+      // Try with the factory default KeyA: 0xFF 0xFF 0xFF 0xFF 0xFF 0xFF
+      Serial.println("Trying to authenticate block 4 with default KEYA value");
+      uint8_t keya[6] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
+
+      // Start with block 4 (the first block of sector 1) since sector 0
+      // contains the manufacturer data and it's probably better just
+      // to leave it alone unless you know what you're doing
+      success = nfc.mifareclassic_AuthenticateBlock(uid, uidLength, 4, 0, keya);
+
       if (success)
       {
-        Serial.println("Datos leidos de sector 4:");
-        nfc.PrintHexChar(data, 16);
-        Serial.println("");
-        delay(5000);
+        Serial.println("Sector 1 (Blocks 4..7) has been authenticated");
+        uint8_t data[16] = {};
+
+        // If you want to write something to block 4 to test with, uncomment
+        // the following line and this text should be read back in a minute
+        //memcpy(data, (const uint8_t[]){ 'a', 'd', 'a', 'f', 'r', 'u', 'i', 't', '.', 'c', 'o', 'm', 0, 0, 0, 0 }, sizeof data);
+        // success = nfc.mifareclassic_WriteDataBlock (4, data);
+
+        // Try to read the contents of block 4
+        success = nfc.mifareclassic_ReadDataBlock(4, data);
+
+        if (success)
+        {
+          // Data seems to have been read ... spit it out
+          Serial.println("Reading Block 4:");
+          nfc.PrintHexChar(data, 16);
+          Serial.println("");
+          Serial.println("Esto es el DATA:");
+          data[15] = '\0';
+          Serial.print((char*)data);
+
+          // Wait a bit before reading the card again
+          delay(1000);
+        }
+        else
+        {
+          Serial.println("Ooops ... unable to read the requested block.  Try another key?");
+        }
       }
       else
       {
-        Serial.println("Fallo al leer tarjeta");
+        Serial.println("Ooops ... authentication failed: Try another key?");
       }
     }
-    else
-    {
-      Serial.println("Fallo autentificar tarjeta");
-    }
-    int productId = 0; //va a ser igual a el id que saquemos de la etiqueta NFC
 
-    /* Si hemos llegado aqui, el usuario ha escaneado un producto, 
+    if (uidLength == 7)
+    {
+      // We probably have a Mifare Ultralight card ...
+      Serial.println("Seems to be a Mifare Ultralight tag (7 byte UID)");
+
+      // Try to read the first general-purpose user page (#4)
+      Serial.println("Reading page 4");
+      uint8_t data[32];
+      success = nfc.mifareultralight_ReadPage(4, data);
+      if (success)
+      {
+        // Data seems to have been read ... spit it out
+        nfc.PrintHexChar(data, 4);
+        Serial.println("");
+        Serial.println("Esto es el DATA:");
+        data[15] = '\0';
+        Serial.print((char*)data);
+
+        // Wait a bit before reading the card again
+        delay(1000);
+      }
+      else
+      {
+        Serial.println("Ooops ... unable to read the requested page!?");
+      }
+    }
+
+    //int productId = 0; //va a ser igual a el id que saquemos de la etiqueta NFC
+
+    /* Si hemos llegado aqui, el usuario ha escaneado un producto,
        ahora conseguimos las intolerancias del producto escaneado*/
-    sendGetIntolerancias(productId);
+    //sendGetIntolerancias(productId);
     /* Nos da la compatibilidad del usuario con el producto escaneado */
-    getCompatibilidad();
+    //getCompatibilidad();
     /* Enlazamos al usuario con el escaneo */
-    sendPutAfterScan(productId);
+    //sendPutAfterScan(productId);
   }
 }
 
 /*
 Funciones:
   1. Para muestrear el Wifi periodicamente, probablemente la unica forma de hacerlo es conectandonos a la red en cuestion
-  de la que queremos ver su PWR (RSSI). En caso de que sea asi, es necesario hacer un bucle en el cual nos conectemos a las 
+  de la que queremos ver su PWR (RSSI). En caso de que sea asi, es necesario hacer un bucle en el cual nos conectemos a las
   redes wifi que nos haran falta para poder hacer la posterior triangulacion de la posicion del dispositivo.
 */
 /* TODO: Funcionalidad de muestrear el Wifi periodicamente. */
