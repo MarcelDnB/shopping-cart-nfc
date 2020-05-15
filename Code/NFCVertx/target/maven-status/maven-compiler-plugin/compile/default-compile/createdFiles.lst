@@ -1,3 +1,4 @@
+mqtt\mqttClientVerticle2.class
 types\scannedProduct.class
 types\wifiReading.class
 types\intolerancia.class
@@ -13,5 +14,6 @@ types\usuario.class
 types\producto.class
 types\intoleranciasIngrediente.class
 database\DatabaseVerticle.class
+mqtt\mqttClientVerticle1.class
 mqtt\mqttMessageFormat.class
 telegram\telegramMain.class
