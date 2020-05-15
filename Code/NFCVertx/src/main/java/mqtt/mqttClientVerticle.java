@@ -51,7 +51,7 @@ public class mqttClientVerticle extends AbstractVerticle {
 						System.out.println(
 								classInstanceId + " subscribed to " + mqttServerVerticle.TOPIC_WIFI + " channel");
 						vertx.setPeriodic((7 + randomTimeSeconds.nextInt(5)) * 1000, handlerPeriodic -> {
-							wifiReading wreading = new wifiReading("WLAN_KAKOTA", -65.7,
+							wifiReading wreading = new wifiReading("WLAN_RED1", -65.7,
 									Calendar.getInstance().getTimeInMillis(), 0, 1);
 							mqttClient.publish(mqttServerVerticle.TOPIC_WIFI,
 									Buffer.buffer(Json.encodePrettily(wreading)), MqttQoS.AT_LEAST_ONCE, false, true);

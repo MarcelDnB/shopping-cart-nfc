@@ -86,7 +86,7 @@ public class mqttServerVerticle extends AbstractVerticle {
 	}
 
 	private static void handleQoS(MqttPublishMessage message, MqttEndpoint endpoint) {
-		if (message.qosLevel() == MqttQoS.AT_LEAST_ONCE) {
+		if (message.qosLevel() == MqttQoS.AT_LEAST_ONCE) { 
 			String topicName = message.topicName();
 			switch (topicName) {
 				case TOPIC_WIFI:
