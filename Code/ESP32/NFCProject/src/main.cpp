@@ -12,7 +12,6 @@
 #include <PubSubClient.h>
 #include "DHTesp.h"
 #include <stdlib.h>
-
 #define PN532_IRQ (15)
 #define PN532_RESET (2)
 using namespace std;
@@ -67,8 +66,11 @@ Funciones:
   2. Inicialización del NFC
   3. Inicialización del Wifi + conexión
 */
+LiquidCrystal lcd(13,14,26,25,19,22);
+//LiquidCrystal lcd = LiquidCrystal(35,34,32,33,25,26);
 void setup()
 {
+
   Serial.begin(9600);
 
   /* NFC INIT */
@@ -92,6 +94,11 @@ void setup()
 
   /* sendPutNuevoUsuario(); // 1. Se ejecuta una vez por reset, se crea el perfil de usuario + sus intolerncias y se envian a la bbdd */
   Serial.println("\n Esperando tarjeta NFC...");
+
+  lcd.begin(16, 2);
+  //lcd.clear();
+//  lcd.setCursor(0,1);
+  lcd.print("Gracias Gabriel");
 }
 
 /*
@@ -104,8 +111,10 @@ Funciones:
 */
 void loop()
 {
+    //lcd.setCursor(0,0);
+
   //para mqtt
-  if (!client1.connected()) {
+/*  if (!client1.connected()) {
     Serial.print("Connecting ...");
     if (client1.connect("Luismijeje", "mqttbroker", "mqttbrokerpass")) {  //Sustituir XX por número de puesto
       Serial.println("connected");
@@ -117,6 +126,7 @@ void loop()
   // Cliente a la escucha
   client1.loop();
   enviarMQTT();
+  */ // DESCOMENTAR DESCOMENTAR DESCOMENTAR DESCOMENTAR DESCOMENTAR DESCOMENTAR DESCOMENTAR
   //conectarMQTT();
 
   /* sendPutWifiRead(); Funcionalidad de muestrear el Wifi periodicamente. */
@@ -134,6 +144,13 @@ void loop()
 */
 
   /* TODO: Funcionalidad que se me ha ocurrido, tener que darle a reset cada vez que un nuevo cliente manipula el aparato */
+/*  lcd.setCursor(2, 0);
+  // Print the string 'Hello World!':
+  lcd.print("Hello World!");
+  // Set the cursor on the third column and the second row:
+  lcd.setCursor(2, 1);
+  // Print the string 'LCD tutorial':
+  lcd.print("LCD tutorial");*/
 }
 
 /*
