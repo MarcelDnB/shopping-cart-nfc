@@ -21,9 +21,13 @@ const int COMERCIO = 1;
 
 //para MQTT
 const int mqttPort = 1885;
-const char* mqttServer = "192.168.1.34";
+const char *mqttServer = "192.168.1.34";
 const char *mqttUser = "mqttbroker";
 const char *mqttPassword = "mqttbrokerpass";
+const char *red1 = "red1";
+const char *red2 = "red2";
+const char *red3 = "red3";
+const char *red4 = "red4";
 
 void sendPutNuevoUsuario();
 void leerNFC();
@@ -55,9 +59,10 @@ String SERVER_IP = "192.168.1.34";
 int SERVER_PORT = 8081;
 vector<int> intoleranciasUsuario;  //desde la funcion sendPutNuevoUsuario()
 vector<int> intoleranciasProducto; //desde la funcion sendGetIntolerancias()
-int resultado;                     //desde la funcion getCompatibilidad()
+int resultado;
+int muestrearWifi; //desde la funcion getCompatibilidad()
 
-//para mqtt
+//Cliente MQTT
 PubSubClient client1(client);
 
 /*
@@ -66,8 +71,7 @@ Funciones:
   2. Inicialización del NFC
   3. Inicialización del Wifi + conexión
 */
-LiquidCrystal lcd(13,14,26,25,19,22);
-//LiquidCrystal lcd = LiquidCrystal(35,34,32,33,25,26);
+LiquidCrystal lcd(13, 14, 26, 25, 19, 22);
 void setup()
 {
 
@@ -96,8 +100,7 @@ void setup()
   Serial.println("\n Esperando tarjeta NFC...");
 
   lcd.begin(16, 2);
-  //lcd.clear();
-//  lcd.setCursor(0,1);
+
   lcd.print("Gracias Gabriel");
 }
 
@@ -111,46 +114,28 @@ Funciones:
 */
 void loop()
 {
-    //lcd.setCursor(0,0);
-
   //para mqtt
-/*  if (!client1.connected()) {
-    Serial.print("Connecting ...");
-    if (client1.connect("Luismijeje", "mqttbroker", "mqttbrokerpass")) {  //Sustituir XX por número de puesto
-      Serial.println("connected");
-      client1.subscribe("wifi");
-    } else {
-      delay(5000);
-    }
-  }
-  // Cliente a la escucha
-  client1.loop();
-  enviarMQTT();
-  */ // DESCOMENTAR DESCOMENTAR DESCOMENTAR DESCOMENTAR DESCOMENTAR DESCOMENTAR DESCOMENTAR
-  //conectarMQTT();
 
-  /* sendPutWifiRead(); Funcionalidad de muestrear el Wifi periodicamente. */
+  //enviarMQTT();
+
+  conectarMQTT();
+
+  //sendPutWifiRead(); //Funcionalidad de muestrear el Wifi periodicamente.
 
   //leerNFC(); //Se ejecuta constantemente
   //grabarNFC();
-  /*  if (resultado != 0)
+  /*if (resultado != 0)
   {
-    // lcd.print();
+    char buffer[];
+    snprintf(buffer, sizeof(buffer), "%s%d", "Nvl.Incompatibilidad: ", resultado);
+    lcd.print(buffer);
   }
   else
   {
-    // lcd.print("Esperando escaneo"); //
-  }
-*/
+    lcd.print("Esperando escaneo");
+  }*/
 
   /* TODO: Funcionalidad que se me ha ocurrido, tener que darle a reset cada vez que un nuevo cliente manipula el aparato */
-/*  lcd.setCursor(2, 0);
-  // Print the string 'Hello World!':
-  lcd.print("Hello World!");
-  // Set the cursor on the third column and the second row:
-  lcd.setCursor(2, 1);
-  // Print the string 'LCD tutorial':
-  lcd.print("LCD tutorial");*/
 }
 
 /*
@@ -184,7 +169,6 @@ void sendPutAfterScan(int productId)
 /*
 Funciones:
   1. Se crea un usuario al inicializar el dispositivo, pasandole el comercio.
-
 */
 void sendPutUsuario()
 {
@@ -392,15 +376,16 @@ void leerNFC(void)
       }
     }
 
-    //int productId = 0; //va a ser igual a el id que saquemos de la etiqueta NFC
+    int productId = 0; //va a ser igual a el id que saquemos de la etiqueta NFC
+    //productId = (int)data[];
 
     /* Si hemos llegado aqui, el usuario ha escaneado un producto,
        ahora conseguimos las intolerancias del producto escaneado*/
-    //sendGetIntolerancias(productId);
+    sendGetIntolerancias(productId);
     /* Nos da la compatibilidad del usuario con el producto escaneado */
-    //getCompatibilidad();
+    getCompatibilidad();
     /* Enlazamos al usuario con el escaneo */
-    //sendPutAfterScan(productId);
+    sendPutAfterScan(productId);
   }
 }
 
@@ -413,21 +398,24 @@ Funciones:
 /* TODO: Funcionalidad de muestrear el Wifi periodicamente. */
 void sendPutWifiRead()
 {
-  /*  if (WiFi.status() != WL_CONNECTED) {
+  if (WiFi.status() != WL_CONNECTED)
+  {
     Serial.println("Couldn't get a wifi connection");
-    while(true);
+    while (true)
+      ;
   }
   // if you are connected, print out info about the connection:
-  else {*/
-  // print the received signal strength:
-  /*string str = "vodafone644A";
-  const char *c = str.c_str();
-  //long rssi = WiFi.RSSI(c);
+  else
+  {
+    // print the received signal strength:
+    string str = "vodafone644A";
+    const char *c = str.c_str();
+    //long rssi = WiFi.RSSI(c);
 
-  Serial.print("RSSI:");
-  Serial.println(rssi);*/
-  /*
-
+    Serial.print("RSSI:");
+    Serial.println(rssi);
+    enviarMQTT();
+    /* // Alternativa API REST de mandar las lecturas WIFI
     HTTPClient http;
     http.begin(client, SERVER_IP, SERVER_PORT, "/api/scan/put/wifi/values", true);
     http.addHeader("Content-Type", "application/json");
@@ -448,8 +436,9 @@ void sendPutWifiRead()
 
     String payload = http.getString();
 
-    Serial.println("Resultado: " + payload);*/
-  //}
+    Serial.println("Resultado: " + payload);
+    */
+  }
 }
 
 /* TODO: Hacer el tema de la ubicacion, crear la triangulacion de alguna forma. mapeo? */
@@ -536,28 +525,48 @@ void grabarNFC()
   success = nfc.readPassiveTargetID(PN532_MIFARE_ISO14443A, uid, &uidLength);
   if (success)
   {
-    Serial.println("Intentando autentificar bloque 4 con clave KEYA");
-    uint8_t keya[6] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
-
-    success = nfc.mifareclassic_AuthenticateBlock(uid, uidLength, 4, 0, keya);
-    if (success)
+    if (uidLength == 4)
     {
-      Serial.println("Sector 1 (Bloques 4 a 7) autentificados");
-      uint8_t data[16];
 
-      memcpy(data, (const uint8_t[]){'l', 'u', 'i', 's', 'l', 'l', 'a', 'm', 'a', 's', '.', 'e', 's', 0, 0, 0}, sizeof data);
-      success = nfc.mifareclassic_WriteDataBlock(4, data);
+      Serial.println("Intentando autentificar bloque 4 con clave KEYA");
+      uint8_t keya[6] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
 
+      success = nfc.mifareclassic_AuthenticateBlock(uid, uidLength, 4, 0, keya);
       if (success)
       {
-        Serial.println("Datos escritos en bloque 4");
-        delay(10000);
+        Serial.println("Sector 1 (Bloques 4 a 7) autentificados");
+        uint8_t data[16];
+
+        memcpy(data, (const uint8_t[]){'l', 'u', 'i', 's', 'l', 'l', 'a', 'm', 'a', 's', '.', 'e', 's', 0, 0, 0}, sizeof data);
+        success = nfc.mifareclassic_WriteDataBlock(4, data);
+
+        if (success)
+        {
+          Serial.println("Datos escritos en bloque 4");
+          delay(10000);
+        }
+        else
+        {
+          Serial.println("Fallo al escribir tarjeta");
+          delay(1000);
+        }
       }
       else
       {
-        Serial.println("Fallo al escribir tarjeta");
+        Serial.println("Fallo autentificar tarjeta");
         delay(1000);
       }
+    }
+  }
+  if (uidLength == 7)
+  {
+    Serial.println("Seems to be a Mifare Ultralight tag (7 byte UID)");
+    uint8_t data[32];
+    memcpy(data, (const uint8_t[]){'l', 'u', 'i', 's', 'l', 'l', 'a', 'm', 'a', 's', '.', 'e', 's', 0, 0, 0}, sizeof(data));
+    success = nfc.mifareultralight_WritePage(4, data);
+    if (success)
+    {
+      delay(10000);
     }
     else
     {
@@ -570,31 +579,41 @@ void grabarNFC()
 // PARTE DE MQTT
 void conectarMQTT()
 {
-  if (!client1.connected()) {
-      Serial.print("Connecting ...");
-      if (client1.connect("wifi", "mqttbroker", "mqttbrokerpass")) {  //Sustituir XX por número de puesto
-        Serial.println("connected");
-        client1.subscribe("wifi");
-      } else {
-        delay(5000);
-      }
+  if (!client1.connected())
+  {
+    Serial.print("Connecting ...");
+    if (client1.connect("GIGI", "mqttbroker", "mqttbrokerpass"))
+    {
+      Serial.println("connected");
+      client1.subscribe("wifi");
     }
-    // Cliente a la escucha
-    client1.loop();
+    else
+    {
+      delay(5000);
+    }
+  }
+  // Cliente a la escucha
+  client1.loop();
 }
 
-void callback(char* topic, byte* payload, unsigned int length) {
-    payload[length] = '\0';
-    String strTopic = String((char*)topic);
-    String msg = "";
-    if (strTopic == "wifi") {
-      msg = (char*)payload;
-      Serial.println(msg);
+void callback(char *topic, byte *payload, unsigned int length)
+{
+  payload[length] = '\0';
+  String strTopic = String((char *)topic);
+  String msg = "";
+  if (strTopic == "wifi")
+  {
+    msg = (char *)payload;
+    if (msg == "enviar")
+    {
+      sendPutWifiRead(); //Si recibe "enviar" por el chat, manda lectura WIFI
     }
+  }
 }
 
-void enviarMQTT() {
-const size_t capacity = JSON_OBJECT_SIZE(3) + JSON_ARRAY_SIZE(2) + 60;
+void enviarMQTT()
+{
+  const size_t capacity = JSON_OBJECT_SIZE(3) + JSON_ARRAY_SIZE(2) + 60;
   DynamicJsonDocument doc(capacity);
   doc["power"] = WiFi.RSSI();
   doc["timestamp"] = 1231211;
@@ -604,15 +623,17 @@ const size_t capacity = JSON_OBJECT_SIZE(3) + JSON_ARRAY_SIZE(2) + 60;
 
   String output;
   serializeJson(doc, output);
-    char JSONmessageBuffer[100];
-    output.toCharArray(JSONmessageBuffer, sizeof(JSONmessageBuffer));
-    Serial.println("Sending message to MQTT topic..");
-    Serial.println(output);
+  char JSONmessageBuffer[100];
+  output.toCharArray(JSONmessageBuffer, sizeof(JSONmessageBuffer));
+  Serial.println("Sending message to MQTT topic..");
+  Serial.println(output);
 
-
-  if (client1.publish("wifi", JSONmessageBuffer) == true) {
+  if (client1.publish("wifi", JSONmessageBuffer) == true)
+  {
     Serial.println("Success sending message");
-  } else {
+  }
+  else
+  {
     Serial.println("Error sending message");
-}
+  }
 }
