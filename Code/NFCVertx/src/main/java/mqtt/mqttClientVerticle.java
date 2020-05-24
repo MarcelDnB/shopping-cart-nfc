@@ -48,7 +48,7 @@ public class mqttClientVerticle extends AbstractVerticle {
 					if (handlerSubscribe.succeeded()) {
 						System.out.println(
 								classInstanceId + " subscribed to " + mqttServerVerticle.TOPIC_WIFI + " channel");
-						vertx.setPeriodic(5000, handlerPeriodic -> {
+						vertx.setPeriodic(15000, handlerPeriodic -> {
 							mqttClient.publish(mqttServerVerticle.TOPIC_WIFI, Buffer.buffer(enviar),
 									MqttQoS.AT_LEAST_ONCE, false, true);
 						});

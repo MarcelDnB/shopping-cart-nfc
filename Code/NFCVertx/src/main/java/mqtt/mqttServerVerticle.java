@@ -118,6 +118,7 @@ public class mqttServerVerticle extends AbstractVerticle {
 			endpoint.publishRelease(message.messageId());
 		}
 		// MYSQL
+		try {
 		wifiReading wifiAIntroducir = Json.decodeValue(message.payload().toString(), wifiReading.class);
 
 		mySQLPool.preparedQuery("INSERT INTO redesWifi (SSID, PWR, captureTime, idComercio) VALUES (?,?,?,?)",
@@ -126,10 +127,15 @@ public class mqttServerVerticle extends AbstractVerticle {
 				handler -> {
 					if (handler.succeeded()) {
 						System.out.println(handler.result().rowCount());
+						System.out.println(wifiAIntroducir);
 					} else {
 						System.out.println(handler.cause().toString());
 					}
 				});
+		}
+		catch(Exception e){
+			System.out.println(e.getMessage());
+		}
 		// MYSQL
 	}
 

@@ -82,6 +82,8 @@ public class DatabaseVerticle extends AbstractVerticle {
 	}
 
 	private void putIntoleranciasUsuario(RoutingContext routingContext) {
+		try {
+			System.out.println("Este es el json: "+routingContext.getBodyAsString());
 		usuarioIntolerancias usuarioIntolerancias = Json.decodeValue(routingContext.getBodyAsString(),
 				usuarioIntolerancias.class);
 		for (Integer i : usuarioIntolerancias.getIntolerancias()) {
@@ -97,6 +99,9 @@ public class DatabaseVerticle extends AbstractVerticle {
 									.end((JsonObject.mapFrom(handler.cause()).encodePrettily()));
 						}
 					});
+		}
+		}catch(Exception e) {
+			System.out.println(e.getMessage());
 		}
 	}
 
@@ -123,6 +128,7 @@ public class DatabaseVerticle extends AbstractVerticle {
 	}
 
 	private void putAfterScan(RoutingContext routingContext) {
+		try {
 		productosUsuario productoUsuario = Json.decodeValue(routingContext.getBodyAsString(), productosUsuario.class);
 		mySQLPool.preparedQuery("INSERT INTO productosUsuario (idProducto, idUsuario) VALUES (?,?)",
 				Tuple.of(productoUsuario.getIdProducto(), idUsuarioCreado), handler -> {
@@ -140,6 +146,10 @@ public class DatabaseVerticle extends AbstractVerticle {
 								.end((JsonObject.mapFrom(handler.cause()).encodePrettily()));
 					}
 				});
+		
+		}catch(Exception e) {
+			System.out.println(e.getMessage());
+		}
 	}
 
 	private void getIntolerances(RoutingContext routingContext) {
@@ -180,6 +190,7 @@ public class DatabaseVerticle extends AbstractVerticle {
 							result.add(JsonObject.mapFrom(new intolerancia(row.getString("nombreIntolerancia"),
 									row.getInteger("idIntolerancia"))));
 						}
+						System.out.println(result);
 						routingContext.response().setStatusCode(200).putHeader("content-type", "application/json")
 								.end(result.encodePrettily());
 					} else {
