@@ -142,9 +142,10 @@ void setup()
   
   
   sendPutNuevoUsuario(); // 1. Se ejecuta una vez por reset, se crea el perfil de usuario + sus intolerncias y se envian a la bbdd */
-  Serial.println("\n Esperando tarjeta NFC...\n");
+  Serial.println("\n Introduciendo intolerancias...\n");
   lcd.begin(16, 2);
   leerTeclado();
+  Serial.println("\n Esperando tarjeta NFC...\n");
   /*MQTT INIT*/
   client1.setServer(mqttServer, mqttPort);
   client1.setCallback(callback);
@@ -176,7 +177,7 @@ void loop1(void *parameter)
   while(1) {
   delay(500);
   leerNFC(); //Se ejecuta constantemente
-  // grabarNFC();
+ // grabarNFC();
   if (aux == 1)
   {
     lcd.clear();
@@ -197,7 +198,9 @@ void loop1(void *parameter)
       delay(5000);
       aux = 0;
       lcd.clear();
-      lcd.print("Esperando escaneo");
+      lcd.print("Esperando");
+      lcd.setCursor(0,1);
+      lcd.print("escaneo.. :D");
   }
   }
    vTaskDelay(10);
@@ -286,24 +289,12 @@ void sendGetAllIntelerances()
     return;
   }
   JsonArray array = doc1.as<JsonArray>();
-
+  intoleranciasTodas.push_back(7);
   for (JsonVariant v : array)
   {
     JsonObject input = v.as<JsonObject>();
     intoleranciasTodas.push_back((int)input["id"]);
   }
-
-
-  for(int i:intoleranciasTodas) {
-    Serial.println(i);
-  }
-  
-
-/*Serial.println(F("Response:"));
-  String nombreIntolerancia = doc1["nombreIntolerancia"].as<char *>();
-  int id = doc1["idIntolerancia"].as<int>();
-  Serial.println("Id: " + String(id));
-  Serial.println("Intolerancia: " + nombreIntolerancia);*/
 }
 
 /*
@@ -626,7 +617,7 @@ void grabarNFC()
         Serial.println("Sector 1 (Bloques 4 a 7) autentificados");
         uint8_t data[16];
 
-        memcpy(data, (const uint8_t[]){'1',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}, sizeof data);
+        memcpy(data, (const uint8_t[]){'8',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}, sizeof data);
         success = nfc.mifareclassic_WriteDataBlock(4, data);
 
         if (success)
@@ -651,7 +642,7 @@ void grabarNFC()
   {
     Serial.println("Seems to be a Mifare Ultralight tag (7 byte UID)");
     uint8_t data[32];
-    memcpy(data, (const uint8_t[]){ '4', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}, sizeof(data));
+    memcpy(data, (const uint8_t[]){ '8', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}, sizeof(data));
     success = nfc.mifareultralight_WritePage(4, data);
     if (success)
     {
@@ -708,7 +699,7 @@ void enviarMQTT(long rssi, String ssid)
   const size_t capacity = JSON_OBJECT_SIZE(3) + JSON_ARRAY_SIZE(2) + 60;
   DynamicJsonDocument doc(capacity);
   doc["power"] = rssi;
-  doc["timestamp"] = 100; //millis();
+  doc["timestamp"] = millis(); //millis();
   doc["idWifi"] = 1;
   doc["idComercio"] = COMERCIO;
   doc["ssid"] = ssid;
@@ -772,16 +763,20 @@ void leerTeclado()
 
     if(salir == 2) {
       sendPutIntoleranciasUsuario();
+      lcd.clear();
+      lcd.print("Esperando");
+      lcd.setCursor(0,1);
+      lcd.print("escaneo.. :D");
       break;
     }
     else if (boton == btnRIGHT)
     {
       delay(500);
       salir++;
-      intoleranciasUsuario.insert(intoleranciasTodas[indexEleccion-1]);
-      //intoleranciasUsuario.push_back(intoleranciasTodas[indexEleccion-1]);
+      intoleranciasUsuario.insert(intoleranciasTodas[indexEleccion]);
     }
   }
+
   salir = 0;
 }
 

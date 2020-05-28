@@ -62,7 +62,7 @@ public class telegramMain extends AbstractVerticle {
 		 * Conexion a la base de datos MySQL
 		 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		MySQLConnectOptions mySQLConnectOptions = new MySQLConnectOptions().setPort(3306).setHost("localhost")
-				.setDatabase("DAD").setUser("dad").setPassword("dnbmusic");
+				.setDatabase("DAD").setUser("dad").setPassword("50641145K");
 		PoolOptions poolOptions = new PoolOptions().setMaxSize(5);
 		mySQLPool = MySQLPool.pool(vertx, mySQLConnectOptions, poolOptions);
 
@@ -271,14 +271,14 @@ public class telegramMain extends AbstractVerticle {
 		bot.start();
 	}
 	
-	/* Menï¿½ */
+	/* Menú */
 	void info(Update handler) {
 		bot.sendMessage(new SendMessage()
-				.setText("A continuaciï¿½n se indica la informaciï¿½n disponible: \n"
+				.setText("A continuación se indica la información disponible: \n"
 						+ " a. Productos escaneados por ususarios con cierta intolerancia" + "\n" +
-						"Seleccione la peticiï¿½n deseada, introduciendo su ï¿½ndice:"+ "\n" + 
-						"b. Comprobar si un producto estï¿½ en la base de datos\n" + 
-						"c. Ver el nombre y numero de telï¿½fono del fabricante de un producto\n")
+						"Seleccione la petición deseada, introduciendo su índice:"+ "\n" + 
+						"b. Comprobar si un producto está en la base de datos\n" + 
+						"c. Ver el nombre y numero de teléfono del fabricante de un producto\n")
 				.setChatId(handler.getMessage().getChatId()));
 		seccion.put(Integer.parseInt(handler.getMessage().getChatId()), "/info");
 		tabla.put(Integer.parseInt(handler.getMessage().getChatId()), " ");
@@ -299,7 +299,7 @@ public class telegramMain extends AbstractVerticle {
 		mySQLPool.query("SELECT table_name FROM information_schema.tables WHERE table_schema = 'dad'", res -> {
 			if (res.succeeded()) {
 				RowSet<Row> resultSet = res.result();
-				System.out.println("El nï¿½mero de elementos obtenidos es " + resultSet.size());
+				System.out.println("El número de elementos obtenidos es " + resultSet.size());
 				for (Row row : resultSet) {
 					bot.sendMessage(new SendMessage().setText("- " + row.getString("TABLE_NAME"))
 							.setChatId(handler.getMessage().getChatId()));
@@ -312,7 +312,7 @@ public class telegramMain extends AbstractVerticle {
 	}
 	void modificar(Update handler) {
 		bot.sendMessage(new SendMessage()
-				.setText("ï¿½Quï¿½ tabla desea modificar?\n\n"
+				.setText("¿Qué tabla desea modificar?\n\n"
 						+ "a. Producto\nb. Ingrediente\nc. Intolerancia")
 				.setChatId(handler.getMessage().getChatId()));
 		seccion.put(Integer.parseInt(handler.getMessage().getChatId()), "/modificar");
@@ -322,7 +322,7 @@ public class telegramMain extends AbstractVerticle {
 	}
 	void eliminar(Update handler) {
 		bot.sendMessage(new SendMessage()
-				.setText("ï¿½De quï¿½ tabla desea eliminar?\n\n"
+				.setText("¿De qué tabla desea eliminar?\n\n"
 						+ "a. Producto\n")
 				.setChatId(handler.getMessage().getChatId()));
 		seccion.put(Integer.parseInt(handler.getMessage().getChatId()), "/eliminar");
@@ -335,13 +335,13 @@ public class telegramMain extends AbstractVerticle {
 				&& (seccion.get(Integer.parseInt(handler.getMessage().getChatId())) == "/info"))) {
 			tabla.put((Integer.parseInt(handler.getMessage().getChatId())), "a");
 			bot.sendMessage(new SendMessage()
-					.setText("ï¿½De que intolerancia desea ver los productos escaneados por los usuarios?, alguno"
-							+ " de los ID's mostrados a continuaciï¿½n: " + "\n")
+					.setText("¿De que intolerancia desea ver los productos escaneados por los usuarios?, alguno"
+							+ " de los ID's mostrados a continuación: " + "\n")
 					.setChatId(handler.getMessage().getChatId()));
 			mySQLPool.query("select idIntolerancia, nombreIntolerancia from intolerancia", res -> {
 				if (res.succeeded()) {
 					RowSet<Row> resultSet = res.result();
-					System.out.println("El nï¿½mero de elementos obtenidos es " + resultSet.size());
+					System.out.println("El número de elementos obtenidos es " + resultSet.size());
 					for (Row row : resultSet) {
 						bot.sendMessage(new SendMessage()
 								.setText(String.valueOf(row.getInteger("idIntolerancia")) + ". "
@@ -362,7 +362,7 @@ public class telegramMain extends AbstractVerticle {
 					"natural join ingredientesproducto natural join ingrediente natural join intoleranciasingrediente natural join intolerancia where idIntolerancia=" + Integer.parseInt(s) +") group by IdProducto", res -> {
 				if (res.succeeded()) {
 					RowSet<Row> resultSet = res.result();
-					System.out.println("El nï¿½mero de elementos obtenidos es " + resultSet.size());
+					System.out.println("El número de elementos obtenidos es " + resultSet.size());
 					for (Row row : resultSet) {
 						bot.sendMessage(new SendMessage()
 								.setText(String.valueOf(row.getString("nombreProducto")) + " - cantidad="
@@ -396,7 +396,7 @@ public class telegramMain extends AbstractVerticle {
 			s + "%'", res -> {
 				if (res.succeeded()) {
 					RowSet<Row> resultSet = res.result();
-					System.out.println("El nï¿½mero de elementos obtenidos es " + resultSet.size());
+					System.out.println("El número de elementos obtenidos es " + resultSet.size());
 					for (Row row : resultSet) {
 						bot.sendMessage(new SendMessage()
 								.setText(row.getInteger("idProducto")+". "+row.getString("nombreProducto"))
@@ -423,7 +423,7 @@ public class telegramMain extends AbstractVerticle {
 			mySQLPool.query("select idProducto, nombreProducto from producto", res -> {
 				if (res.succeeded()) {
 					RowSet<Row> resultSet = res.result();
-					System.out.println("El nï¿½mero de elementos obtenidos es " + resultSet.size());
+					System.out.println("El número de elementos obtenidos es " + resultSet.size());
 					for (Row row : resultSet) {
 						bot.sendMessage(new SendMessage()
 								.setText(String.valueOf(row.getInteger("idProducto")) + ". "
@@ -443,7 +443,7 @@ public class telegramMain extends AbstractVerticle {
 			mySQLPool.query("select fabricante, telefono from producto where idProducto="+Integer.parseInt(s), res -> {
 				if (res.succeeded()) {
 					RowSet<Row> resultSet = res.result();
-					System.out.println("El nï¿½mero de elementos obtenidos es " + resultSet.size());
+					System.out.println("El número de elementos obtenidos es " + resultSet.size());
 					for (Row row : resultSet) {
 						bot.sendMessage(new SendMessage()
 								.setText(row.getString("fabricante")+" | "+row.getInteger("telefono"))
@@ -521,7 +521,7 @@ public class telegramMain extends AbstractVerticle {
 			mySQLPool.query("select idIntolerancia, nombreIntolerancia from intolerancia", res -> {
 				if (res.succeeded()) {
 					RowSet<Row> resultSet = res.result();
-					System.out.println("El nï¿½mero de elementos obtenidos es " + resultSet.size());
+					System.out.println("El número de elementos obtenidos es " + resultSet.size());
 					for (Row row : resultSet) {
 						bot.sendMessage(new SendMessage()
 								.setText(String.valueOf(row.getInteger("idIntolerancia")) + ". "
@@ -555,7 +555,7 @@ public class telegramMain extends AbstractVerticle {
 					mySQLPool.query("select idIngrediente, nombreIngrediente from ingrediente", res -> {
 						if (res.succeeded()) {
 							RowSet<Row> resultSet = res.result();
-							System.out.println("El nï¿½mero de elementos obtenidos es " + resultSet.size());
+							System.out.println("El número de elementos obtenidos es " + resultSet.size());
 							for (Row row : resultSet) {
 								bot.sendMessage(new SendMessage()
 										.setText(String.valueOf(row.getInteger("idIngrediente")) + ". "
@@ -619,7 +619,7 @@ public class telegramMain extends AbstractVerticle {
 			mySQLPool.query("select idIngrediente, nombreIngrediente from ingrediente", res -> {
 				if (res.succeeded()) {
 					RowSet<Row> resultSet = res.result();
-					System.out.println("El nï¿½mero de elementos obtenidos es " + resultSet.size());
+					System.out.println("El número de elementos obtenidos es " + resultSet.size());
 					for (Row row : resultSet) {
 						bot.sendMessage(new SendMessage()
 								.setText(String.valueOf(row.getInteger("idIngrediente")) + ". "
@@ -652,7 +652,7 @@ public class telegramMain extends AbstractVerticle {
 					mySQLPool.query("select idProducto, nombreProducto from producto", res -> {
 						if (res.succeeded()) {
 							RowSet<Row> resultSet = res.result();
-							System.out.println("El nï¿½mero de elementos obtenidos es " + resultSet.size());
+							System.out.println("El número de elementos obtenidos es " + resultSet.size());
 							for (Row row : resultSet) {
 								bot.sendMessage(new SendMessage()
 										.setText(String.valueOf(row.getInteger("idProducto")) + ". "
@@ -795,7 +795,7 @@ public class telegramMain extends AbstractVerticle {
 					prod.setFabricante(handler.getMessage().getText());
 					map.put(Integer.parseInt(handler.getMessage().getChatId()), prod);
 					bot.sendMessage(
-							new SendMessage().setText("Telï¿½fono").setChatId(handler.getMessage().getChatId()));
+							new SendMessage().setText("Teléfono").setChatId(handler.getMessage().getChatId()));
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					bot.sendMessage(
@@ -859,7 +859,7 @@ public class telegramMain extends AbstractVerticle {
 					com.setNombreComercio(handler.getMessage().getText());
 					map.put(Integer.parseInt(handler.getMessage().getChatId()), com);
 					bot.sendMessage(
-							new SendMessage().setText("Telefono").setChatId(handler.getMessage().getChatId()));
+							new SendMessage().setText("Teléfono").setChatId(handler.getMessage().getChatId()));
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					bot.sendMessage(new SendMessage().setText(e.getMessage()).setChatId(handler.getMessage().getChatId()));
@@ -918,7 +918,7 @@ public class telegramMain extends AbstractVerticle {
 			mySQLPool.query("SELECT idProducto, nombreProducto FROM producto", res -> {
 				if (res.succeeded()) {
 					RowSet<Row> resultSet = res.result();
-					System.out.println("El nï¿½mero de elementos obtenidos es " + resultSet.size());
+					System.out.println("El número de elementos obtenidos es " + resultSet.size());
 					for (Row row : resultSet) {
 						bot.sendMessage(new SendMessage().setText(row.getInteger("idProducto")
 								+". "+ row.getString("nombreProducto"))
@@ -929,7 +929,7 @@ public class telegramMain extends AbstractVerticle {
 							.setChatId(handler.getMessage().getChatId()));
 				}
 			});
-			bot.sendMessage(new SendMessage().setText("ï¿½Que producto desea modificar? Introduzca el ID")
+			bot.sendMessage(new SendMessage().setText("¿Qué producto desea modificar? Introduzca el ID")
 					.setChatId(handler.getMessage().getChatId()));
 		}else if(ruta.get(Integer.parseInt(handler.getMessage().getChatId())) == " ") {
 			Integer id = Integer.parseInt(handler.getMessage().getText());
@@ -937,7 +937,7 @@ public class telegramMain extends AbstractVerticle {
 			mySQLPool.query("select * from producto where idProducto=" + id, res -> {
 				if (res.succeeded()) {
 					RowSet<Row> resultSet = res.result();
-					System.out.println("El nï¿½mero de elementos obtenidos es " + resultSet.size());
+					System.out.println("El número de elementos obtenidos es " + resultSet.size());
 					for (Row row : resultSet) {
 						bot.sendMessage(new SendMessage()
 								.setText(row.getInteger("idProducto")+". "+row.getString("nombreProducto"))
@@ -986,7 +986,7 @@ public class telegramMain extends AbstractVerticle {
 			mySQLPool.query("SELECT idIngrediente, nombreIngrediente FROM ingrediente", res -> {
 				if (res.succeeded()) {
 					RowSet<Row> resultSet = res.result();
-					System.out.println("El nï¿½mero de elementos obtenidos es " + resultSet.size());
+					System.out.println("El número de elementos obtenidos es " + resultSet.size());
 					for (Row row : resultSet) {
 						bot.sendMessage(new SendMessage().setText(row.getInteger("idIngrediente")
 								+". "+ row.getString("nombreIngrediente"))
@@ -997,7 +997,7 @@ public class telegramMain extends AbstractVerticle {
 							.setChatId(handler.getMessage().getChatId()));
 				}
 			});
-			bot.sendMessage(new SendMessage().setText("ï¿½Que ingrediente desea modificar? Introduzca el ID")
+			bot.sendMessage(new SendMessage().setText("¿Qué ingrediente desea modificar? Introduzca el ID")
 					.setChatId(handler.getMessage().getChatId()));
 		}else if(ruta.get(Integer.parseInt(handler.getMessage().getChatId())) == " ") {
 			Integer id = Integer.parseInt(handler.getMessage().getText());
@@ -1005,7 +1005,7 @@ public class telegramMain extends AbstractVerticle {
 			mySQLPool.query("select * from ingrediente where idIngrediente=" + id, res -> {
 				if (res.succeeded()) {
 					RowSet<Row> resultSet = res.result();
-					System.out.println("El nï¿½mero de elementos obtenidos es " + resultSet.size());
+					System.out.println("El número de elementos obtenidos es " + resultSet.size());
 					for (Row row : resultSet) {
 						bot.sendMessage(new SendMessage()
 								.setText(row.getInteger("idingrediente")+". "+row.getString("nombreIngrediente"))
@@ -1047,7 +1047,7 @@ public class telegramMain extends AbstractVerticle {
 			mySQLPool.query("SELECT idintolerancia, nombreIntolerancia FROM intolerancia", res -> {
 				if (res.succeeded()) {
 					RowSet<Row> resultSet = res.result();
-					System.out.println("El nï¿½mero de elementos obtenidos es " + resultSet.size());
+					System.out.println("El número de elementos obtenidos es " + resultSet.size());
 					for (Row row : resultSet) {
 						bot.sendMessage(new SendMessage().setText(row.getInteger("idintolerancia")
 								+". "+ row.getString("nombreIntolerancia"))
@@ -1058,7 +1058,7 @@ public class telegramMain extends AbstractVerticle {
 							.setChatId(handler.getMessage().getChatId()));
 				}
 			});
-			bot.sendMessage(new SendMessage().setText("ï¿½Que intolerancia desea modificar? Introduzca el ID")
+			bot.sendMessage(new SendMessage().setText("¿Qué intolerancia desea modificar? Introduzca el ID")
 					.setChatId(handler.getMessage().getChatId()));
 		}else if(ruta.get(Integer.parseInt(handler.getMessage().getChatId())) == " ") {
 			Integer id = Integer.parseInt(handler.getMessage().getText());
@@ -1066,7 +1066,7 @@ public class telegramMain extends AbstractVerticle {
 			mySQLPool.query("select * from intolerancia where idintolerancia=" + id, res -> {
 				if (res.succeeded()) {
 					RowSet<Row> resultSet = res.result();
-					System.out.println("El nï¿½mero de elementos obtenidos es " + resultSet.size());
+					System.out.println("El número de elementos obtenidos es " + resultSet.size());
 					for (Row row : resultSet) {
 						bot.sendMessage(new SendMessage()
 								.setText(row.getInteger("idintolerancia")+". "+row.getString("nombreIntolerancia"))
@@ -1110,7 +1110,7 @@ public class telegramMain extends AbstractVerticle {
 			mySQLPool.query("SELECT idProducto, nombreProducto FROM producto", res -> {
 				if (res.succeeded()) {
 					RowSet<Row> resultSet = res.result();
-					System.out.println("El nï¿½mero de elementos obtenidos es " + resultSet.size());
+					System.out.println("El número de elementos obtenidos es " + resultSet.size());
 					for (Row row : resultSet) {
 						bot.sendMessage(new SendMessage().setText(row.getInteger("idProducto")
 								+". "+ row.getString("nombreProducto"))
@@ -1121,7 +1121,7 @@ public class telegramMain extends AbstractVerticle {
 							.setChatId(handler.getMessage().getChatId()));
 				}
 			});
-			bot.sendMessage(new SendMessage().setText("ï¿½Que producto desea eliminar? Introduzca el ID")
+			bot.sendMessage(new SendMessage().setText("¿Qué producto desea eliminar? Introduzca el ID")
 					.setChatId(handler.getMessage().getChatId()));
 		}else if(ruta.get(Integer.parseInt(handler.getMessage().getChatId())) == " ") {
 			Integer id = Integer.parseInt(handler.getMessage().getText());
